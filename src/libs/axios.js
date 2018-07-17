@@ -4,7 +4,8 @@ import store from '../store';
 import { Message } from 'iview';
 import helper from './httpHelper';
 
-let baseUrl = 'http://100.100.100.142:81/'; // 设置你的baseUrl
+let baseUrl = 'http://192.168.2.159:81/'; // 设置你的baseUrl
+
 
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
@@ -56,13 +57,14 @@ function formatReq (type, url, data) {
         axios({
             method: type,
             url: `${baseUrl}${url}`,
-            headers: {
-                // 这里的请求头与后台商量设置
-                'content-Type': 'application/x-www-form-urlencoded'
-            },
+            // headers: {
+            //     // 这里的请求头与后台商量设置
+            //     'content-Type': 'application/x-www-form-urlencoded'
+            // },
+            headers: { 'content-Type': 'application/json; charset=utf-8' },
             cancelToken: source.token,
-            data: qs.stringify(data) // java后台用qs转
-            // data:JSON.stringify(data)//PHP后台用JSON转
+            // data: qs.stringify(data) // java后台用qs转
+            data:JSON.stringify(data)//PHP后台用JSON转
         })
             .then(res => {
                 // store.commit('UPDATE_LOADING', false); // 隐藏loading
