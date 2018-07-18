@@ -1,6 +1,6 @@
 <style lang="less">
     @import '../../styles/common.less';
-    @import './components/table.less';
+    @import './components/styles/table.less';
 
     .vertical-center-modal {
         display: flex;
@@ -30,21 +30,16 @@
                             title="添加会员"
                             v-model="modal"
                             :mask-closable="false"
-                            ok-text="添加"
-                            cancel-text="取消"
                             :closable="false"
-                            @on-ok="onOK"
-                            @on-cancel="onCancel"
-                            :loading="true"
                             class-name="vertical-center-modal">
-                        <Form :model="memberItem" :label-width="80">
+                        <Form ref="memberItem" :model="memberItem" :label-width="80" :rules="ruleCustom">
                             <FormItem label="姓名">
                                 <Input v-model="memberItem.name" placeholder="请输入姓名..."></Input>
                             </FormItem>
-                            <FormItem label="手机号码">
+                            <FormItem label="手机号码" prop="phone">
                                 <Input v-model="memberItem.phone" placeholder="请输入手机号码..."></Input>
                             </FormItem>
-                            <FormItem label="车牌号码">
+                            <FormItem label="车牌号码" prop="carnum">
                                 <Input v-model="memberItem.carnum" placeholder="请输入车牌号码..."></Input>
                             </FormItem>
                             <FormItem label="汽车品牌">
@@ -69,6 +64,10 @@
                                        placeholder="请输入备注信息..."></Input>
                             </FormItem>
                         </Form>
+                        <div slot="footer">
+                            <Button type="ghost" style="margin-left: 8px" @click="onCancel">取消</Button>
+                            <Button type="primary" :loading="isLoading" @click="onOK('memberItem')">添加</Button>
+                        </div>
                     </Modal>
 
                     <Row>
@@ -91,10 +90,35 @@
 <script>
 
     import config from '../../libs/config';
+    import utils from '../../libs/util';
 
     export default {
         name: 'member',
         data() {
+            const validatePhone = (rule, value, callback) => {
+                if (value != "") {
+                    if (!utils.phoneVerify(value)) {
+                        callback(new Error('请输入正确的手机号码'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+
+            };
+            const validateCarNum = (rule, value, callback) => {
+                if (value != "") {
+                    if (!utils.carNumberVerify(value)) {
+                        callback(new Error('请输入正确的车牌号码'));
+                    } else {
+                        callback();
+                    }
+                } else {
+                    callback();
+                }
+
+            };
             return {
                 searchConName: '',
                 searchConTel: '',
@@ -123,7 +147,7 @@
                         render: (h, params) => {
                             return h('Button', {
                                 props: {
-                                    type: 'text',
+                                    type: 'primary',
                                     size: 'small'
                                 },
                                 on: {
@@ -140,16 +164,25 @@
                     }
 
                 ],
+                ruleCustom: {
+                    phone: [
+                        {validator: validatePhone, trigger: 'blur'}
+                    ],
+                    carnum: [
+                        {validator: validateCarNum, trigger: 'blur'}
+                    ]
+                },
                 data: [],
                 initTable: [],
                 modal: false,
+                isLoading: false,
                 memberItem: {
                     name: '',
                     phone: '',
                     carnum: '鄂A',
                     carmake: ''
                 },
-                accountItem:{
+                accountItem: {
                     money: 100,
                     type: '1',
                     remark: ''
@@ -193,35 +226,46 @@
                     carnum: this.searchCarNo
                 });
             },
-            onOK() {
-                var data= {
-                    user:this.memberItem,
-                    account:this.accountItem
-                }
+            onOK(name) {
+                this.isLoading = true;
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        if (this.memberItem.phone == "" && this.memberItem.carnum == "") {
+                            this.$Message.info('请输入手机号码或车牌号!');
+                            return;
+                        }
+                        let data = {
+                            user: this.memberItem,
+                            account: this.accountItem
+                        };
+                        this.Http.postJson(config.service.addMember, data).then((res) => {
+                            if (res.data.code == 100) {
+                                this.$Message.success({
+                                    content: '添加成功!',
+                                    duration: 2
+                                });
+                                this.isLoading = false;
+                                this.modal = false;
+                                //添加数据
+                                this.data.push(res.data.data)
 
-                this.Http.post(config.service.addMember, data).then((res) => {
-                    if (res.data.code == 100) {
-                        this.$Message.success({
-                            content: '添加成功!',
-                            duration: 2
+                            } else {
+                                this.isLoading = false;
+                                this.$Message.error({
+                                    content: res.data.msg,
+                                    duration: 2
+                                });
+
+                            }
                         });
-                        this.modal = false;
-                        //添加数据
-                        this.data.push(res.data.data)
-
                     } else {
-                        this.modal = false;
-                        this.$Message.error({
-                            content: res.data.msg,
-                            duration: 2
-                        });
-
+                        this.isLoading = false;
                     }
-                });
-
+                })
             },
             onCancel() {
                 this.$Message.info('取消添加!');
+                this.modal = false;
             }
         },
         mounted() {

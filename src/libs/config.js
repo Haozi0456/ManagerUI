@@ -15,7 +15,21 @@ var config = {
         getAllMembers:'system/user/getAllUsers',
 
         //添加会员
-        addMember:'system/user/toRegister'
+        addMember:'system/user/toRegister',
+
+        //获取会员详情
+        getMemberInfo:'system/user/getUserById',
+
+        //获取我的账户userId
+        getMyAccount:'/system/account/getMyAccount',
+
+        //获取我的订单userId
+        getMyOrders:'/system/order/getMyOrders',
+
+        //添加订单
+        addOrder:'/system/order/addOrder'
+
+
     }
 };
 

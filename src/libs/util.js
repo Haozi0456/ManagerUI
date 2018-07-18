@@ -3,9 +3,7 @@ import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
 
-let util = {
-
-};
+let util = {};
 util.title = function (title) {
     title = title || 'iView admin';
     window.document.title = title;
@@ -265,5 +263,26 @@ util.checkUpdate = function (vm) {
         }
     });
 };
+
+//手机号验证
+util.phoneVerify = function (text) {
+    //手机号正则
+    var phonePattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9])|(19[0,5-9])|(17[0,5-9]))\d{8}$/;
+    return phonePattern.test(text)
+}
+
+util.carNumberVerify = function(text) {
+    var num = text+"";
+    let len = num.length;
+    var xreg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
+    var creg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
+    if (len == 7) {
+        return creg.test(num);
+    } else if (len == 8) {
+        return xreg.test(num);
+    } else {
+        return false;
+    }
+}
 
 export default util;

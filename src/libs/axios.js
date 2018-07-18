@@ -4,7 +4,7 @@ import store from '../store';
 import { Message } from 'iview';
 import helper from './httpHelper';
 
-let baseUrl = 'http://192.168.2.159:81/'; // 设置你的baseUrl
+let baseUrl = 'http://100.100.100.142:81/'; // 设置你的baseUrl
 
 
 const CancelToken = axios.CancelToken;
@@ -51,20 +51,49 @@ axios.interceptors.response.use(res => {
 });
 
 // 封装请求方法
-function formatReq (type, url, data) {
+function formatReq (type, url, data,headers) {
+    setToken();
+    if(headers == undefined){
+        headers = {
+            'content-Type': 'application/x-www-form-urlencoded'
+        }
+    }
+    return new Promise((reslove, reject) => {
+        axios({
+            method: type,
+            url: `${baseUrl}${url}`,
+            headers:headers,
+            // headers: {
+            //     // 这里的请求头与后台商量设置
+            //     'content-Type': 'application/x-www-form-urlencoded'
+            // },
+            // headers: { 'content-Type': 'application/json; charset=utf-8' },
+            cancelToken: source.token,
+            data: qs.stringify(data) // java后台用qs转
+            // data:JSON.stringify(data)//PHP后台用JSON转
+        })
+            .then(res => {
+                // store.commit('UPDATE_LOADING', false); // 隐藏loading
+                // 这里可以添加指定对应状态码的处理方式,比如登陆过期,res.data.code === '6666' 路由跳转到login
+                reslove(res);
+            })
+            .catch(e => {
+                // store.commit('UPDATE_LOADING', false); // 隐藏loading
+                reject(e.message);
+                Message.error(e.message);
+            });
+    });
+}
+
+function formatReqJson (type, url, data) {
     setToken();
     return new Promise((reslove, reject) => {
         axios({
             method: type,
             url: `${baseUrl}${url}`,
-            // headers: {
-            //     // 这里的请求头与后台商量设置
-            //     'content-Type': 'application/x-www-form-urlencoded'
-            // },
             headers: { 'content-Type': 'application/json; charset=utf-8' },
             cancelToken: source.token,
-            // data: qs.stringify(data) // java后台用qs转
-            data:JSON.stringify(data)//PHP后台用JSON转
+            data: JSON.stringify(data) //转成json字符串
         })
             .then(res => {
                 // store.commit('UPDATE_LOADING', false); // 隐藏loading
@@ -86,6 +115,7 @@ const Http = {
         return axios.get(`${baseUrl}${url}`, { cancelToken: source.token }).then(r => r);
     },
     post: (url, data) => formatReq('post', url, data),
+    postJson: (url, data) => formatReqJson('post', url, data),
     put: (url, data) => formatReq('put', url, data),
     patch: (url, data) => formatReq('patch', url, data),
     delete: (url, data) => formatReq('delete', url, data)
