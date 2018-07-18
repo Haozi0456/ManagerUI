@@ -51,7 +51,7 @@
                                 <Input v-model="memberItem.carmake" placeholder="请输入汽车品牌..."></Input>
                             </FormItem>
                             <FormItem label="账户操作">
-                                <Select v-model="memberItem.type" value="1" placeholder="请选择...">
+                                <Select v-model="accountItem.type" value="1" placeholder="请选择...">
                                     <Option value="1">充值</Option>
                                     <Option value="2">录入</Option>
                                     <Option value="3">提现</Option>
@@ -62,10 +62,10 @@
                                         :max="5000"
                                         :min="0"
                                         :step="5"
-                                        v-model="memberItem.money"></InputNumber>
+                                        v-model="accountItem.money"></InputNumber>
                             </FormItem>
                             <FormItem label="备注">
-                                <Input v-model="memberItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                                <Input v-model="accountItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                        placeholder="请输入备注信息..."></Input>
                             </FormItem>
                         </Form>
@@ -147,7 +147,9 @@
                     name: '',
                     phone: '',
                     carnum: '鄂A',
-                    carmake: '',
+                    carmake: ''
+                },
+                accountItem:{
                     money: 100,
                     type: '1',
                     remark: ''
@@ -192,7 +194,12 @@
                 });
             },
             onOK() {
-                this.Http.post(config.service.addMember, this.formItem).then((res) => {
+                var data= {
+                    user:this.memberItem,
+                    account:this.accountItem
+                }
+
+                this.Http.post(config.service.addMember, data).then((res) => {
                     if (res.data.code == 100) {
                         this.$Message.success({
                             content: '添加成功!',
