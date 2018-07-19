@@ -96,10 +96,10 @@ export const appRouter = [
         path: '/member',
         icon: 'person-stalker',
         name: 'member',
-        title: '会员列表',
+        title: '会员管理',
         component: Main,
         children: [
-            {path: 'index', title: '会员列表', name: 'member_index', component: () => import('@/views/member/member.vue')}
+            {path: 'index', title: '会员管理', name: 'member_index', component: () => import('@/views/member/member.vue')}
         ]
     },{
         path: '/statistics',

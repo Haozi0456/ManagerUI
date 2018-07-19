@@ -39,7 +39,7 @@
                 <Row class-name="home-page-row1" :gutter="10">
                     <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
                         <Card>
-                            <Row type="flex" class="user-infor" :gutter="8">
+                            <Row type="flex" class="member-user-infor" :gutter="8">
                                 <Col :md="12" :lg="8">
                                     <Col span="24" align="middle">
                                         <!--<Row class-name="made-child-con-middle" type="flex" align="middle">-->

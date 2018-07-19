@@ -20,6 +20,9 @@ var config = {
         //获取会员详情
         getMemberInfo:'system/user/getUserById',
 
+        //获取会员人数
+        getMemberCount:'system/user/getMemberCount',
+
         //获取我的账户userId
         getMyAccount:'/system/account/getMyAccount',
 
