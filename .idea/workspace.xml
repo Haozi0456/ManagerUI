@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="896cb905-ad5e-4eb9-8e1f-52db3725799d" name="默认" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/ic-header.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/member/components/countUp.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/member/components/inforCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/libs/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/libs/axios.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/libs/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/libs/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/libs/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/libs/util.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/member/components/style/table.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/member/data/search.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/member/member-details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/member/member-details.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/member/member.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/member/member.vue" afterDir="false" />
-    </list>
+    <list default="true" id="896cb905-ad5e-4eb9-8e1f-52db3725799d" name="默认" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -70,7 +57,7 @@
       <file leaf-file-name="member-details.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/member/member-details.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
+            <state relative-caret-position="-5062">
               <caret line="115" column="49" selection-start-line="115" selection-start-column="49" selection-end-line="115" selection-end-column="49" />
               <folding>
                 <element signature="n#style#0;n#Button#0;n#div#0;n#Modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -188,9 +175,9 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="194" />
-    <option name="y" value="300" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="69" />
+    <option name="y" value="45" />
     <option name="width" value="1499" />
     <option name="height" value="955" />
   </component>
@@ -371,12 +358,12 @@
       <updated>1531790543797</updated>
       <workItem from="1531790544959" duration="29332000" />
       <workItem from="1531821896383" duration="352000" />
-      <workItem from="1531874944647" duration="26866000" />
+      <workItem from="1531874944647" duration="27140000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56550000" />
+    <option name="totallyTimeSpent" value="56824000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -388,12 +375,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="69" y="45" width="1499" height="955" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24973656" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.32443532" />
       <window_info anchor="bottom" id="TODO" order="11" weight="0.3293348" />
-      <window_info anchor="bottom" id="调试" order="0" visible="true" weight="0.074154854" />
+      <window_info anchor="bottom" id="调试" order="0" weight="0.083333336" />
       <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="6" weight="0.26608506" />
@@ -756,7 +743,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/member/member-details.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
+        <state relative-caret-position="-5062">
           <caret line="115" column="49" selection-start-line="115" selection-start-column="49" selection-end-line="115" selection-end-column="49" />
           <folding>
             <element signature="n#style#0;n#Button#0;n#div#0;n#Modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
