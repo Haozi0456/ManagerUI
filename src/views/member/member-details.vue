@@ -121,7 +121,7 @@
                                 :end-val="account.money"
                                 iconType="social-yen"
                                 color="#2d8cf0"
-                                decimals=2
+                                :decimals="decimals"
                                 unit="元"
                                 intro-text="账户余额"
                         ></infor-card>
@@ -132,7 +132,7 @@
                                 :end-val="account.totalConsume"
                                 iconType="cash"
                                 color="#64d572"
-                                decimals=0
+                                :decimals="decimals"
                                 unit="元"
                                 :iconSize="50"
                                 intro-text="总消费金额"
@@ -144,7 +144,7 @@
                         <infor-card
                                 id-name="collection_count"
                                 :end-val="count.collection"
-                                decimals=0
+                                :decimals="timedecimals"
                                 unit="次"
                                 iconType="ios-cart"
                                 color="#ffd572"
@@ -246,22 +246,15 @@
             inforCard
         },
         props: {
-            color: '#f25e43',
-            countSize: {
-                type: String,
-                default: '30px'
-            },
-            countWeight: {
-                type: Number,
-                default: 700
-            },
-            iconSize: 40
+            color: '#f25e43'
 
         },
         data() {
             return {
                 userId: null,
                 showInfo: false,
+                decimals:2,
+                timedecimals:0,
                 count: {
                     createUser: 0,
                     visit: 0,
