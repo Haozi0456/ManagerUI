@@ -101,6 +101,15 @@ export const appRouter = [
         children: [
             {path: 'index', title: '会员列表', name: 'member_index', component: () => import('@/views/member/member.vue')}
         ]
+    },{
+        path: '/statistics',
+        icon: 'ios-pie',
+        name: 'statistics',
+        title: '数据统计',
+        component: Main,
+        children: [
+            {path: 'index', title: '数据统计', name: 'statistics_index', component: () => import('@/views/statistics/statistics.vue')}
+        ]
     },
     {
         path: '/access',

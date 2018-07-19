@@ -141,6 +141,10 @@
                         title: '车牌号'
                     },
                     {
+                        key: 'createtime',
+                        title: '入会时间'
+                    },
+                    {
                         title: '查看详情',
                         key: 'show_more',
                         align: 'center',
@@ -232,6 +236,7 @@
                     if (valid) {
                         if (this.memberItem.phone == "" && this.memberItem.carnum == "") {
                             this.$Message.info('请输入手机号码或车牌号!');
+                            this.isLoading = false;
                             return;
                         }
                         let data = {

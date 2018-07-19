@@ -15,7 +15,9 @@
                     <count-up 
                         class="infor-card-count user-created-count" 
                         :id-name="idName" 
-                        :end-val="endVal" 
+                        :end-val="endVal"
+                        :decimals="decimals"
+                        :unitLable="unit"
                         :color="color"
                         :countSize="countSize"
                         :countWeight="countWeight"
@@ -39,6 +41,11 @@ export default {
     props: {
         idName: String,
         endVal: Number,
+        decimals:{
+            type: Number,
+            default: 2
+        },
+        unit:String,
         color: String,
         iconType: String,
         introText: String,

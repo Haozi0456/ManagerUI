@@ -4,7 +4,7 @@ import store from '../store';
 import { Message } from 'iview';
 import helper from './httpHelper';
 
-let baseUrl = 'http://100.100.100.142:81/'; // 设置你的baseUrl
+let baseUrl = 'http://127.0.0.1:81/'; // 设置你的baseUrl
 
 
 const CancelToken = axios.CancelToken;

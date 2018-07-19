@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p :class="className" :style="{textAlign: 'center', color: color, fontSize: countSize, fontWeight: countWeight}"><span v-cloak :id="idName">{{ startVal }}</span><span>{{ unit }}</span></p>
+        <p :class="className" :style="{textAlign: 'center', color: color, fontSize: countSize, fontWeight: countWeight}"><span v-cloak :id="idName">{{ startVal }}</span><span :style="{fontSize: unitSize}">{{ unit }}</span></p>
         <slot name="intro"></slot>
     </div>
 </template>
@@ -8,21 +8,22 @@
 <script>
 import CountUp from 'countup';
 
-function transformValue (val) {
-    let endVal = 0;
-    let unit = '';
-    if (val < 1000) {
-        endVal = val;
-    } else if (val >= 1000 && val < 1000000) {
-        endVal = parseInt(val / 1000);
-        unit = 'K+';
-    } else if (val >= 1000000 && val < 10000000000) {
-        endVal = parseInt(val / 1000000);
-        unit = 'M+';
-    } else {
-        endVal = parseInt(val / 1000000000);
-        unit = 'B+';
-    }
+function transformValue (val,unitLable) {
+    // let endVal = 0.00;
+    let unit = unitLable;
+    // if (val < 10000) {
+    let  endVal = parseFloat(val).toFixed(2);
+    // } else if (val >= 10000 && val < 1000000) {
+    //     endVal = parseInt(val / 1000);
+    //     unit = 'K+';
+    // } else if (val >= 1000000 && val < 10000000000) {
+    //     endVal = parseInt(val / 1000000);
+    //     unit = 'M+';
+    // } else {
+    //     endVal = parseInt(val / 1000000000);
+    //     unit = 'B+';
+    // }
+
     return {
         val: endVal,
         unit: unit
@@ -40,6 +41,7 @@ export default {
     props: {
         idName: String,
         className: String,
+        unitLable:String,
         startVal: {
             type: Number,
             default: 0
@@ -50,7 +52,7 @@ export default {
         },
         decimals: {
             type: Number,
-            default: 0
+            default: 2
         },
         duration: {
             type: Number,
@@ -76,6 +78,10 @@ export default {
             type: String,
             default: '30px'
         },
+        unitSize: {
+            type: String,
+            default: '18px'
+        },
         countWeight: {
             type: Number,
             default: 700
@@ -85,7 +91,7 @@ export default {
     mounted () {
         this.$nextTick(() => {
             setTimeout(() => {
-                let res = transformValue(this.endVal);
+                let res = transformValue(this.endVal,this.unitLable);
                 let endVal = res.val;
                 this.unit = res.unit;
                 let demo = {};

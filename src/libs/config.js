@@ -23,12 +23,29 @@ var config = {
         //获取我的账户userId
         getMyAccount:'/system/account/getMyAccount',
 
+        //充值
+        toRecharge:'/system/account/toRecharge',
+
+        //充值记录
+        getRechargeList:'/system/account/getRechargeList',
+
         //获取我的订单userId
         getMyOrders:'/system/order/getMyOrders',
 
         //添加订单
-        addOrder:'/system/order/addOrder'
+        addOrder:'/system/order/addOrder',
 
+        //统计年里每个月订单收入
+        getStatisticsByMonthInYear:'/system/statistics/getStatisticsByMonthInYear',
+
+        //统计年收入
+        getStatisticsByYear:'/system/statistics/getStatisticsByYear',
+
+        //统计给定日期订单收入
+        getStatisticsByDay:'/system/statistics/getStatisticsByDay',
+
+        //统计给定日期不同类型订单收入
+        getStatisticsByDayWithType:'/system/statistics/getStatisticsByDayWithType'
 
     }
 };
