@@ -8,9 +8,9 @@
 <script>
 import CountUp from 'countup';
 
-function transformValue (val) {
+function transformValue (val,unitLable) {
     // let endVal = 0.00;
-    let unit = '元';
+    let unit = unitLable;
     // if (val < 10000) {
     let  endVal = parseFloat(val).toFixed(2);
     // } else if (val >= 10000 && val < 1000000) {
@@ -41,6 +41,7 @@ export default {
     props: {
         idName: String,
         className: String,
+        unitLable:String,
         startVal: {
             type: Number,
             default: 0
@@ -90,7 +91,7 @@ export default {
     mounted () {
         this.$nextTick(() => {
             setTimeout(() => {
-                let res = transformValue(this.endVal);
+                let res = transformValue(this.endVal,this.unitLable);
                 let endVal = res.val;
                 this.unit = res.unit;
                 let demo = {};

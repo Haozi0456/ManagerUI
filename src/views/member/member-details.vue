@@ -2,14 +2,32 @@
     @import "./components/styles/member.less";
     @import "../../styles/common.less";
 
-    .vertical-center-modal{
+    .vertical-center-modal {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        .ivu-modal{
+        .ivu-modal {
             top: 0;
         }
+    }
+
+    .infor-card-icon-con {
+        height: 100%;
+    }
+
+    .height-100 {
+        height: 100%;
+    }
+
+    .infor-card-con {
+        height: 95px;
+    }
+
+    .infor-intro-text {
+        font-size: 16px;
+        font-weight: 500;
+        color: #C8C8C8;
     }
 
 </style>
@@ -87,8 +105,8 @@
                             </Row>
                             <div class="line-gray"></div>
                             <Row class="margin-top-8">
-                                <Col span="8"><p class="notwrap">上次关顾时间:{{user.lastvisittime}}</p></Col>
-                                <Col span="16" class="padding-left-8"></Col>
+                                <Col span="16"><p class="notwrap">上次光顾时间:{{" "+user.lastvisittime}}</p></Col>
+                                <Col span="8" class="padding-left-8"></Col>
                             </Row>
                         </Card>
                     </Col>
@@ -103,6 +121,8 @@
                                 :end-val="account.money"
                                 iconType="social-yen"
                                 color="#2d8cf0"
+                                decimals=2
+                                unit="元"
                                 intro-text="账户余额"
                         ></infor-card>
                     </Col>
@@ -110,8 +130,10 @@
                         <infor-card
                                 id-name="visit_count"
                                 :end-val="account.totalConsume"
-                                iconType="ios-eye"
+                                iconType="cash"
                                 color="#64d572"
+                                decimals=0
+                                unit="元"
                                 :iconSize="50"
                                 intro-text="总消费金额"
                         ></infor-card>
@@ -122,19 +144,30 @@
                         <infor-card
                                 id-name="collection_count"
                                 :end-val="count.collection"
-                                iconType="upload"
+                                decimals=0
+                                unit="次"
+                                iconType="ios-cart"
                                 color="#ffd572"
-                                intro-text="今日数据采集量"
+                                intro-text="到店次数"
                         ></infor-card>
                     </Col>
                     <Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '5px'}">
-                        <infor-card
-                                id-name="transfer_count"
-                                :end-val="count.transfer"
-                                iconType="shuffle"
-                                color="#f25e43"
-                                intro-text="今日服务调用量"
-                        ></infor-card>
+                        <Card :padding="0">
+                            <div class="infor-card-con">
+                                <Col class="infor-card-icon-con" style="backgroundColor:#f25e43; color: white;" span="8">
+                                    <Row class="height-100" type="flex" align="middle" justify="center">
+                                        <Icon type="ios-gear" size="40"></Icon>
+                                    </Row>
+                                </Col>
+                                <Col span="16" class="height-100">
+                                    <Row type="flex" align="middle" justify="center" class="height-100">
+                                        <Col span="24" align="middle">
+                                            <Button type="primary" icon="plus">充值</Button>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </div>
+                        </Card>
                     </Col>
                 </Row>
             </Col>
@@ -207,49 +240,60 @@
     import utils from '../../libs/util';
     import inforCard from './components/inforCard.vue';
 
-
     export default {
         name: "member-details",
         components: {
             inforCard
         },
+        props: {
+            color: '#f25e43',
+            countSize: {
+                type: String,
+                default: '30px'
+            },
+            countWeight: {
+                type: Number,
+                default: 700
+            },
+            iconSize: 40
+
+        },
         data() {
             return {
-                userId:null,
+                userId: null,
                 showInfo: false,
                 count: {
-                    createUser: 496,
-                    visit: 3264,
-                    collection: 24389305,
-                    transfer: 39503498
+                    createUser: 0,
+                    visit: 0,
+                    collection: 0,
+                    transfer: 0
                 },
                 user: {
                     carmake: "",
                     carnum: "",
                     createtime: "",
-                    id: 45,
                     lastvisittime: "",
                     name: "",
                     phone: ""
                 },
                 account: {
                     createtime: "",
-                    id: 3,
-                    money: 100,
-                    remark: "23",
-                    type: 1,
-                    totalConsume:0.00,
+                    id: 0,
+                    money: 0,
+                    remark: "",
+                    type: '1',
+                    totalConsume: 0.00,
                     userid: 52
                 },
-                data:[],
-                isShow:false,
-                isLoading:false,
+                data: [],
+                isShow: false,
+                isLoading: false,
                 orderItem: {
-                    userid:this.userId,
-                    type: 1,
-                    payfrom: 1,
-                    money:25,
-                    remark:""
+                    userid: this.userId,
+                    type: '1',
+                    payfrom: '1',
+                    money: 25,
+                    remark: ""
                 },
                 columns: [
                     {
@@ -261,15 +305,16 @@
                         title: '类型',
                         render: function (h, params) {
                             let text = '';
-                            if(this.row.type == 1){
+                            if (this.row.type == 1) {
                                 text = '洗车'
-                            }else if(this.row.type == 2){
+                            } else if (this.row.type == 2) {
                                 text = '维修'
-                            }else{
+                            } else {
                                 text = "其它"
                             }
 
-                            return h('div',text);/*这里的this.row能够获取当前行的数据*/
+                            return h('div', text);
+                            /*这里的this.row能够获取当前行的数据*/
                         }
 
                     },
@@ -280,18 +325,18 @@
                     {
                         key: 'payfrom',
                         title: '支付方式',
-                        render: function(h, params) {
+                        render: function (h, params) {
                             let text = '';
-                            if(this.row.payfrom == 1){
+                            if (this.row.payfrom == 1) {
                                 text = "支付宝"
-                            }else if(this.row.payfrom == 2){
+                            } else if (this.row.payfrom == 2) {
                                 text = "微信"
-                            }else if(this.row.payfrom == 3){
+                            } else if (this.row.payfrom == 3) {
                                 text = "现金"
-                            }else{
+                            } else {
                                 text = "其它"
                             }
-                            return h('div',text)
+                            return h('div', text)
                         }
                     },
                     {
