@@ -8,5 +8,5 @@ node_modules
 build/env.js
 dist/
 .idea/
-.idea/workspace.xml
+.idea/**/workspace.xml
 .idea/workspace.xml
