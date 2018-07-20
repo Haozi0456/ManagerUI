@@ -11,6 +11,9 @@ var config = {
         // 登录地址，用于建立会话
         loginUrl: 'system/manager/login',
 
+        // 修改密码
+        resetPassword: 'system/manager/resetPassword',
+
         //获取所有会员
         getAllMembers:'system/user/getAllUsers',
 
@@ -37,6 +40,9 @@ var config = {
 
         //添加订单
         addOrder:'/system/order/addOrder',
+
+        //根据日期查询订单
+        getStatisticsOrdersByDay:'/system/statistics/getStatisticsOrdersByDay',
 
         //统计年里每个月订单收入
         getStatisticsByMonthInYear:'/system/statistics/getStatisticsByMonthInYear',

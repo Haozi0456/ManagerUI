@@ -46,7 +46,7 @@ export default {
     },
     computed: {
         avatorPath () {
-            return localStorage.avatorImgPath;
+            return require('../../../../images/ic-manager.png');
         }
     },
     methods: {

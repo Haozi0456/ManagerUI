@@ -1,19 +1,19 @@
 <style lang="less">
-    @import './styles/infor-card.less';
+    @import './styles/member-infor-card.less';
 </style>
 
 <template>
     <Card :padding="0">
-        <div class="infor-card-con">
-            <Col class="infor-card-icon-con" :style="{backgroundColor: color, color: 'white'}" span="8">
-                <Row class="height-100" type="flex" align="middle" justify="center">
+        <div class="member-infor-card-con">
+            <Col class="member-infor-card-icon-con" :style="{backgroundColor: color, color: 'white'}" span="8">
+                <Row class="member-height-100" type="flex" align="middle" justify="center">
                     <Icon :type="iconType" :size="iconSize"></Icon>
                 </Row>
             </Col>
-            <Col span="16" class="height-100">
+            <Col span="16" class="member-height-100">
                 <Row type="flex" align="middle" justify="center" class="height-100">
                     <count-up 
-                        class="infor-card-count user-created-count" 
+                        class="member-infor-card-count user-created-count"
                         :id-name="idName" 
                         :end-val="endVal"
                         :decimals="decimals"
@@ -22,7 +22,7 @@
                         :countSize="countSize"
                         :countWeight="countWeight"
                     >
-                        <p class="infor-intro-text" slot="intro">{{ introText }}</p>
+                        <p class="member-infor-intro-text" slot="intro">{{ introText }}</p>
                     </count-up>
                 </Row>
             </Col>

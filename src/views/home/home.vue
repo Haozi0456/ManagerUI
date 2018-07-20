@@ -1,6 +1,8 @@
 <style lang="less">
     @import "./home.less";
     @import "../../styles/common.less";
+
+
 </style>
 <template>
     <div class="home-main">
@@ -64,10 +66,12 @@
                     <Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
                         <infor-card
                                 id-name="collection_count"
-                                :end-val="count.collection"
-                                iconType="upload"
-                                color="#ffd572"
-                                intro-text="今日数据采集量"
+                                :end-val="count.orderCount"
+                                iconType="android-cart"
+                                color="#f25e43"
+                                :decimals="decimalsCount"
+                                unit="个"
+                                intro-text="今日订单数量"
                         ></infor-card>
                     </Col>
                     <Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
@@ -83,39 +87,23 @@
             </Col>
         </Row>
         <Row :gutter="10">
-            <Col :md="24" :lg="12" :style="{marginBottom: '8px'}">
+            <Col :md="24" :lg="24" :style="{marginBottom: '8px'}">
+                <!--<img src="../../images/home-bg.jpg" class="homebg"/>-->
                 <Card>
                     <p slot="title" class="card-title">
-                        <Icon type="android-map"></Icon>
-                        上周每日来访量统计
+                        <Icon type="podium"></Icon>
+                        月收入统计
+                    </p>
+                    <p slot="extra">
+                        年份:
+                        <DatePicker type="year" placement="bottom-end" :value="currentYear" :clearable="false" format="yyyy" @on-change="handleChange"
+                                    :editable="false" placeholder="请选择年份" style="width: 200px"></DatePicker>
                     </p>
                     <div class="data-source-row">
-
+                        <statisticsMonthOfYear :year-val='yearVal'></statisticsMonthOfYear>
                     </div>
                 </Card>
             </Col>
-            <Col :md="24" :lg="12" :style="{marginBottom: '8px'}">
-                <Card :padding="0">
-                    <p slot="title" class="card-title">
-                        <Icon type="map"></Icon>
-                        今日服务调用地理分布
-                    </p>
-                    <div class="map-con">
-                        <Col span="10">
-                            <map-data-table :cityData="cityData" height="281"
-                                            :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
-                        </Col>
-                        <Col span="14" class="map-incon">
-                            <Row type="flex" justify="center" align="middle">
-                                <home-map :city-data="cityData"></home-map>
-                            </Row>
-                        </Col>
-                    </div>
-                </Card>
-            </Col>
-        </Row>
-        <Row class="margin-top-10">
-
         </Row>
     </div>
 </template>
@@ -128,6 +116,9 @@
     import countUp from './components/countUp.vue';
     import inforCard from './components/inforCard.vue';
     import Cookies from 'js-cookie';
+
+    import statisticsMonthOfYear from '../statistics/statisticsMonthOfYear.vue';
+
     import utils from '../../libs/util';
     import config from '../../libs/config';
 
@@ -138,17 +129,20 @@
             dataSourcePie,
             userFlow,
             countUp,
-            inforCard
+            inforCard,
+            statisticsMonthOfYear
         },
         data() {
             return {
                 decimals: 2,
-                decimalsCount:0,
+                decimalsCount: 0,
+                todayYear: 2018,
+                yearVal:2018,
                 count: {
                     dayIncome: 0,
                     memberCount: 0,
-                    collection: 24389305,
-                    transfer: 39503498
+                    orderCount: 0,
+                    transfer: 395
                 },
                 cityData: cityData,
                 showAddNewTodo: false,
@@ -165,6 +159,10 @@
             },
             lastVisitTime() {
                 return Cookies.get('lastTime');
+            },
+            currentYear() {
+                this.todayYear = new Date().format('yyyy');
+                return this.todayYear;
             }
         },
         methods: {
@@ -173,6 +171,8 @@
                 let data = {
                     day: date
                 };
+
+                //获取今日收入统计
                 this.Http.post(config.service.getStatisticsByDay, data).then((res) => {
                     if (res.data.code == 100) {
                         this.count.dayIncome = res.data.data.total;
@@ -184,6 +184,7 @@
                     }
                 });
 
+                //获取会员数量
                 this.Http.post(config.service.getMemberCount, data).then((res) => {
                     if (res.data.code == 100) {
                         this.count.memberCount = res.data.data;
@@ -195,18 +196,17 @@
                     }
                 });
 
-                // //获取账户信息
-                // this.Http.post(config.service.getMyAccount, data).then((res) => {
-                //     if (res.data.code == 100) {
-                //         this.account = res.data.data;
-                //         this.getRechargeList();
-                //     } else {
-                //         this.$Message.error({
-                //             content: res.data.msg,
-                //             duration: 2
-                //         });
-                //     }
-                // });
+                //获取今日订单
+                this.Http.post(config.service.getStatisticsOrdersByDay, data).then((res) => {
+                    if (res.data.code == 100) {
+                        this.count.orderCount = res.data.data.length;
+                    } else {
+                        this.$Message.error({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                    }
+                });
                 //
                 // //获取历史消费订单信息
                 // this.Http.post(config.service.getMyOrders, data).then((res) => {
@@ -220,6 +220,13 @@
                 //     }
                 // });
 
+            },
+            handleChange(daterange) {
+                this.yearVal = parseInt(daterange);
+                this.$Message.error({
+                    content: this.todayYear+"",
+                    duration: 2
+                });
             }
         },
         mounted() {
