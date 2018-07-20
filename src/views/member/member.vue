@@ -252,7 +252,7 @@
                                 this.isLoading = false;
                                 this.modal = false;
                                 //添加数据
-                                this.data.push(res.data.data)
+                                this.data.unshift(res.data.data)
 
                             } else {
                                 this.isLoading = false;

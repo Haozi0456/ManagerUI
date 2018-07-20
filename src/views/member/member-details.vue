@@ -12,23 +12,27 @@
         }
     }
 
-    .infor-card-icon-con {
-        height: 100%;
+    .recharge-box {
+        height: 100px;
     }
 
-    .height-100 {
-        height: 100%;
-    }
+    /*.infor-card-icon-con {*/
+    /*height: 100%;*/
+    /*}*/
 
-    .infor-card-con {
-        height: 95px;
-    }
+    /*.height-100 {*/
+    /*height: 100%;*/
+    /*}*/
 
-    .infor-intro-text {
-        font-size: 16px;
-        font-weight: 500;
-        color: #C8C8C8;
-    }
+    /*.infor-card-con {*/
+    /*height: 95px;*/
+    /*}*/
+
+    /*.infor-intro-text {*/
+    /*font-size: 16px;*/
+    /*font-weight: 500;*/
+    /*color: #C8C8C8;*/
+    /*}*/
 
 </style>
 
@@ -43,38 +47,39 @@
                                 <Col :md="12" :lg="8">
                                     <Col span="24" align="middle">
                                         <!--<Row class-name="made-child-con-middle" type="flex" align="middle">-->
-                                            <img class="avator-img" src="../../images/ic-header.png"/>
+                                        <img class="avator-img" src="../../images/ic-header.png"/>
                                         <!--</Row>-->
                                     </Col>
                                     <Col span="24" style="padding-left:6px; margin-top: 10px" align="middle">
                                         <!--<Row class-name="made-child-con-middle" type="flex" align="middle">-->
-                                            <div>
-                                                <b class="card-user-infor-name">{{user.name}}</b>
-                                                <p>普通会员</p>
-                                            </div>
+                                        <div>
+                                            <b class="member-card-user-infor-name">{{user.name}}</b>
+                                            <p>普通会员</p>
+                                        </div>
                                         <!--</Row>-->
                                     </Col>
                                 </Col>
                                 <Col :md="12" :lg="8">
                                     <Col span="24" align="middle">
-                                        <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '15px'}">
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle"
+                                             :style="{marginBottom: '15px'}">
                                             <div v-if="user.phone!=''">
-                                                <p>手机号码:</p>
-                                                <b class="card-user-infor-name">{{user.phone}}</b>
+                                                <p style="text-align: left;">手机号码:</p>
+                                                <b class="member-card-user-infor-name">{{user.phone}}</b>
                                             </div>
                                             <div v-else>
-                                                <p>手机号码:</p>
-                                                <b class="card-user-infor-name">无</b>
+                                                <p style="text-align: left;">手机号码:</p>
+                                                <b class="member-card-user-infor-name">无</b>
                                             </div>
                                         </Row>
-                                        <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                            <div v-if="user.carnum!=''">
-                                                <p>车牌号码:</p>
-                                                <b class="card-user-infor-name">{{user.carnum}}</b>
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" >
+                                            <div v-if="user.carnum!=''" >
+                                                <p style="text-align: left;">车牌号码:</p>
+                                                <b class="member-card-user-infor-name" style="text-align: left">{{user.carnum}}</b>
                                             </div>
                                             <div v-else>
-                                                <p>车牌号码:</p>
-                                                <b class="card-user-infor-name">无</b>
+                                                <p style="text-align: left">车牌号码:</p>
+                                                <b class="member-card-user-infor-name">无</b>
                                             </div>
                                         </Row>
                                     </Col>
@@ -85,18 +90,18 @@
                                         <Row class-name="made-child-con-middle" type="flex" align="middle"
                                              :style="{marginBottom: '15px'}">
                                             <div v-if="user.carmake!=''">
-                                                <p>车辆品牌:</p>
-                                                <b class="card-user-infor-name">{{user.carmake}}</b>
+                                                <p style="text-align: left">车辆品牌:</p>
+                                                <b class="member-card-user-infor-name">{{user.carmake}}</b>
                                             </div>
                                             <div v-else>
-                                                <p>车辆品牌:</p>
-                                                <b class="card-user-infor-name">无</b>
+                                                <p style="text-align: left;">车辆品牌:</p>
+                                                <b class="member-card-user-infor-name" >无</b>
                                             </div>
                                         </Row>
-                                        <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" >
                                             <div>
-                                                <p>入会时间:</p>
-                                                <b class="card-user-infor-name">{{user.createtime}}</b>
+                                                <p style="text-align: left;">入会时间:</p>
+                                                <b class="member-card-user-infor-name">{{user.createtime}}</b>
                                             </div>
                                         </Row>
                                     </Col>
@@ -109,7 +114,6 @@
                             </Row>
                         </Card>
                     </Col>
-
                 </Row>
             </Col>
             <Col :md="24" :lg="12">
@@ -138,7 +142,7 @@
                         ></infor-card>
                     </Col>
                 </Row>
-                <Row>
+                <Row :gutter="5">
                     <Col :xs="24" :sm="24" :md="24" :style="{marginBottom: '5px'}">
                         <Card :padding="5">
                             <p slot="title" class="card-title">
@@ -149,42 +153,13 @@
                                 <Icon type="plus-round"></Icon>
                                 充值
                             </a>
-                            <div class="map-con">
+                            <div class="recharge-box">
                                 <Row class="searchable-table-recharge">
                                     <Table stripe :columns="chargeColumns" :data="chargeData" height="100"></Table>
                                 </Row>
                             </div>
                         </Card>
                     </Col>
-                    <!--<Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '5px'}">-->
-                        <!--<infor-card-->
-                                <!--id-name="collection_count"-->
-                                <!--:end-val="count.collection"-->
-                                <!--:decimals="timedecimals"-->
-                                <!--unit="次"-->
-                                <!--iconType="ios-cart"-->
-                                <!--color="#ffd572"-->
-                                <!--intro-text="到店次数"-->
-                        <!--&gt;</infor-card>-->
-                    <!--</Col>-->
-                    <!--<Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '5px'}">-->
-                        <!--<Card :padding="0">-->
-                            <!--<div class="infor-card-con">-->
-                                <!--<Col class="infor-card-icon-con" style="backgroundColor:#f25e43; color: white;" span="8">-->
-                                    <!--<Row class="height-100" type="flex" align="middle" justify="center">-->
-                                        <!--<Icon type="ios-gear" size="40"></Icon>-->
-                                    <!--</Row>-->
-                                <!--</Col>-->
-                                <!--<Col span="16" class="height-100">-->
-                                    <!--<Row type="flex" align="middle" justify="center" class="height-100">-->
-                                        <!--<Col span="24" align="middle">-->
-                                            <!--<Button type="primary" icon="plus" @click="isRechargeShow = true">充值</Button>-->
-                                        <!--</Col>-->
-                                    <!--</Row>-->
-                                <!--</Col>-->
-                            <!--</div>-->
-                        <!--</Card>-->
-                    <!--</Col>-->
                 </Row>
             </Col>
         </Row>
@@ -275,11 +250,11 @@
                             v-model="rechargeForm.money"></InputNumber>
                 </FormItem>
                 <!--<FormItem label="赠送金额">-->
-                    <!--<InputNumber-->
-                            <!--:max="5000"-->
-                            <!--:min="0"-->
-                            <!--:step="5"-->
-                            <!--v-model="accountForm.subjoinMoney"></InputNumber>-->
+                <!--<InputNumber-->
+                <!--:max="5000"-->
+                <!--:min="0"-->
+                <!--:step="5"-->
+                <!--v-model="accountForm.subjoinMoney"></InputNumber>-->
                 <!--</FormItem>-->
                 <FormItem label="备注">
                     <Input v-model="rechargeForm.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
@@ -312,8 +287,8 @@
             return {
                 userId: null,
                 showInfo: false,
-                decimals:2,
-                timedecimals:0,
+                decimals: 2,
+                timedecimals: 0,
                 count: {
                     createUser: 0,
                     visit: 0,
@@ -336,9 +311,9 @@
                     userid: 52
                 },
                 data: [],
-                chargeData:[],
+                chargeData: [],
                 isShow: false,
-                isRechargeShow:false,
+                isRechargeShow: false,
                 isLoading: false,
                 orderItem: {
                     userid: this.userId,
@@ -347,11 +322,11 @@
                     money: 25,
                     remark: ""
                 },
-                rechargeForm:{
-                    accountId:0,
+                rechargeForm: {
+                    accountId: 0,
                     type: '1',
                     money: 500,
-                    subjoinMoney:0,
+                    subjoinMoney: 0,
                     remark: ""
                 },
                 columns: [
@@ -388,7 +363,7 @@
                             let text = '';
                             if (this.row.payfrom == 0) {
                                 text = "账户余额"
-                            }else if (this.row.payfrom == 1) {
+                            } else if (this.row.payfrom == 1) {
                                 text = "支付宝"
                             } else if (this.row.payfrom == 2) {
                                 text = "微信"
@@ -523,7 +498,7 @@
                         this.isLoading = false;
                         this.isShow = false;
                         //添加数据
-                        this.data.push(res.data.data)
+                        this.data.unshift(res.data.data)
 
                     } else {
                         this.isLoading = false;
@@ -535,7 +510,7 @@
                     }
                 });
             },
-            onRecharge(){
+            onRecharge() {
                 this.rechargeForm.accountId = this.account.id;
                 this.Http.post(config.service.toRecharge, this.rechargeForm).then((res) => {
                     if (res.data.code == 100) {
@@ -547,7 +522,7 @@
                         this.isLoading = false;
                         this.isRechargeShow = false;
                         //添加数据
-                        // this.data.push(res.data.data)
+                        this.chargeData.unshift(res.data.data)
 
                     } else {
                         this.isLoading = false;
@@ -565,9 +540,9 @@
                 this.isLoading = false;
                 this.isRechargeShow = false;
             },
-            getRechargeList(){
+            getRechargeList() {
                 let data = {
-                    accountId:this.account.id,
+                    accountId: this.account.id,
                 }
                 this.Http.post(config.service.getRechargeList, data).then((res) => {
                     if (res.data.code == 100) {
@@ -581,7 +556,7 @@
                     }
                 });
             },
-            getMyAccount(){
+            getMyAccount() {
                 let data = {
                     userId: this.userId
                 };
