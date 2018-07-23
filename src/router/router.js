@@ -105,10 +105,29 @@ export const appRouter = [
         path: '/statistics',
         icon: 'ios-pie',
         name: 'statistics',
+        title: '订单管理',
+        component: Main,
+        children: [
+            {path: 'index', title: '订单管理', name: 'order_index', component: () => import('@/views/orderManager/OrderManager.vue')}
+        ]
+    },{
+        path: '/statistics',
+        icon: 'ios-pie',
+        name: 'statistics',
         title: '数据统计',
         component: Main,
         children: [
             {path: 'index', title: '数据统计', name: 'statistics_index', component: () => import('@/views/statistics/statistics.vue')}
+        ]
+    },{
+        path: '/storeManager',
+        icon: 'ios-pie',
+        name: 'storeManager',
+        title: '库存管理',
+        component: Main,
+        children: [
+            {path: 'store_goods', title: '库存商品管理', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
+            {path: 'store_parts', title: '配件类型管理', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
         ]
     }
     // ,

@@ -27,34 +27,51 @@ var config = {
         getMemberCount:'system/user/getMemberCount',
 
         //获取我的账户userId
-        getMyAccount:'/system/account/getMyAccount',
+        getMyAccount:'system/account/getMyAccount',
 
         //充值
-        toRecharge:'/system/account/toRecharge',
+        toRecharge:'system/account/toRecharge',
 
         //充值记录
-        getRechargeList:'/system/account/getRechargeList',
+        getRechargeList:'system/account/getRechargeList',
 
         //获取我的订单userId
-        getMyOrders:'/system/order/getMyOrders',
+        getMyOrders:'system/order/getMyOrders',
+
+        //获取订单分页列表
+        getOrderList:'system/order/getOrderList',
 
         //添加订单
-        addOrder:'/system/order/addOrder',
+        addOrder:'system/order/addOrder',
 
         //根据日期查询订单
-        getStatisticsOrdersByDay:'/system/statistics/getStatisticsOrdersByDay',
+        getStatisticsOrdersByDay:'system/statistics/getStatisticsOrdersByDay',
 
         //统计年里每个月订单收入
-        getStatisticsByMonthInYear:'/system/statistics/getStatisticsByMonthInYear',
+        getStatisticsByMonthInYear:'system/statistics/getStatisticsByMonthInYear',
 
         //统计年收入
-        getStatisticsByYear:'/system/statistics/getStatisticsByYear',
+        getStatisticsByYear:'system/statistics/getStatisticsByYear',
 
         //统计给定日期订单收入
-        getStatisticsByDay:'/system/statistics/getStatisticsByDay',
+        getStatisticsByDay:'system/statistics/getStatisticsByDay',
 
         //统计给定日期不同类型订单收入
-        getStatisticsByDayWithType:'/system/statistics/getStatisticsByDayWithType'
+        getStatisticsByDayWithType:'system/statistics/getStatisticsByDayWithType',
+
+
+        //添加库存类型
+        addStoreParts:'system/store/addStoreParts',
+
+        //获取库存类型列表
+        getStoreParts:'system/store/getStoreParts',
+
+        //获取库存商品列表
+        getGoodsList:'system/store/getGoodsList',
+
+        //添加库存商品
+        addStoreGoods:'system/store/addStoreGoods'
+
 
     }
 };

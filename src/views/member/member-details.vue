@@ -272,6 +272,7 @@
 <script>
     import config from '../../libs/config';
     import utils from '../../libs/util';
+    import Cookies from 'js-cookie';
     import inforCard from './components/inforCard.vue';
 
     export default {
@@ -488,6 +489,8 @@
             onOK() {
                 this.isLoading = true;
                 this.orderItem.userid = this.userId;
+                let user = Cookies.get('user');
+                this.orderItem.operator = user;
                 this.Http.post(config.service.addOrder, this.orderItem).then((res) => {
                     if (res.data.code == 100) {
                         this.$Message.success({
