@@ -41,6 +41,9 @@ var config = {
         //获取订单分页列表
         getOrderList:'system/order/getOrderList',
 
+        //按月份获取订单分页列表
+        getOrderListByMonth:'system/order/getOrderListByMonth',
+
         //添加订单
         addOrder:'system/order/addOrder',
 
@@ -49,6 +52,9 @@ var config = {
 
         //统计年里每个月订单收入
         getStatisticsByMonthInYear:'system/statistics/getStatisticsByMonthInYear',
+
+        //统计近30天每天订单收入
+        getStatisticsByNearOneMonth:'system/statistics/getStatisticsByNearOneMonth',
 
         //统计年收入
         getStatisticsByYear:'system/statistics/getStatisticsByYear',
@@ -68,6 +74,9 @@ var config = {
 
         //获取库存商品列表
         getGoodsList:'system/store/getGoodsList',
+
+        //获取库存商品列表按类型
+        getGoodsListByPartsId:'system/store/getGoodsListByPartsId',
 
         //添加库存商品
         addStoreGoods:'system/store/addStoreGoods'

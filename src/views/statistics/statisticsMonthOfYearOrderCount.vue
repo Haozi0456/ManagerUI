@@ -1,5 +1,5 @@
 <template>
-    <div style="width:100%; height:100%; " id="monthOfYearChart"></div>
+    <div style="width:100%; height:100%; " id="chartOfOrderCount"></div>
 </template>
 
 <script>
@@ -7,7 +7,7 @@
     import config from '../../libs/config';
 
     export default {
-        name: "statisticsMonthOfYear",
+        name: "statisticsMonthOfYearOrderCount",
         data () {
             return {
                 year:2018,
@@ -63,9 +63,9 @@
                     ,
                     series: [
                         {
-                            name: '月收入',
-                            type: 'bar',
-                            barWidth: 40,
+                            name: '月订单数',
+                            type: 'line',
+                            barWidth: 60,
                             label: {
                                 normal: {
                                     show: true,
@@ -73,14 +73,14 @@
                                     fontSize:18,
                                     fontWeight:600,
                                     color:'#ff0000',
-                                    formatter: '{c}.00'
+                                    formatter: '{c}个'
                                 }
                             },
-                            data: this.chartData.yValues
+                            data: this.chartData.counts
                         }
                     ]
                 };
-                let statisticsCharts = echarts.init(document.getElementById('monthOfYearChart'));
+                let statisticsCharts = echarts.init(document.getElementById('chartOfOrderCount'));
                 this.chart = statisticsCharts;
                 statisticsCharts.setOption(option);
 
@@ -109,7 +109,7 @@
                         this.chartData.datelines = datelines;
                         this.chartData.totals = totals;
                         this.chartData.counts = counts;
-                        let titleLable = val+'年月收入(单位:元)';
+                        let titleLable = val+'年月订数量(单位:个)';
                         this.chart.setOption({
                             title:{
                                 text:titleLable
@@ -118,9 +118,9 @@
                                 data: this.chartData.datelines
                             },
                             series: [{
-                                name: '月收入',
-                                type: 'bar',
-                                data: this.chartData.totals
+                                name: '月订单数',
+                                type: 'line',
+                                data: this.chartData.counts
                             }]
                         });
 

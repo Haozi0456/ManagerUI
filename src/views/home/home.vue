@@ -88,19 +88,13 @@
         </Row>
         <Row :gutter="10">
             <Col :md="24" :lg="24" :style="{marginBottom: '8px'}">
-                <!--<img src="../../images/home-bg.jpg" class="homebg"/>-->
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="podium"></Icon>
-                        月收入统计
-                    </p>
-                    <p slot="extra">
-                        年份:
-                        <DatePicker type="year" placement="bottom-end" :value="currentYear" :clearable="false" format="yyyy" @on-change="handleChange"
-                                    :editable="false" placeholder="请选择年份" style="width: 200px"></DatePicker>
+                        近30天每日收入统计
                     </p>
                     <div class="data-source-row">
-                        <statisticsMonthOfYear :year-val='yearVal'></statisticsMonthOfYear>
+                        <statisticsNear30Days></statisticsNear30Days>
                     </div>
                 </Card>
             </Col>
@@ -117,9 +111,8 @@
     import inforCard from './components/inforCard.vue';
     import Cookies from 'js-cookie';
 
-    import statisticsMonthOfYear from '../statistics/statisticsMonthOfYear.vue';
+    import statisticsNear30Days from '../statistics/statisticsNear30Days.vue';
 
-    import utils from '../../libs/util';
     import config from '../../libs/config';
 
     export default {
@@ -130,14 +123,12 @@
             userFlow,
             countUp,
             inforCard,
-            statisticsMonthOfYear
+            statisticsNear30Days
         },
         data() {
             return {
                 decimals: 2,
                 decimalsCount: 0,
-                todayYear: 2018,
-                yearVal:2018,
                 count: {
                     dayIncome: 0,
                     memberCount: 0,
@@ -220,13 +211,6 @@
                 //     }
                 // });
 
-            },
-            handleChange(daterange) {
-                this.yearVal = parseInt(daterange);
-                this.$Message.error({
-                    content: this.todayYear+"",
-                    duration: 2
-                });
             }
         },
         mounted() {

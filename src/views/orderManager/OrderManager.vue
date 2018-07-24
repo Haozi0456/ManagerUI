@@ -24,16 +24,35 @@
                     </p>
                     <a type="text" slot="extra" @click.prevent="isShow = true">
                         <Icon type="plus-round"></Icon>
-                        添加
+                        添加订单
                     </a>
-                    <Row class="searchable-table-con1">
+                    <Row>
+                        <Col span="12">
+                            <DatePicker type="month" placeholder="请选择月份查询" @on-change="dateChange" style="width: 200px"></DatePicker>
+                        </Col>
+                        <!--<Input v-model="searchcCategory" placeholder="请输入类别搜搜..." style="width: 200px; margin-left: 6px" />-->
+                        <!--<Select v-model="formItem.partsId" filterable clearable  @on-change="typeChange" placeholder="请选择或检索类型..." style="width: 200px; margin-left: 6px" >-->
+                            <!--<Option v-for="item in partsList" :value="item.id" :key="item.id">{{ item.partsName }}</Option>-->
+                        <!--</Select>-->
+                        <!--<Input v-model="searchcCategory" placeholder="请输入类别搜搜..." style="width: 200px; margin-left: 10px" />-->
+                        <!--<span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>-->
+                        <!--<Button @click="handleCancel" type="ghost" >取消</Button>-->
+                        <!--<Input v-model="searchConName" @on-change="handleSearch" icon="search"-->
+                        <!--placeholder="请输入姓名搜搜..." style="width: 200px"/>-->
+                        <!--<Input v-model="searchConTel" @on-change="handleSearch" icon="search"-->
+                        <!--placeholder="请输入手机号搜搜..." style="width: 200px"/>-->
+                        <!--<Input v-model="searchCarNo" @on-change="handleSearch" icon="search" placeholder="请输入车牌号搜搜..."-->
+                        <!--style="width: 200px"/>-->
+                    </Row>
+                    <Row class="margin-top-10 searchable-table-con1">
+
                         <Col :md="24" :lg="24">
                             <Table stripe :columns="columns" :data="data"></Table>
                         </Col>
                         <Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">
                             <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;"><span
                                     style="margin-right: 10px;">共{{ page.total }}条</span>
-                                <Page :total="page.total" show-sizer="true" :page-size="page.pageSize" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></Page>
+                                <Page :total="page.total" show-sizer :page-size="page.pageSize" :current="page.pageNumber" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></Page>
                             </div>
 
                         </Col>
@@ -57,8 +76,7 @@
                     </Select>
                 </FormItem>
                 <FormItem label="支付方式">
-                    <Select v-model="orderItem.payfrom" value="0" placeholder="请选择...">
-                        <Option value="0">账户余额</Option>
+                    <Select v-model="orderItem.payfrom" value="1" placeholder="请选择...">
                         <Option value="1">支付宝</Option>
                         <Option value="2">微信</Option>
                         <Option value="3">现金</Option>
@@ -103,7 +121,7 @@
                 columns: [
                     {
                         key: 'orderno',
-                        title: '订单编号'
+                        title: '编号'
                     },
                     {
                         key: 'type',
@@ -166,17 +184,18 @@
                 isLoading: false,
                 isShow: false,
                 isRechargeShow: false,
+                chooseMonth:'',
                 orderItem: {
                     userid: this.userId,
                     type: '1',
-                    payfrom: '0',
+                    payfrom: '1',
                     money: 25,
                     remark: ""
                 },
                 page: {
                     pageNumber: 1,
                     pageSize: 10,
-                    total: 10
+                    total: 0
                 }
             };
         },
@@ -247,34 +266,103 @@
                 this.isShow = false;
                 this.isLoading = false;
             },
-            onPageChange(pageNumber){
-                this.page.pageNumber = pageNumber;
-                this.Http.post(config.service.getOrderList, this.page).then((res) => {
-                    if (res.data.code == 100) {
-                        this.data = this.initTable = res.data.data.rows;
-                        this.page.total = res.data.data.total;
-                    } else {
-                        this.$Message.error({
-                            content: res.data.msg,
-                            duration: 2
-                        });
+            onPageChange(pageNo){
+
+                if(this.chooseMonth == ''){
+                    this.page.pageNumber = pageNo;
+                    this.Http.post(config.service.getOrderList, this.page).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }else{
+                    this.page.pageNumber = pageNo;
+                    let data = {
+                        pageNumber:pageNo,
+                        pageSize:this.page.pageSize,
+                        month:this.chooseMonth
                     }
-                });
+                    this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }
+
             },
             onPageSizeChange(pageSize){
-                this.page.pageNumber = 1;
-                this.page.pageSize = pageSize;
-                this.Http.post(config.service.getOrderList, this.page).then((res) => {
-                    if (res.data.code == 100) {
-                        this.data = this.initTable = res.data.data.rows;
-                        this.page.total = res.data.data.total;
-                    } else {
-                        this.$Message.error({
-                            content: res.data.msg,
-                            duration: 2
-                        });
+                if(this.chooseMonth == ''){
+                    this.page.pageNumber = 1;
+                    this.page.pageSize = pageSize;
+                    this.Http.post(config.service.getOrderList, this.page).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }else{
+                    this.page.pageNumber = 1;
+                    this.page.pageSize = pageSize;
+                    let data = {
+                        pageVO:this.page,
+                        month:this.chooseMonth
                     }
-                });
+
+                    this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }
+
+            },
+            dateChange(dateValue) {
+                this.chooseMonth = dateValue;
+                if(dateValue != ''){
+                    this.page.pageNumber = 1;
+                    let data = {
+                        pageNumber:this.page.pageNumber,
+                        pageSize:this.page.pageSize,
+                        month:dateValue
+                    }
+                    this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }else{
+                    this.onPageChange(1);
+                }
+
             }
         },
         mounted() {

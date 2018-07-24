@@ -1,6 +1,6 @@
 <style lang="less">
     @import '../../styles/common.less';
-    @import './components/styles/store.less';
+    @import './components/styles/order.less';
 
     .vertical-center-modal {
         display: flex;
@@ -20,35 +20,35 @@
                 <Card>
                     <p slot="title">
                         <Icon type="person-stalker"></Icon>
-                        库存商品类型列表
+                        维修工单
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">
                         <Icon type="plus-round"></Icon>
                         添加
                     </a>
-                    <Modal
-                            title="添加会员"
-                            v-model="modal"
-                            :mask-closable="false"
-                            :closable="false"
-                            class-name="vertical-center-modal">
-                        <Form ref="formItem" :model="formItem" :label-width="80" >
-                            <FormItem label="类型名称">
-                                <Input v-model="formItem.partsName" placeholder="请输入配件类型名称..."></Input>
-                            </FormItem>
-                        </Form>
-                        <div slot="footer">
-                            <Button type="ghost" style="margin-left: 8px" @click="onCancel">取消</Button>
-                            <Button type="primary" :loading="isLoading" @click="onOK">添加</Button>
-                        </div>
-                    </Modal>
+                    <!--<Modal-->
+                            <!--title="添加会员"-->
+                            <!--v-model="modal"-->
+                            <!--:mask-closable="false"-->
+                            <!--:closable="false"-->
+                            <!--class-name="vertical-center-modal">-->
+                        <!--<Form ref="formItem" :model="formItem" :label-width="80" >-->
+                            <!--<FormItem label="类型名称">-->
+                                <!--<Input v-model="formItem.partsName" placeholder="请输入配件类型名称..."></Input>-->
+                            <!--</FormItem>-->
+                        <!--</Form>-->
+                        <!--<div slot="footer">-->
+                            <!--<Button type="ghost" style="margin-left: 8px" @click="onCancel">取消</Button>-->
+                            <!--<Button type="primary" :loading="isLoading" @click="onOK">添加</Button>-->
+                        <!--</div>-->
+                    <!--</Modal>-->
 
-                    <Row>
-                        <Input v-model="searchName" @on-change="handleSearch" icon="search"
-                               placeholder="请输入类型名称搜搜..." style="width: 200px"/>
-                    </Row>
+                    <!--<Row>-->
+                        <!--<Input v-model="searchName" @on-change="handleSearch" icon="search"-->
+                               <!--placeholder="请输入类型名称搜搜..." style="width: 200px"/>-->
+                    <!--</Row>-->
                     <Row class="margin-top-10 searchable-table-con1">
-                        <Table stripe :columns="columns" :data="data" height="540"></Table>
+                        <Table stripe :columns="columns" :data="data"  ></Table>
                     </Row>
                 </Card>
             </Col>
@@ -62,22 +62,26 @@
     import utils from '../../libs/util';
 
     export default {
-        name: 'store_parts',
+        name: 'workOrder',
         data() {
             return {
                 searchName: '',
                 columns: [
                     {
-                        key: 'id',
-                        title: '编号'
+                        key: 'name',
+                        title: '名称'
                     },
                     {
-                        key: 'partsName',
-                        title: '类型名称'
+                        key: 'type',
+                        title: '型号'
                     },
                     {
-                        key: 'createTime',
-                        title: '入库时间'
+                        key: 'materialsPrice',
+                        title: '耗材费'
+                    },
+                    {
+                        key: 'workPrice',
+                        title: '工时费'
                     },
                     {
                         title: '查看详情',
@@ -91,11 +95,11 @@
                                 },
                                 on: {
                                     click: () => {
-                                        let query = {user_id: params.row.id};
-                                        this.$router.push({
-                                            name: 'member_details',
-                                            query: query
-                                        });
+                                        // let query = {user_id: params.row.id};
+                                        // this.$router.push({
+                                        //     name: 'member_details',
+                                        //     query: query
+                                        // });
                                     }
                                 }
                             }, '详情');
@@ -115,38 +119,17 @@
         },
         methods: {
             init() {
-                this.Http.post(config.service.getStoreParts, "").then((res) => {
-                    if (res.data.code == 100) {
-                        this.data = this.initTable = res.data.data;
-                    } else {
-                        this.$Message.error({
-                            content: res.data.msg,
-                            duration: 2
-                        });
-                    }
-                });
-            },
-
-
-            search(data, argumentObj) {
-                let res = data;
-                let dataClone = data;
-                for (let argu in argumentObj) {
-                    if (argumentObj[argu].length > 0) {
-                        res = dataClone.filter(d => {
-                            return d[argu].indexOf(argumentObj[argu]) > -1;
-                        });
-                        dataClone = res;
-                    }
-                }
-                return res;
-            },
-
-            handleSearch() {
-                this.data = this.initTable;
-                this.data = this.search(this.data, {
-                    partsName: this.searchName
-                });
+                    this.data = [];
+                // this.Http.post(config.service.getStoreParts, "").then((res) => {
+                //     if (res.data.code == 100) {
+                //         this.data = this.initTable = res.data.data;
+                //     } else {
+                //         this.$Message.error({
+                //             content: res.data.msg,
+                //             duration: 2
+                //         });
+                //     }
+                // });
             },
             onOK() {
                 this.isLoading = true;

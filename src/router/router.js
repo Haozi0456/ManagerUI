@@ -102,13 +102,14 @@ export const appRouter = [
             {path: 'index', title: '会员管理', name: 'member_index', component: () => import('@/views/member/member.vue')}
         ]
     },{
-        path: '/statistics',
+        path: '/orderManager',
         icon: 'ios-pie',
         name: 'statistics',
-        title: '订单管理',
+        title: '工单管理',
         component: Main,
         children: [
-            {path: 'index', title: '订单管理', name: 'order_index', component: () => import('@/views/orderManager/OrderManager.vue')}
+            {path: 'order_manager', title: '工单列表', name: 'orderManager_index', component: () => import('@/views/orderManager/OrderManager.vue')},
+            {path: 'work_order', title: '维修工单', name: 'workOrder_index', component: () => import('@/views/orderManager/WorkOrder.vue')}
         ]
     },{
         path: '/statistics',

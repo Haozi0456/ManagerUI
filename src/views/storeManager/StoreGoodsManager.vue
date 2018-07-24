@@ -75,7 +75,11 @@
                     </Modal>
 
                     <Row>
-                        <Input v-model="searchcCategory" placeholder="请输入类别搜搜..." style="width: 200px; margin-left: 6px" />
+                        <!--<Input v-model="searchcCategory" placeholder="请输入类别搜搜..." style="width: 200px; margin-left: 6px" />-->
+                        <Select filterable clearable  @on-change="typeChange" placeholder="请选择或检索类型..." style="width: 200px; margin-left: 6px" >
+                            <Option v-for="item in partsList" :value="item.id" :key="item.id">{{ item.partsName }}</Option>
+                        </Select>
+                        <Input v-model="searchcCategory" placeholder="请输入类别搜搜..." style="width: 200px; margin-left: 10px" />
                         <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
                         <Button @click="handleCancel" type="ghost" >取消</Button>
                         <!--<Input v-model="searchConName" @on-change="handleSearch" icon="search"-->
@@ -92,7 +96,7 @@
                         <Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">
                             <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;"><span
                                     style="margin-right: 10px;">共{{ page.total }}条</span>
-                                <Page :total="page.total" show-sizer="true" :page-size="page.pageSize" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></Page>
+                                <Page :total="page.total" show-sizer :page-size="page.pageSize" :current="page.pageNumber" @on-change="onPageChange" @on-page-size-change="onPageSizeChange"></Page>
                             </div>
 
                         </Col>
@@ -104,14 +108,13 @@
 </template>
 
 <script>
-
     import config from '../../libs/config';
     import utils from '../../libs/util';
     import Cookies from 'js-cookie';
 
     export default {
         name: 'store_goods',
-        data() {
+        data () {
             return {
                 searchConName: '',
                 searchConTel: '',
@@ -143,7 +146,7 @@
                     },
                     {
                         key: 'stockCount',
-                        title: '库存数量(个)'
+                        title: '库存(个)'
                     },
                     {
                         key: 'operator',
@@ -176,18 +179,19 @@
                 data: [],
                 initTable: [],
                 modal: false,
-                partsType:'',
-                partsList:[],
+                partsType: '',
+                partsList: [],
                 isLoading: false,
-                searchcCategory:'',
+                choosePartsTypeId:'',
+                searchcCategory: '',
                 formItem: {
                     partsId: '',
-                    type:'',
-                    inPrice:100,
-                    outPrice:100,
-                    workPrice:100,
-                    stockCount:1,
-                    remark:''
+                    type: '',
+                    inPrice: 100,
+                    outPrice: 100,
+                    workPrice: 100,
+                    stockCount: 1,
+                    remark: ''
                 },
                 page: {
                     pageNumber: 1,
@@ -197,9 +201,9 @@
             };
         },
         methods: {
-            init() {
-                //获取配件类型
-                this.Http.post(config.service.getStoreParts, "").then((res) => {
+            init () {
+                // 获取配件类型
+                this.Http.post(config.service.getStoreParts, '').then((res) => {
                     if (res.data.code == 100) {
                         this.partsList = this.initTable = res.data.data;
                     } else {
@@ -210,10 +214,9 @@
                     }
                 });
 
-
-                let data= {
-                    pageVO:this.page
-                }
+                let data = {
+                    pageVO: this.page
+                };
 
                 this.Http.post(config.service.getGoodsList, data).then((res) => {
                     if (res.data.code == 100) {
@@ -227,15 +230,15 @@
                     }
                 });
             },
-            onOK() {
+            onOK () {
                 this.isLoading = true;
-                if (this.formItem.partsId == "" ) {
+                if (this.formItem.partsId == '') {
                     this.$Message.info('请选择配件类型');
                     this.isLoading = false;
                     return;
                 }
 
-                if(this.formItem.type == ''){
+                if (this.formItem.type == '') {
                     this.$Message.info('请输入配件型号');
                     this.isLoading = false;
                     return;
@@ -247,56 +250,94 @@
                 //     goods:this.formItem
                 // };
                 this.Http.post(config.service.addStoreGoods, this.formItem).then((res) => {
-                    if (res.data.code == 100) {
+                    if (res.data.code === 100) {
                         this.$Message.success({
                             content: '添加成功!',
                             duration: 2
                         });
                         this.isLoading = false;
                         this.modal = false;
-                        //添加数据
-                        this.onPageChange(1)
-
+                        // 添加数据
+                        this.onPageChange(1);
                     } else {
                         this.isLoading = false;
                         this.$Message.error({
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
-            onPageChange(pageNumber){
+            onPageChange (pageNumber) {
                 this.page.pageNumber = pageNumber;
-                this.Http.post(config.service.getGoodsList, this.page).then((res) => {
-                    if (res.data.code == 100) {
-                        this.data = this.initTable = res.data.data.rows;
-                        this.page.total = res.data.data.total;
-                    } else {
-                        this.$Message.error({
-                            content: res.data.msg,
-                            duration: 2
-                        });
+                if(this.choosePartsTypeId == ''){
+                    this.Http.post(config.service.getGoodsList, this.page).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }else{
+                    var data ={
+                        pageNumber:this.page.pageNumber,
+                        pageSize:this.page.pageSize,
+                        partsId:this.choosePartsTypeId
                     }
-                });
+                    this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }
+
             },
-            onPageSizeChange(pageSize){
+            onPageSizeChange (pageSize) {
                 this.page.pageNumber = 1;
                 this.page.pageSize = pageSize;
-                this.Http.post(config.service.getGoodsList, this.page).then((res) => {
-                    if (res.data.code == 100) {
-                        this.data = this.initTable = res.data.data.rows;
-                        this.page.total = res.data.data.total;
-                    } else {
-                        this.$Message.error({
-                            content: res.data.msg,
-                            duration: 2
-                        });
+                if(this.choosePartsTypeId == ''){
+                    this.Http.post(config.service.getGoodsList, this.page).then((res) => {
+                        if (res.data.code === 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }else{
+                    var data ={
+                        pageNumber:this.page.pageNumber,
+                        pageSize:this.page.pageSize,
+                        partsId:this.choosePartsTypeId
                     }
-                });
+                    this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }
+
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.modal = false;
             },
@@ -306,11 +347,37 @@
             },
             handleCancel () {
                 this.data = this.initTable;
-            }
-        },
-        mounted() {
-            this.init();
+            },
+            typeChange(partsId){
+                this.choosePartsTypeId = partsId;
+                if(partsId != null && partsId != ''){
+                    this.page.pageNumber = 1;
+                    var data ={
+                        pageNumber:this.page.pageNumber,
+                        pageSize:this.page.pageSize,
+                        partsId:partsId
+                    }
+                    this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
+                        if (res.data.code == 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }else{
+                    this.onPageChange(1);
+                }
 
+            }
+
+
+        },
+        mounted () {
+            this.init();
         }
     };
 </script>
