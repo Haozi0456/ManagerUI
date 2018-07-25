@@ -215,7 +215,8 @@
                 });
 
                 let data = {
-                    pageVO: this.page
+                    pageNumber:this.page.pageNumber,
+                    pageSize:this.page.pageSize,
                 };
 
                 this.Http.post(config.service.getGoodsList, data).then((res) => {
@@ -371,7 +372,6 @@
                 }else{
                     this.onPageChange(1);
                 }
-
             }
 
 
