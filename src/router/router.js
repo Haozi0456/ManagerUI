@@ -99,7 +99,8 @@ export const appRouter = [
         title: '会员管理',
         component: Main,
         children: [
-            {path: 'index', title: '会员管理', name: 'member_index', component: () => import('@/views/member/member.vue')}
+            {path: 'member_index', title: '会员列表', name: 'member_index', component: () => import('@/views/member/member.vue')},
+            {path: 'member_add', title: '会员办理', name: 'member_add', component: () => import('@/views/member/member-add.vue')}
         ]
     },{
         path: '/orderManager',
@@ -127,7 +128,7 @@ export const appRouter = [
         title: '库存管理',
         component: Main,
         children: [
-            {path: 'store_goods', title: '库存商品管理', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
+            {path: 'store_goods', title: '库存配件管理', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
             {path: 'store_parts', title: '配件类型管理', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
         ]
     }

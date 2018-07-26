@@ -164,6 +164,8 @@
                                 <Button type="primary" @click="getCurrentData" :disabled="isEnablePreview">打印预览</Button>
 
                                 <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px">打印</Button>
+
+                                <Button type="primary" :disabled="isEnablePreview" @click="addRecord" style="margin-left: 10px">提交</Button>
                             </div>
 
                         </Col>
@@ -179,6 +181,7 @@
     import config from '../../libs/config';
     import canEditTable from './components/canEditTable.vue';
     import tableData from './components/data/table_data.js';
+    import Cookies from 'js-cookie';
 
     export default {
         name: 'workOrder',
@@ -296,26 +299,32 @@
                 //     return;
                 // }
                 //
-                // this.Http.post(config.service.addStoreParts, this.formItem).then((res) => {
-                //     if (res.data.code == 100) {
-                //         this.$Message.success({
-                //             content: '添加成功!',
-                //             duration: 2
-                //         });
-                //         this.isLoading = false;
-                //         this.modal = false;
-                //         //添加数据
-                //         this.data.unshift(res.data.data)
-                //
-                //     } else {
-                //         this.isLoading = false;
-                //         this.$Message.error({
-                //             content: res.data.msg,
-                //             duration: 2
-                //         });
-                //
-                //     }
-                // });
+
+            },
+            addRecord(){
+                if(this.data.length == 0){
+                    this.$Message.info('请添加维修项目');
+                    return;
+                }
+                let userName = Cookies.get("user");
+                let parameters = {
+                    items:this.data,
+                    operator:userName
+                }
+                this.Http.postJson(config.service.addRepairRecord,parameters).then((res) => {
+                    if (res.data.code == 100) {
+                        this.$Message.success({
+                            content: '添加成功!',
+                            duration: 2
+                        });
+                    } else {
+                        this.$Message.error({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+
+                    }
+                });
             },
             onCancel() {
                 this.$Message.info('取消添加!');
@@ -323,7 +332,7 @@
             },
             handleDel(val, index) {
                 this.$Message.success('删除了第' + (index + 1) + '行数据');
-                if (this.data.length = 0) {
+                if (this.data.length == 0) {
                     this.isEnablePreview = true;
                 }
             },

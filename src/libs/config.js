@@ -79,9 +79,10 @@ var config = {
         getGoodsListByPartsId:'system/store/getGoodsListByPartsId',
 
         //添加库存商品
-        addStoreGoods:'system/store/addStoreGoods'
+        addStoreGoods:'system/store/addStoreGoods',
 
-
+        //添加维修工单记录
+        addRepairRecord:'system/repair/addRepairRecord'
     }
 };
 
