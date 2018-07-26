@@ -44,18 +44,33 @@
                 </Card>
             </Col>
         </Row>
+        <Row :gutter="10">
+            <Col :md="24" :lg="24" :style="{marginBottom: '8px'}">
+                <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="podium"></Icon>
+                        近30天每日收入统计
+                    </p>
+                    <div class="near_30_days">
+                        <statisticsNear30Days></statisticsNear30Days>
+                    </div>
+                </Card>
+            </Col>
+        </Row>
     </div>
 </template>
 
 <script>
     import statisticsMonthOfYear from '../statistics/statisticsMonthOfYear.vue';
     import statisticsMonthOfYearOrderCount from '../statistics/statisticsMonthOfYearOrderCount.vue';
+    import statisticsNear30Days from './statisticsNear30Days.vue';
 
     export default {
         name: "statistics",
         components: {
             statisticsMonthOfYear,
-            statisticsMonthOfYearOrderCount
+            statisticsMonthOfYearOrderCount,
+            statisticsNear30Days
         },
         data() {
             return {

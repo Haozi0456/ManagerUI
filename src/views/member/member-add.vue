@@ -52,6 +52,14 @@
                                 <Input v-model="accountItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
                                        placeholder="请输入备注信息..."></Input>
                             </FormItem>
+
+                            <FormItem align="right">
+                                <Button type="ghost" style="margin-right: 15px">取消</Button>
+                                <Button type="primary" :loading="isLoading" @click="onOK('memberItem')">
+                                    <span v-if="!isLoading">添加</span>
+                                    <span v-else>提交中...</span>
+                                </Button>
+                            </FormItem>
                         </Form>
                         </Col>
                     </Row>
@@ -139,7 +147,20 @@
                                     duration: 2
                                 });
                                 this.isLoading = false;
-                                //添加数据
+
+                                this.memberItem = {
+                                        name: '',
+                                        phone: '',
+                                        carnum: '',
+                                        carmake: ''
+                                };
+                                this.accountItem = {
+                                        money: 100,
+                                        submoney:0,
+                                        type: '1',
+                                        remark: ''
+                                }
+
                             } else {
                                 this.isLoading = false;
                                 this.$Message.error({

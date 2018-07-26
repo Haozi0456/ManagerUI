@@ -22,7 +22,7 @@
                         <Icon type="person-stalker"></Icon>
                         会员列表
                     </p>
-                    <a type="text" slot="extra" @click.prevent="modal = true">
+                    <a type="text" slot="extra" @click.prevent="toAddMember">
                         <Icon type="plus-round"></Icon>
                         添加会员
                     </a>
@@ -271,6 +271,11 @@
             onCancel() {
                 this.$Message.info('取消添加!');
                 this.modal = false;
+            },
+            toAddMember(){
+                this.$router.push({
+                    name: 'member_add'
+                });
             }
         },
         mounted() {
