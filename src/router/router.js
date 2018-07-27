@@ -93,24 +93,26 @@ export const otherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
     {
+        path: '/orderManager',
+        icon: 'social-yen',
+        name: 'statistics',
+        title: '收银开单',
+        component: Main,
+        children: [
+            {path: 'order_add', title: '快速结账', name: 'order-add', component: () => import('@/views/orderManager/order-add.vue')},
+            {path: 'order_list', title: '营业明细', name: 'order_list', component: () => import('@/views/orderManager/order-list.vue')},
+            {path: 'order_billing', title: '维修开单', name: 'order_billing', component: () => import('@/views/orderManager/order-billing.vue')}
+        ]
+    },
+    {
         path: '/member',
         icon: 'person-stalker',
         name: 'member',
         title: '会员管理',
         component: Main,
         children: [
-            {path: 'member_index', title: '会员列表', name: 'member_index', component: () => import('@/views/member/member.vue')},
-            {path: 'member_add', title: '会员办理', name: 'member_add', component: () => import('@/views/member/member-add.vue')}
-        ]
-    },{
-        path: '/orderManager',
-        icon: 'ios-pie',
-        name: 'statistics',
-        title: '工单管理',
-        component: Main,
-        children: [
-            {path: 'order_manager', title: '工单列表', name: 'orderManager_index', component: () => import('@/views/orderManager/OrderManager.vue')},
-            {path: 'work_order', title: '维修工单', name: 'workOrder_index', component: () => import('@/views/orderManager/WorkOrder.vue')}
+            {path: 'member_index', icon:'ios-person', title: '会员列表', name: 'member_index', component: () => import('@/views/member/member.vue')},
+            {path: 'member_add', icon:'android-person-add', title: '会员办理', name: 'member_add', component: () => import('@/views/member/member-add.vue')}
         ]
     },{
         path: '/statistics',
@@ -125,11 +127,11 @@ export const appRouter = [
         path: '/storeManager',
         icon: 'ios-pie',
         name: 'storeManager',
-        title: '库存管理',
+        title: '商品库存',
         component: Main,
         children: [
-            {path: 'store_goods', title: '库存配件管理', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
-            {path: 'store_parts', title: '配件类型管理', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
+            {path: 'store_goods', title: '商品列表', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
+            {path: 'store_parts', title: '商品分类', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
         ]
     }
     // ,

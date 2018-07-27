@@ -9,10 +9,10 @@
         <Row :gutter="10">
             <Col :md="24" :lg="24">
                 <Row class-name="home-page-row1" :gutter="10">
-                    <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
+                    <Col :md="24" :lg="24" :style="{marginBottom: '10px'}">
                         <Card>
                             <Row type="flex" class="user-infor">
-                                <Col span="16">
+                                <Col span="24" :md="24" :lg="24">
                                     <Row class-name="made-child-con-middle" type="flex" align="middle">
                                         <Col>
                                             <img class="avator-img" src='../../images/ic-manager.png'/>
@@ -20,7 +20,6 @@
                                         <Col>
                                             <div>
                                                 <p class="welcome">你好, 欢迎登录:</p>
-
                                             </div>
                                         </Col>
                                         <Col>
@@ -44,25 +43,33 @@
             </Col>
             <Col :md="24" :lg="24">
                 <Row class-name="home-page-row1" :gutter="10">
-                    <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
+                    <Col :md="24" :lg="24" :style="{marginBottom: '10px'}">
                         <Card>
                             <p slot="title">
-                                <Icon type="person-stalker"></Icon>
+                                <Icon type="social-windows"></Icon>
                                 快捷菜单
                             </p>
-                            <Row :gutter="10">
-                                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-
+                            <Row type="flex" :gutter="20">
+                                <Col :style="{marginBottom: '10px', marginLeft:'10px', marginRight:'10px'}">
+                                    <card-button iconType="cash"
+                                                 intro-text="收银结算"
+                                                 @click.native="toCollectMoney"
+                                                 color="#2d8cf0"></card-button>
                                 </Col>
-                                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-
+                                <Col :style="{marginBottom: '10px', marginLeft:'10px', marginRight:'10px'}">
+                                    <card-button iconType="android-person-add"
+                                                 intro-text="会员办理"
+                                                 @click.native="toAddMember"
+                                                 color="#64d572"></card-button>
                                 </Col>
-                                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
 
+                                <Col :style="{marginBottom: '10px', marginLeft:'10px', marginRight:'10px'}">
+                                    <card-button iconType="android-cart"
+                                                 intro-text="商品库存"
+                                                 @click.native="toStore"
+                                                 color="#f25e43"></card-button>
                                 </Col>
-                                <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
 
-                                </Col>
                             </Row>
                         </Card>
                     </Col>
@@ -80,7 +87,7 @@
                                     id-name="user_created_count"
                                     :end-val="count.dayIncome"
                                     iconType="social-yen"
-                                    color="#2d8cf0"
+                                    color="#F78C68"
                                     :decimals="decimals"
                                     unit="元"
                                     intro-text="今日收入"
@@ -91,7 +98,7 @@
                                     id-name="visit_count"
                                     :end-val="count.memberCount"
                                     iconType="ios-people"
-                                    color="#64d572"
+                                    color="#F37276"
                                     :decimals="decimalsCount"
                                     unit="人"
                                     :iconSize="50"
@@ -102,8 +109,8 @@
                             <infor-card
                                     id-name="collection_count"
                                     :end-val="count.orderCount"
-                                    iconType="android-cart"
-                                    color="#f25e43"
+                                    iconType="ios-paper"
+                                    color="#22B9B0"
                                     :decimals="decimalsCount"
                                     unit="个"
                                     intro-text="今日订单数量"
@@ -114,7 +121,7 @@
                                     id-name="transfer_count"
                                     :end-val="count.transfer"
                                     iconType="shuffle"
-                                    color="#f25e43"
+                                    color="#0BC9E2"
                                     intro-text="今日服务调用量"
                             ></infor-card>
                         </Col>
@@ -134,6 +141,8 @@
     import inforCard from './components/inforCard.vue';
     import Cookies from 'js-cookie';
 
+    import cardButton from '../custom-component/cardButton.vue';
+
 
     import config from '../../libs/config';
 
@@ -144,7 +153,8 @@
             dataSourcePie,
             userFlow,
             countUp,
-            inforCard
+            inforCard,
+            cardButton
         },
         data() {
             return {
@@ -231,6 +241,19 @@
                 //         });
                 //     }
                 // });
+
+            },
+            toAddMember() { //添加会员
+                this.$router.push({
+                    name: 'member_add'
+                });
+            },
+            toStore(){//商品库存
+                this.$router.push({
+                    name: 'storeGoods_index'
+                });
+            },
+            toCollectMoney(){
 
             }
         },
