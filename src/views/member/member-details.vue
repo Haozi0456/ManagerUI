@@ -13,7 +13,7 @@
     }
 
     .recharge-box {
-        height: 100px;
+        height: 220px;
     }
 
     /*.infor-card-icon-con {*/
@@ -41,28 +41,36 @@
         <Row :gutter="10">
             <Col :md="24" :lg="12">
                 <Row class-name="home-page-row1" :gutter="10">
-                    <Col :md="12" :lg="24" :style="{marginBottom: '10px'}">
+                    <Col :md="24" :lg="24" :style="{marginBottom: '10px'}">
                         <Card>
                             <Row type="flex" class="member-user-infor" :gutter="8">
-                                <Col :md="12" :lg="8">
+                                <Col :md="12" :lg="12" :xs="12">
                                     <Col span="24" align="middle">
-                                        <!--<Row class-name="made-child-con-middle" type="flex" align="middle">-->
-                                        <img class="avator-img" src="../../images/ic-header.png"/>
-                                        <!--</Row>-->
-                                    </Col>
-                                    <Col span="24" style="padding-left:6px; margin-top: 10px" align="middle">
-                                        <!--<Row class-name="made-child-con-middle" type="flex" align="middle">-->
-                                        <div>
-                                            <b class="member-card-user-infor-name">{{user.name}}</b>
-                                            <p>普通会员</p>
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle">
+                                        <div style="display: flex;">
+                                            <div>
+                                            <img class="avator-img" src="../../images/ic_member.png"/>
+                                            </div>
+                                            <div style="text-align: center; vertical-align: center">
+                                                <b class="member-card-user-infor-name" style="text-align: center">{{user.name}}随身带</b>
+                                                <p >普通会员</p>
+                                            </div>
                                         </div>
-                                        <!--</Row>-->
+
+                                        </Row>
                                     </Col>
+                                    <!--<Col span="12" style="padding-left:6px; margin-top: 10px" align="middle">-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;<Row class-name="made-child-con-middle" type="flex" align="middle">&ndash;&gt;&ndash;&gt;-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;<div>&ndash;&gt;&ndash;&gt;-->
+                                            <!--&lt;!&ndash;&lt;!&ndash;<b class="member-card-user-infor-name" style="text-align: center">{{user.name}}随身带</b>&ndash;&gt;&ndash;&gt;-->
+                                            <!--&lt;!&ndash;&lt;!&ndash;<p >普通会员</p>&ndash;&gt;&ndash;&gt;-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;</Row>&ndash;&gt;&ndash;&gt;-->
+                                    <!--</Col>-->
                                 </Col>
-                                <Col :md="12" :lg="8">
-                                    <Col span="24" align="middle">
-                                        <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                             :style="{marginBottom: '15px'}">
+                                <Col :md="12" :lg="12" :xs="12">
+                                    <Col span="12" align="middle">
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '5px'}">
                                             <div v-if="user.phone!=''">
                                                 <p style="text-align: left;">手机号码:</p>
                                                 <b class="member-card-user-infor-name">{{user.phone}}</b>
@@ -72,23 +80,25 @@
                                                 <b class="member-card-user-infor-name">无</b>
                                             </div>
                                         </Row>
-                                        <Row class-name="made-child-con-middle" type="flex" align="middle" >
-                                            <div v-if="user.carnum!=''" >
-                                                <p style="text-align: left;">车牌号码:</p>
-                                                <b class="member-card-user-infor-name" style="text-align: left">{{user.carnum}}</b>
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '5px'}">
+                                            <div v-if="account.money!=''">
+                                                <p style="text-align: left">账户余额:</p>
+                                                <b class="member-card-user-infor-name">{{account.money.toFixed(2)}}</b>
                                             </div>
                                             <div v-else>
-                                                <p style="text-align: left">车牌号码:</p>
-                                                <b class="member-card-user-infor-name">无</b>
+                                                <p style="text-align: left;">账户余额:</p>
+                                                <b class="member-card-user-infor-name" >0.00</b>
                                             </div>
                                         </Row>
                                     </Col>
 
                                 </Col>
-                                <Col :md="12" :lg="8">
-                                    <Col span="24">
-                                        <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                             :style="{marginBottom: '15px'}">
+                            </Row>
+                            <div class="line-gray" :style="{marginBottom: '5px'}"></div>
+                            <Row>
+                                <Col :md="12" :lg="12">
+                                    <Col span="24" :md="12" :lg="12" :xs="12">
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '5px'}">
                                             <div v-if="user.carmake!=''">
                                                 <p style="text-align: left">车辆品牌:</p>
                                                 <b class="member-card-user-infor-name">{{user.carmake}}</b>
@@ -98,10 +108,30 @@
                                                 <b class="member-card-user-infor-name" >无</b>
                                             </div>
                                         </Row>
-                                        <Row class-name="made-child-con-middle" type="flex" align="middle" >
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '5px'}">
                                             <div>
                                                 <p style="text-align: left;">入会时间:</p>
                                                 <b class="member-card-user-infor-name">{{user.createtime}}</b>
+                                            </div>
+                                        </Row>
+                                    </Col>
+                                </Col>
+                                <Col :md="12" :lg="12">
+                                    <Col span="24" :md="12" :lg="12" :xs="12">
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '5px'}">
+                                            <div v-if="user.carnum!=''" >
+                                                <p style="text-align: left;">车牌号码:</p>
+                                                <b class="member-card-user-infor-name" style="text-align: left">{{user.carnum}}</b>
+                                            </div>
+                                            <div v-else>
+                                                <p style="text-align: left">车牌号码:</p>
+                                                <b class="member-card-user-infor-name">无</b>
+                                            </div>
+                                        </Row>
+                                        <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '5px'}">
+                                            <div>
+                                                <p style="text-align: left;">总消费金额:</p>
+                                                <b class="member-card-user-infor-name">{{account.totalConsume}}</b>
                                             </div>
                                         </Row>
                                     </Col>
@@ -118,33 +148,33 @@
             </Col>
             <Col :md="24" :lg="12">
                 <Row :gutter="5">
-                    <Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '5px'}">
-                        <infor-card
-                                id-name="user_created_count"
-                                :end-val="account.money"
-                                iconType="social-yen"
-                                color="#2d8cf0"
-                                :decimals="decimals"
-                                unit="元"
-                                intro-text="账户余额"
-                        ></infor-card>
-                    </Col>
-                    <Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '5px'}">
-                        <infor-card
-                                id-name="visit_count"
-                                :end-val="account.totalConsume"
-                                iconType="cash"
-                                color="#64d572"
-                                :decimals="decimals"
-                                unit="元"
-                                :iconSize="50"
-                                intro-text="总消费金额"
-                        ></infor-card>
-                    </Col>
+                    <!--<Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '5px'}">-->
+                        <!--<infor-card-->
+                                <!--id-name="user_created_count"-->
+                                <!--:end-val="account.money"-->
+                                <!--iconType="social-yen"-->
+                                <!--color="#2d8cf0"-->
+                                <!--:decimals="decimals"-->
+                                <!--unit="元"-->
+                                <!--intro-text="账户余额"-->
+                        <!--&gt;</infor-card>-->
+                    <!--</Col>-->
+                    <!--<Col :xs="24" :sm="12" :md="12" :style="{marginBottom: '5px'}">-->
+                        <!--<infor-card-->
+                                <!--id-name="visit_count"-->
+                                <!--:end-val="account.totalConsume"-->
+                                <!--iconType="cash"-->
+                                <!--color="#64d572"-->
+                                <!--:decimals="decimals"-->
+                                <!--unit="元"-->
+                                <!--:iconSize="50"-->
+                                <!--intro-text="总消费金额"-->
+                        <!--&gt;</infor-card>-->
+                    <!--</Col>-->
                 </Row>
                 <Row :gutter="5">
                     <Col :xs="24" :sm="24" :md="24" :style="{marginBottom: '5px'}">
-                        <Card :padding="5">
+                        <Card :padding="10">
                             <p slot="title" class="card-title">
                                 <Icon type="map"></Icon>
                                 充值记录
@@ -155,7 +185,7 @@
                             </a>
                             <div class="recharge-box">
                                 <Row class="searchable-table-recharge">
-                                    <Table stripe :columns="chargeColumns" :data="chargeData" height="100"></Table>
+                                    <Table stripe :columns="chargeColumns" :data="chargeData" height="220"></Table>
                                 </Row>
                             </div>
                         </Card>
@@ -165,7 +195,7 @@
         </Row>
         <Row :gutter="10" class="margin-top-8">
             <Col :md="24" :lg="24" :style="{marginBottom: '8px'}">
-                <Card>
+                <Card :padding="10">
                     <p slot="title" class="card-title">
                         <Icon type="android-map"></Icon>
                         历史消费记录

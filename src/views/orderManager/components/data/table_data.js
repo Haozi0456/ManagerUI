@@ -38,7 +38,18 @@ export const columns = [
     }
 ];
 
-export const  itemColumns = [
+export const serverColumns = [
+    {
+        key: 'itemName',
+        title: '服务项目'
+    },
+    {
+        key: 'itemPrice',
+        title: '单价'
+    }
+];
+
+export const itemColumns = [
     {
         title: '序号',
         type: 'index',
@@ -71,7 +82,6 @@ export const  itemColumns = [
     // }
 
 ];
-
 
 
 export const showCurrentColumns = [
@@ -108,6 +118,7 @@ export const showCurrentColumns = [
 ];
 
 const tableData = {
+    serverColumns:serverColumns,
     table1Columns: columns,
     table2Columns: itemColumns,
     showCurrentColumns: showCurrentColumns

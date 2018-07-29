@@ -82,7 +82,11 @@ var config = {
         addStoreGoods:'system/store/addStoreGoods',
 
         //添加维修工单记录
-        addRepairRecord:'system/repair/addRepairRecord'
+        addRepairRecord:'system/repair/addRepairRecord',
+
+
+        //根据类型获取配置记录
+        getConfigsByType:'/system/congfig/getConfigsByType'
     }
 };
 
