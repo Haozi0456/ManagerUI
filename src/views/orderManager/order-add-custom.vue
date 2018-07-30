@@ -253,7 +253,6 @@
                 consumeData: [],
                 serverData: [],
                 initServerData: [],
-                totalPrice: 0.00,
                 isEnablePreview: true,
                 count: {
                     createUser: 0,
@@ -288,56 +287,15 @@
 
 
             },
-            addConsumeItem(data) { // 添加消费条目
-                let item = data;
-                item.count = 1;
-                this.consumeData.push(item);
-                if (this.consumeData.length > 0) {
-                    this.isEnablePreview = false;
-                    var totalConsumeData = 0.00;
-                    for (let i = 0; i < this.consumeData.length; i++) {
-                        totalConsumeData += parseInt(this.consumeData[i].itemValue);
-                    }
-                    this.totalPrice = totalConsumeData;
-                }
-            },
-            handleDel(val, index) {
-                this.$Message.success('删除了第' + (index + 1) + '行数据');
-                if (this.consumeData.length == 0) {
-                    this.isEnablePreview = true;
-                    this.totalPrice = 0.00;
-                } else {
-                    var totalConsumeData = 0.00;
-                    for (let i = 0; i < this.consumeData.length; i++) {
-                        totalConsumeData += parseInt(this.consumeData[i].itemValue);
-                    }
-                    this.totalPrice = totalConsumeData;
-                }
-            },
-            search(data, argumentObj) {
-                let res = data;
-                let dataClone = data;
-                for (let argu in argumentObj) {
-                    if (argumentObj[argu].length > 0) {
-                        res = dataClone.filter(d => {
-                            return d[argu].indexOf(argumentObj[argu]) > -1;
-                        });
-                        dataClone = res;
-                    }
-                }
-                return res;
-            },
-            handleSearch() {
-                this.serverData = this.initServerData;
-                this.serverData = this.search(this.serverData, {
-                    itemKey: this.searchName,
-                });
-            },
-            toShowPayModal() {
-                this.orderItem.money = this.totalPrice;
-                this.isPayShow = true;
-            },
             onOK() {
+                if(this.orderItem.items === ''){
+                    this.$Message.info({
+                        content: '请输入消费内容!',
+                        duration: 2
+                    });
+                    return;
+                }
+
                 this.isLoading = true;
                 if (this.user != null) {
                     this.orderItem.userid = this.user.id;

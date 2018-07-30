@@ -122,8 +122,10 @@
                 searchCarNo: '',
                 columns: [
                     {
-                        key: 'id',
-                        title: '编号'
+                        title: '序号',
+                        type: 'index',
+                        width: 80,
+                        align: 'center'
                     },
                     {
                         key: 'name',

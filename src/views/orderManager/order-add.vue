@@ -26,7 +26,9 @@
                                     @on-change="chooseUser"
                                     @on-clear="onClear"
                                     :loading="loading">
-                                <Option v-for="(option, index) in options" :value="option" :key="index">{{option.phone}}</Option>
+                                <Option v-for="(option, index) in options" :value="option" :key="index">
+                                    {{option.phone}}
+                                </Option>
                             </Select>
 
                             <Button type="primary" icon="search" style="margin: 0 5px;">查找会员</Button>
@@ -142,21 +144,30 @@
         <Row :gutter="8">
             <Col span="8">
                 <Card :padding="10">
-                    <p slot="title" class="card-title">
-                        <Icon type="map"></Icon>
-                        服务项目
-                    </p>
-                    <Row>
-                        <Input v-model="searchName" @on-change="handleSearch" icon="search"
-                               placeholder="请输入名称搜搜..." style="width: 200px; margin-bottom: 8px"/>
-                    </Row>
-                    <Row>
-                        <div class="table_box">
-                            <Table border stripe :columns="serverColumns" :data="serverData" height="280"
-                                   @on-row-dblclick="addConsumeItem"></Table>
-                        </div>
-                    </Row>
-
+                    <!--<p slot="title" class="card-title-custom">-->
+                    <!--<Icon type="map"></Icon>-->
+                    <!---->
+                    <!--</p>-->
+                    <div>
+                        <p class="card-title-custom">
+                            <Icon type="map"></Icon>
+                            <RadioGroup v-model="serverType" type="button" @on-change="onTypeChange">
+                                <Radio label="服务项目"></Radio>
+                                <Radio label="商品列表"></Radio>
+                            </RadioGroup>
+                        </p>
+                        <div class="divide_line"></div>
+                        <Row>
+                            <Input v-model="searchName" @on-change="handleSearch" icon="search"
+                                   placeholder="请输入名称搜搜..." style="width: 200px; margin-bottom: 8px"/>
+                        </Row>
+                        <Row>
+                            <div class="table_box">
+                                <Table border stripe :columns="serverColumns" :data="serverData" height="280"
+                                       @on-row-dblclick="addConsumeItem"></Table>
+                            </div>
+                        </Row>
+                    </div>
                 </Card>
             </Col>
             <Col span="16">
@@ -167,7 +178,8 @@
                     </p>
                     <div class="table_box1">
                         <!--<Table border stripe :columns="consumeColumns" :data="consumeData" height="320" ></Table>-->
-                        <can-edit-table refs="table1" @on-delete="handleDel" v-model="consumeData" :columns-list="consumeColumns" max-height="280"></can-edit-table>
+                        <can-edit-table refs="table1" @on-delete="handleDel" v-model="consumeData"
+                                        :columns-list="consumeColumns" max-height="280"></can-edit-table>
                     </div>
                     <Row>
                         <Col :md="24" :lg="24" align="right" :style="{marginTop: '8px'}">
@@ -184,7 +196,8 @@
                                 <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px">挂单带结
                                 </Button>
 
-                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px" @click="toShowPayModal">结账
+                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px"
+                                        @click="toShowPayModal">结账
                                 </Button>
                             </div>
                         </Col>
@@ -201,7 +214,9 @@
             <Form ref="orderItem" :model="orderItem" :label-width="80">
                 <FormItem label="支付方式">
                     <Select v-model="orderItem.payfrom" value="0" placeholder="请选择...">
-                        <Option value="0">账户余额</Option>
+                        <div v-if="this.user.id != null">
+                            <Option value="0">账户余额</Option>
+                        </div>
                         <Option value="1">支付宝</Option>
                         <Option value="2">微信</Option>
                         <Option value="3">现金</Option>
@@ -212,10 +227,10 @@
 
                 <FormItem label="支付金额">
                     <InputNumber
-                            :max="5000"
                             :min="0"
                             :step="5"
                             v-model="orderItem.money"></InputNumber>
+                    <span style="margin-left: 5px">元</span>
                 </FormItem>
                 <FormItem label="备注">
                     <Input v-model="orderItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
@@ -224,7 +239,7 @@
             </Form>
             <div slot="footer">
                 <Button type="ghost" style="margin-right: 8px" @click="onCancel">取消</Button>
-                <Button type="primary" :loading="isLoading" @click="onOK">提交</Button>
+                <Button type="primary" :loading="isLoading" @click="onOK">确认收款</Button>
             </div>
         </Modal>
     </div>
@@ -247,9 +262,10 @@
                 model: '',
                 isPayShow: false,
                 loading: false,
-                isLoading:false,
+                isLoading: false,
                 options: [],
                 searchName: '',
+                serverType:'',
                 serverColumns: [
                     {
                         key: 'itemKey',
@@ -341,6 +357,9 @@
                     }
                 });
             },
+            onTypeChange(data){ //类型切换
+
+            },
             addConsumeItem(data) { // 添加消费条目
                 let item = data;
                 item.count = 1;
@@ -392,15 +411,15 @@
             },
             onOK() {
                 this.isLoading = true;
-                if(this.user != null){
+                if (this.user != null) {
                     this.orderItem.userid = this.user.id;
                 }
                 let consumeItems = '';
                 for (var i = 0; i < this.consumeData.length; i++) {
-                    if(i == this.consumeData.length -1){
+                    if (i == this.consumeData.length - 1) {
                         consumeItems += this.consumeData[i].itemKey;
-                    }else{
-                        consumeItems += this.consumeData[i].itemKey+"；";
+                    } else {
+                        consumeItems += this.consumeData[i].itemKey + "；";
                     }
 
                 }
@@ -435,7 +454,7 @@
                 if (query !== '' && query.length > 3) {
                     this.loading = true;
                     let data = {
-                        phone:query
+                        phone: query
                     };
                     this.Http.post(config.service.getUsersLikePhone, data).then((res) => {
                         if (res.data.code == 100) {
@@ -454,9 +473,9 @@
                     this.options = [];
                 }
             },
-            chooseUser(data){
+            chooseUser(data) {
                 this.user = data;
-                if(this.user != null && this.user != ''){
+                if (this.user != null && this.user != '') {
                     let data = {
                         userId: this.user.id
                     };
@@ -471,7 +490,7 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.account = {
                         createtime: "",
                         id: 0,
@@ -481,15 +500,15 @@
                     }
                 }
             },
-            onClear(){
-              this.user = null;
-              this.account = {
-                  createtime: "",
-                  id: 0,
-                  money: 0.00,
-                  totalConsume: 0.00,
-                  userid: 0
-              }
+            onClear() {
+                this.user = null;
+                this.account = {
+                    createtime: "",
+                    id: 0,
+                    money: 0.00,
+                    totalConsume: 0.00,
+                    userid: 0
+                }
             }
         },
         mounted() {
