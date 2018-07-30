@@ -47,7 +47,7 @@
                     <Row class="margin-top-10 searchable-table-con1">
 
                         <Col :md="24" :lg="24">
-                            <Table stripe :columns="columns" :data="data"></Table>
+                            <Table border stripe :columns="columns" :data="data"></Table>
                         </Col>
                         <Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">
                             <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;"><span
@@ -110,7 +110,6 @@
 <script>
 
     import config from '../../libs/config';
-    import utils from '../../libs/util';
     import Cookies from 'js-cookie';
 
     export default {
@@ -124,21 +123,25 @@
                         title: '编号'
                     },
                     {
-                        key: 'type',
-                        title: '类型',
-                        render: function (h, params) {
-                            let text = '';
-                            if (this.row.type == 1) {
-                                text = '洗车'
-                            } else if (this.row.type == 2) {
-                                text = '维修'
-                            } else {
-                                text = "其它"
-                            }
-
-                            return h('div', text);
-                            /*这里的this.row能够获取当前行的数据*/
-                        }
+                        key: 'items',
+                        title: '服务项目'
+                        // ,
+                        // render: function (h, params) {
+                        //     let text =''
+                        //     var str = this.row.items+"";
+                        //     let itemsArr = str.split(";");
+                        //     // for (let i = 0; i < itemsArr.length; i++) {
+                        //     //     text += itemsArr[i]+" \n "
+                        //     // }
+                        //
+                        //
+                        //     return h('ol',{style:{ type:1}}, itemsArr.map(function (item) {
+                        //         return h('li',{style:{ type:1}},item)
+                        //     }));
+                        //
+                        //     // return h('div', text);
+                        //     /*这里的this.row能够获取当前行的数据*/
+                        // }
 
                     },
                     {

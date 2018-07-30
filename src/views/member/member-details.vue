@@ -99,11 +99,15 @@
                                 <Col :md="12" :lg="12">
                                     <Col span="24" :md="12" :lg="12" :xs="12">
                                         <Row class-name="made-child-con-middle" type="flex" align="middle" :style="{marginBottom: '5px'}">
-                                            <div v-if="user.carmake!=''">
-                                                <p style="text-align: left">车辆品牌:</p>
-                                                <b class="member-card-user-infor-name">{{user.carmake}}</b>
-                                            </div>
-                                            <div v-else>
+                                            <!--<div v-if="user.carmake!=''">-->
+                                                <!--<p style="text-align: left">车辆品牌:</p>-->
+                                                <!--<b class="member-card-user-infor-name">{{user.carmake}}</b>-->
+                                            <!--</div>-->
+                                            <!--<div v-else>-->
+                                                <!--<p style="text-align: left;">车辆品牌:</p>-->
+                                                <!--<b class="member-card-user-infor-name" >无</b>-->
+                                            <!--</div>-->
+                                            <div >
                                                 <p style="text-align: left;">车辆品牌:</p>
                                                 <b class="member-card-user-infor-name" >无</b>
                                             </div>
@@ -327,7 +331,6 @@
                     transfer: 0
                 },
                 user: {
-                    carmake: "",
                     carnum: "",
                     createtime: "",
                     lastvisittime: "",

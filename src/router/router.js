@@ -100,8 +100,8 @@ export const appRouter = [
         component: Main,
         children: [
             {path: 'order_add', title: '快速收银', name: 'order-add', component: () => import('@/views/orderManager/order-add.vue')},
-            {path: 'order_add', title: '自定义收银', name: 'order-add', component: () => import('@/views/orderManager/order-add.vue')},
-            {path: 'order_add', title: '挂单代结', name: 'order-add', component: () => import('@/views/orderManager/order-add.vue')},
+            {path: 'order-add-custom', title: '自定义收银', name: 'order-add-custom', component: () => import('@/views/orderManager/order-add-custom.vue')},
+            {path: 'order_outstanding', title: '挂单代结', name: 'order_outstanding', component: () => import('@/views/orderManager/order-outstanding.vue')},
             {path: 'order_list', title: '营业明细', name: 'order_list', component: () => import('@/views/orderManager/order-list.vue')},
             {path: 'order_billing', title: '维修开单', name: 'order_billing', component: () => import('@/views/orderManager/order-billing.vue')}
         ]

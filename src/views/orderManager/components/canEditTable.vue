@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <Table :ref="refs" :columns="columnsList" :data="thisTableData" border disabled-hover></Table>
+        <Table :ref="refs" :columns="columnsList" :data="thisTableData" border disabled-hover :height="maxHeight"></Table>
     </div>
 </template>
 
@@ -141,6 +141,10 @@ export default {
         columnsList: Array,
         value: Array,
         url: String,
+        maxHeight:{
+            type:Number,
+            default: 260
+        },
         editIncell: {
             type: Boolean,
             default: false

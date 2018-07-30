@@ -140,96 +140,55 @@
             </Col>
         </Row>
         <Row :gutter="8">
-            <Col span="8">
+            <Col span="24">
                 <Card :padding="10">
                     <p slot="title" class="card-title">
                         <Icon type="map"></Icon>
-                        服务项目
+                        快速结算
                     </p>
-                    <Row>
-                        <Input v-model="searchName" @on-change="handleSearch" icon="search"
-                               placeholder="请输入名称搜搜..." style="width: 200px; margin-bottom: 8px"/>
-                    </Row>
-                    <Row>
-                        <div class="table_box">
-                            <Table border stripe :columns="serverColumns" :data="serverData" height="280"
-                                   @on-row-dblclick="addConsumeItem"></Table>
-                        </div>
-                    </Row>
-
-                </Card>
-            </Col>
-            <Col span="16">
-                <Card :padding="10">
-                    <p slot="title" class="card-title">
-                        <Icon type="map"></Icon>
-                        消费清单
-                    </p>
-                    <div class="table_box1">
-                        <!--<Table border stripe :columns="consumeColumns" :data="consumeData" height="320" ></Table>-->
-                        <can-edit-table refs="table1" @on-delete="handleDel" v-model="consumeData" :columns-list="consumeColumns" max-height="280"></can-edit-table>
-                    </div>
-                    <Row>
-                        <Col :md="24" :lg="24" align="right" :style="{marginTop: '8px'}">
-                            <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;">
-
-                                <div style="display: inline-flex; text-align:center; margin-right: 15px; align-items: baseline;">
-                                    <span class="pre-lable">总计:
-                                        <span class="pre-total-value">￥{{totalPrice.toFixed(2)}}</span>元
-                                    </span>
-                                </div>
-
-                                <Button type="primary" :disabled="isEnablePreview">打印预览</Button>
-
-                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px">挂单带结
-                                </Button>
-
-                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px" @click="toShowPayModal">结账
-                                </Button>
+                    <Row align="middle">
+                        <Col span="24" :md="24" :lg="12" :xs="24">
+                            <Form ref="orderItem" :model="orderItem" :label-width="80">
+                                <FormItem label="消费内容">
+                                    <Input v-model="orderItem.items" placeholder="请输入消费描述..."></Input>
+                                </FormItem>
+                                <FormItem label="支付方式">
+                                    <Select v-model="orderItem.payfrom" value="0" placeholder="请选择...">
+                                        <div v-if="this.user.id != null">
+                                            <Option value="0">账户余额</Option>
+                                        </div>
+                                        <Option value="1">支付宝</Option>
+                                        <Option value="2">微信</Option>
+                                        <Option value="3">现金</Option>
+                                        <Option value="4">其它</Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem label="支付金额">
+                                    <InputNumber
+                                            :max="5000"
+                                            :min="0"
+                                            :step="5"
+                                            v-model="orderItem.money"></InputNumber><span style="margin-left: 5px">元</span>
+                                </FormItem>
+                                <FormItem label="备注">
+                                    <Input v-model="orderItem.remark" type="textarea"
+                                           :autosize="{minRows: 2,maxRows: 5}"
+                                           placeholder="请输入备注信息..."></Input>
+                                </FormItem>
+                            </Form>
+                            <div align="right">
+                                <Button type="ghost" style="margin-right: 8px" @click="onCancel">取消</Button>
+                                <Button type="primary" :loading="isLoading" @click="onOK">结账</Button>
                             </div>
+
                         </Col>
                     </Row>
+
                 </Card>
             </Col>
         </Row>
-        <Modal
-                title="支付"
-                v-model="isPayShow"
-                :mask-closable="false"
-                :closable="false"
-                class-name="vertical-center-modal">
-            <Form ref="orderItem" :model="orderItem" :label-width="80">
-                <FormItem label="支付方式">
-                    <Select v-model="orderItem.payfrom" value="0" placeholder="请选择...">
-                        <Option value="0">账户余额</Option>
-                        <Option value="1">支付宝</Option>
-                        <Option value="2">微信</Option>
-                        <Option value="3">现金</Option>
-                        <Option value="4">其它</Option>
-                    </Select>
-                </FormItem>
 
-
-                <FormItem label="支付金额">
-                    <InputNumber
-                            :max="5000"
-                            :min="0"
-                            :step="5"
-                            v-model="orderItem.money"></InputNumber>
-                </FormItem>
-                <FormItem label="备注">
-                    <Input v-model="orderItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
-                           placeholder="请输入备注信息..."></Input>
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                <Button type="ghost" style="margin-right: 8px" @click="onCancel">取消</Button>
-                <Button type="primary" :loading="isLoading" @click="onOK">提交</Button>
-            </div>
-        </Modal>
     </div>
-
-
 </template>
 
 <script>
@@ -238,7 +197,7 @@
     import Cookies from 'js-cookie';
 
     export default {
-        name: "add-order",
+        name: "add-order-custom",
         components: {
             canEditTable
         },
@@ -247,7 +206,7 @@
                 model: '',
                 isPayShow: false,
                 loading: false,
-                isLoading:false,
+                isLoading: false,
                 options: [],
                 searchName: '',
                 serverColumns: [
@@ -317,29 +276,17 @@
                     userid: 0
                 },
                 orderItem: {
+                    items:"",
                     payfrom: 0,
-                    money: this.totalPrice,
+                    money: 100.00,
                     remark: ""
                 },
-                list: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New hampshire', 'New jersey', 'New mexico', 'New york', 'North carolina', 'North dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode island', 'South carolina', 'South dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West virginia', 'Wisconsin', 'Wyoming']
             }
         },
         methods: {
             init() {
-                let data = {
-                    type: 'server'
-                }
-                // 获取配件类型
-                this.Http.post(config.service.getConfigsByType, data).then((res) => {
-                    if (res.data.code == 100) {
-                        this.serverData = this.initServerData = res.data.data;
-                    } else {
-                        this.$Message.error({
-                            content: res.data.msg,
-                            duration: 2
-                        });
-                    }
-                });
+
+
             },
             addConsumeItem(data) { // 添加消费条目
                 let item = data;
@@ -392,19 +339,9 @@
             },
             onOK() {
                 this.isLoading = true;
-                if(this.user != null){
+                if (this.user != null) {
                     this.orderItem.userid = this.user.id;
                 }
-                let consumeItems = '';
-                for (var i = 0; i < this.consumeData.length; i++) {
-                    if(i == this.consumeData.length -1){
-                        consumeItems += this.consumeData[i].itemKey;
-                    }else{
-                        consumeItems += this.consumeData[i].itemKey+"；";
-                    }
-
-                }
-                this.orderItem.items = consumeItems;
                 this.orderItem.status = 1;
                 let user = Cookies.get('user');
                 this.orderItem.operator = user;
@@ -435,7 +372,7 @@
                 if (query !== '' && query.length > 3) {
                     this.loading = true;
                     let data = {
-                        phone:query
+                        phone: query
                     };
                     this.Http.post(config.service.getUsersLikePhone, data).then((res) => {
                         if (res.data.code == 100) {
@@ -454,9 +391,9 @@
                     this.options = [];
                 }
             },
-            chooseUser(data){
+            chooseUser(data) {
                 this.user = data;
-                if(this.user != null && this.user != ''){
+                if (this.user != null && this.user != '') {
                     let data = {
                         userId: this.user.id
                     };
@@ -471,7 +408,7 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.account = {
                         createtime: "",
                         id: 0,
@@ -481,15 +418,15 @@
                     }
                 }
             },
-            onClear(){
-              this.user = null;
-              this.account = {
-                  createtime: "",
-                  id: 0,
-                  money: 0.00,
-                  totalConsume: 0.00,
-                  userid: 0
-              }
+            onClear() {
+                this.user = null;
+                this.account = {
+                    createtime: "",
+                    id: 0,
+                    money: 0.00,
+                    totalConsume: 0.00,
+                    userid: 0
+                }
             }
         },
         mounted() {

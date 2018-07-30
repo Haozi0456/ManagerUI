@@ -26,6 +26,9 @@ var config = {
         //获取会员人数
         getMemberCount:'system/user/getMemberCount',
 
+        //根据手机号模糊查询用户列表
+        getUsersLikePhone:'system/user/getUsersLikePhone',
+
         //获取我的账户userId
         getMyAccount:'system/account/getMyAccount',
 

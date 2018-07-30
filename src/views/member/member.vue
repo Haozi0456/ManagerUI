@@ -42,9 +42,6 @@
                             <FormItem label="车牌号码" prop="carnum">
                                 <Input v-model="memberItem.carnum" placeholder="请输入车牌号码..."></Input>
                             </FormItem>
-                            <FormItem label="汽车品牌">
-                                <Input v-model="memberItem.carmake" placeholder="请输入汽车品牌..."></Input>
-                            </FormItem>
                             <FormItem label="账户操作">
                                 <Select v-model="accountItem.type" value="1" placeholder="请选择...">
                                     <Option value="1">充值</Option>
@@ -184,7 +181,6 @@
                     name: '',
                     phone: '',
                     carnum: '鄂A',
-                    carmake: ''
                 },
                 accountItem: {
                     money: 100,
