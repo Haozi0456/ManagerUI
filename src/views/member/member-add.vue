@@ -18,7 +18,7 @@
                                 <Input v-model="memberItem.name" placeholder="请输入姓名..."></Input>
                             </FormItem>
                             <FormItem label="手机号码" prop="phone">
-                                <Input v-model="memberItem.phone" placeholder="请输入手机号码..."></Input>
+                                <Input v-model="memberItem.phone" placeholder="请输入手机号码(会员号)..."></Input>
                             </FormItem>
                             <FormItem label="车牌号码" prop="carnum">
                                 <Input v-model="memberItem.carnum" placeholder="请输入车牌号码..."></Input>
@@ -101,7 +101,7 @@
             return {
                 ruleCustom: {
                     phone: [
-                        {validator: validatePhone, trigger: 'blur'}
+                        {required: true,validator: validatePhone, trigger: 'blur'}
                     ],
                     carnum: [
                         {validator: validateCarNum, trigger: 'blur'}

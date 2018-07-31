@@ -130,7 +130,7 @@
                     },
                     {
                         key: 'type',
-                        title: '型号'
+                        title: '名称'
                     },
                     {
                         key: 'inPrice',

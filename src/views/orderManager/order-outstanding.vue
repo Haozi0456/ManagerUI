@@ -31,34 +31,13 @@
                             <DatePicker type="month" placeholder="请选择月份查询" @on-change="dateChange"
                                         style="width: 200px"></DatePicker>
                         </Col>
-                        <!--<Input v-model="searchcCategory" placeholder="请输入类别搜搜..." style="width: 200px; margin-left: 6px" />-->
-                        <!--<Select v-model="formItem.partsId" filterable clearable  @on-change="typeChange" placeholder="请选择或检索类型..." style="width: 200px; margin-left: 6px" >-->
-                        <!--<Option v-for="item in partsList" :value="item.id" :key="item.id">{{ item.partsName }}</Option>-->
-                        <!--</Select>-->
-                        <!--<Input v-model="searchcCategory" placeholder="请输入类别搜搜..." style="width: 200px; margin-left: 10px" />-->
-                        <!--<span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>-->
-                        <!--<Button @click="handleCancel" type="ghost" >取消</Button>-->
-                        <!--<Input v-model="searchConName" @on-change="handleSearch" icon="search"-->
-                        <!--placeholder="请输入姓名搜搜..." style="width: 200px"/>-->
-                        <!--<Input v-model="searchConTel" @on-change="handleSearch" icon="search"-->
-                        <!--placeholder="请输入手机号搜搜..." style="width: 200px"/>-->
-                        <!--<Input v-model="searchCarNo" @on-change="handleSearch" icon="search" placeholder="请输入车牌号搜搜..."-->
-                        <!--style="width: 200px"/>-->
                     </Row>
                     <Row class="margin-top-10 searchable-table-con1">
 
                         <Col :md="24" :lg="24">
-                            <can-edit-table refs="table1" @on-delete="handleDel" v-model="consumeData" :columns-list="consumeColumns" max-height="280"></can-edit-table>
+                            <can-edit-table refs="table1" v-model="data" :columns-list="columns"
+                                            max-height="480"></can-edit-table>
                         </Col>
-                        <!--<Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">-->
-                            <!--<div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;"><span-->
-                                    <!--style="margin-right: 10px;">共{{ page.total }}条</span>-->
-                                <!--<Page :total="page.total" show-sizer :page-size="page.pageSize"-->
-                                      <!--:current="page.pageNumber" @on-change="onPageChange"-->
-                                      <!--@on-page-size-change="onPageSizeChange"></Page>-->
-                            <!--</div>-->
-
-                        <!--</Col>-->
                     </Row>
                 </Card>
             </Col>
@@ -67,6 +46,7 @@
 </template>
 <script>
     import canEditTable from './components/canEditTable.vue';
+    import config from '../../libs/config';
 
     export default {
         name: "order-outstanding",
@@ -79,40 +59,159 @@
                 loading: false,
                 options: [],
                 searchName: '',
-                consumeColumns:[
+                columns: [
                     {
-                        key: 'itemKey',
-                        title: '服务项目'
+                        key: 'orderno',
+                        title: '编号'
                     },
                     {
-                        key: 'itemValue',
-                        title: '单价',
+                        key: 'member',
+                        title: '会员号',
                         render: function (h, params) {
-                            let price = parseInt(params.row.itemValue).toFixed(2);
+                            let text='';
+                            let member = this.row.member;
+                            if(member == undefined){
+                                text = "散客";
+                            }else{
+                                text = member.phone;
+                            }
+                            return h('div', text);
+                        }
+
+                    },
+                    {
+                        key: 'items',
+                        title: '服务项目',
+                        render: function (h, params) {
+                            let itemList = this.row.items;
+                            return h('ol', {style: {type: 1,listStyle:'blue'}}, itemList.map(function (item) {
+                                return h('li', {style: {type: 1}}, item.item)
+                            }));
+                        }
+
+                    },
+                    {
+                        key: 'money',
+                        title: '金额(元)',
+                        render: function (h, params) {
+                            let price = parseFloat(params.row.money).toFixed(2);
                             return h('div', price);
-                            /*这里的this.row能够获取当前行的数据*/
                         }
                     },
                     {
-                        key: 'count',
-                        title: '数量'
+                        key: 'createtime',
+                        title: '消费时间'
+                    },
+                    {
+                        key: 'operator',
+                        title: '经办人'
+                    },
+                    {
+                        key: 'remark',
+                        title: '备注'
                     },
                     {
                         title: '操作',
+                        key: 'action',
+                        width: 200,
                         align: 'center',
-                        width: 120,
-                        key: 'handle',
-                        handle: ['delete']
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '8px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.show(params.index)
+                                        }
+                                    }
+                                }, '支付'),
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '8px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.show(params.index)
+                                        }
+                                    }
+                                }, '详情'),
+                                h('Poptip', {
+                                    props: {
+                                        confirm: true,
+                                        title: '您确定要删除这条数据吗?',
+                                        transfer: true
+                                    },
+                                    on: {
+                                        'on-ok': () => {
+
+                                        }
+                                    }
+                                }, [
+                                    h('Button', {
+                                        style: {
+                                            margin: '0 5px'
+                                        },
+                                        props: {
+                                            type: 'error',
+                                            size: 'small',
+                                            placement: 'top'
+                                        }
+                                    }, '删除')
+                                ])
+                            ]);
+                        }
                     }
                 ],
-                consumeData:[]
+                data: [],
+                page: {
+                    pageNumber: 1,
+                    pageSize: 100,
+                    total: 0
+                }
             }
         },
-        methods:{
+        methods: {
+            init() {
+                let data = {
+                    pageVo: this.page,
+                    status: 0
+                };
+                this.Http.post(config.service.getOrderList, data).then((res) => {
+                    if (res.data.code == 100) {
+                        this.data = res.data.data.rows;
+                        this.page.total = res.data.data.total;
+                    } else {
+                        this.$Message.error({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                    }
+                });
+            },
             handleDel(val, index) {
                 this.$Message.success('删除了第' + (index + 1) + '行数据');
 
             },
+            show (index) {
+                this.$Modal.info({
+                    title: 'User Info',
+                    content: "sdfsf"
+                })
+            }
+        },
+        mounted() {
+            this.init();
+
         }
     }
 </script>

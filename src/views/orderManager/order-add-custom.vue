@@ -44,7 +44,7 @@
                                             <img class="avator-img" src="../../images/ic_member.png"/>
                                         </div>
                                         <div style="text-align: center; vertical-align: center">
-                                            <b class="member-card-user-infor-name" style="text-align: center">{{user.name}}</b>
+                                            <b class="member-card-user-infor-name" style="text-align: center">{{member.name}}</b>
                                             <p>普通会员</p>
                                         </div>
                                     </div>
@@ -64,9 +64,9 @@
                             <Col span="12" align="middle">
                                 <Row class-name="made-child-con-middle" type="flex" align="middle"
                                      :style="{marginBottom: '5px'}">
-                                    <div v-if="user.phone!=''">
+                                    <div v-if="member.phone!=''">
                                         <p style="text-align: left;">手机号码:</p>
-                                        <b class="member-card-user-infor-name">{{user.phone}}</b>
+                                        <b class="member-card-user-infor-name">{{member.phone}}</b>
                                     </div>
                                     <div v-else>
                                         <p style="text-align: left;">手机号码:</p>
@@ -94,9 +94,9 @@
                             <Col span="24" :md="12" :lg="12" :xs="12">
                                 <Row class-name="made-child-con-middle" type="flex" align="middle"
                                      :style="{marginBottom: '5px'}">
-                                    <div v-if="user.carmake!=''">
+                                    <div v-if="member.carmake!=''">
                                         <p style="text-align: left">车辆品牌:</p>
-                                        <b class="member-card-user-infor-name">{{user.carmake}}</b>
+                                        <b class="member-card-user-infor-name">{{member.carmake}}</b>
                                     </div>
                                     <div v-else>
                                         <p style="text-align: left;">车辆品牌:</p>
@@ -107,7 +107,7 @@
                                      :style="{marginBottom: '5px'}">
                                     <div>
                                         <p style="text-align: left;">入会时间:</p>
-                                        <b class="member-card-user-infor-name">{{user.createtime}}</b>
+                                        <b class="member-card-user-infor-name">{{member.createtime}}</b>
                                     </div>
                                 </Row>
                             </Col>
@@ -116,10 +116,10 @@
                             <Col span="24" :md="12" :lg="12" :xs="12">
                                 <Row class-name="made-child-con-middle" type="flex" align="middle"
                                      :style="{marginBottom: '5px'}">
-                                    <div v-if="user.carnum!=''">
+                                    <div v-if="member.carnum!=''">
                                         <p style="text-align: left;">车牌号码:</p>
                                         <b class="member-card-user-infor-name"
-                                           style="text-align: left">{{user.carnum}}</b>
+                                           style="text-align: left">{{member.carnum}}</b>
                                     </div>
                                     <div v-else>
                                         <p style="text-align: left">车牌号码:</p>
@@ -150,11 +150,11 @@
                         <Col span="24" :md="24" :lg="12" :xs="24">
                             <Form ref="orderItem" :model="orderItem" :label-width="80">
                                 <FormItem label="消费内容">
-                                    <Input v-model="orderItem.items" placeholder="请输入消费描述..."></Input>
+                                    <Input v-model="orderItem.consumContent" placeholder="请输入消费描述..."></Input>
                                 </FormItem>
                                 <FormItem label="支付方式">
-                                    <Select v-model="orderItem.payfrom" value="0" placeholder="请选择...">
-                                        <div v-if="this.user.id != null">
+                                    <Select v-model="orderItem.payfrom" placeholder="请选择...">
+                                        <div v-if="this.member.id != null">
                                             <Option value="0">账户余额</Option>
                                         </div>
                                         <Option value="1">支付宝</Option>
@@ -168,7 +168,8 @@
                                             :max="5000"
                                             :min="0"
                                             :step="5"
-                                            v-model="orderItem.money"></InputNumber><span style="margin-left: 5px">元</span>
+                                            v-model="orderItem.money"></InputNumber>
+                                    <span style="margin-left: 5px">元</span>
                                 </FormItem>
                                 <FormItem label="备注">
                                     <Input v-model="orderItem.remark" type="textarea"
@@ -209,50 +210,6 @@
                 isLoading: false,
                 options: [],
                 searchName: '',
-                serverColumns: [
-                    {
-                        key: 'itemKey',
-                        title: '服务项目'
-                    },
-                    {
-                        key: 'itemValue',
-                        title: '单价',
-                        render: function (h, params) {
-                            let price = parseInt(params.row.itemValue).toFixed(2);
-                            return h('div', price);
-                            /*这里的this.row能够获取当前行的数据*/
-                        }
-                    }
-                ],
-                consumeColumns: [
-                    {
-                        key: 'itemKey',
-                        title: '名称'
-                    },
-                    {
-                        key: 'itemValue',
-                        title: '单价',
-                        render: function (h, params) {
-                            let price = parseInt(params.row.itemValue).toFixed(2);
-                            return h('div', price);
-                            /*这里的this.row能够获取当前行的数据*/
-                        }
-                    },
-                    {
-                        key: 'count',
-                        title: '数量'
-                    },
-                    {
-                        title: '操作',
-                        align: 'center',
-                        width: 120,
-                        key: 'handle',
-                        handle: ['delete']
-                    }
-                ],
-                consumeData: [],
-                serverData: [],
-                initServerData: [],
                 isEnablePreview: true,
                 count: {
                     createUser: 0,
@@ -260,7 +217,7 @@
                     collection: 0,
                     transfer: 0
                 },
-                user: {
+                member: {
                     carnum: "",
                     createtime: "",
                     lastvisittime: "",
@@ -275,11 +232,12 @@
                     userid: 0
                 },
                 orderItem: {
-                    items:"",
-                    payfrom: 0,
+                    consumContent:'',
+                    payfrom: '1',
                     money: 100.00,
                     remark: ""
                 },
+                items:''
             }
         },
         methods: {
@@ -288,7 +246,7 @@
 
             },
             onOK() {
-                if(this.orderItem.items === ''){
+                if (this.orderItem.consumContent === '') {
                     this.$Message.info({
                         content: '请输入消费内容!',
                         duration: 2
@@ -297,27 +255,48 @@
                 }
 
                 this.isLoading = true;
+
+                let orderItems = [];
+                let itemData = {
+                    item: this.orderItem.consumContent,
+                    goodsId: -1,
+                    goodsCount: 1,
+                    cost: this.orderItem.money,
+                    type: 0
+                };
+                orderItems.push(itemData);
+
                 if (this.user != null) {
                     this.orderItem.userid = this.user.id;
                 }
                 this.orderItem.status = 1;
                 let user = Cookies.get('user');
                 this.orderItem.operator = user;
-                this.Http.post(config.service.addOrder, this.orderItem).then((res) => {
+
+                let data = {
+                    order: this.orderItem,
+                    items: orderItems
+                };
+
+                this.Http.postJson(config.service.addOrder, data).then((res) => {
                     if (res.data.code == 100) {
                         this.$Message.success({
-                            content: '添加成功!',
+                            content: res.data.msg,
                             duration: 2
-                        })
+                        });
+                        this.orderItem = {
+                            consumContent:'',
+                            payfrom: 1,
+                            money: 100.00,
+                            remark: ""
+                        };
                         this.isLoading = false;
-                        this.isPayShow = false;
                     } else {
                         this.isLoading = false;
                         this.$Message.error({
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
@@ -350,11 +329,14 @@
                 }
             },
             chooseUser(data) {
-                this.user = data;
-                if (this.user != null && this.user != '') {
+                this.member = data;
+                if (this.member != null && this.member != '') {
                     let data = {
-                        userId: this.user.id
+                        userId: this.member.id
                     };
+
+                    this.orderItem.payfrom = '0';
+
                     //获取账户信息
                     this.Http.post(config.service.getMyAccount, data).then((res) => {
                         if (res.data.code == 100) {
@@ -374,10 +356,11 @@
                         totalConsume: 0.00,
                         userid: 0
                     }
+                    this.orderItem.payfrom = '1';
                 }
             },
             onClear() {
-                this.user = null;
+                this.member = null;
                 this.account = {
                     createtime: "",
                     id: 0,

@@ -73,7 +73,7 @@
                     },
                     {
                         key: 'partsName',
-                        title: '类型名称'
+                        title: '类别'
                     },
                     {
                         key: 'createTime',

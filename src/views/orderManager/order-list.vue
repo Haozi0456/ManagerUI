@@ -123,25 +123,32 @@
                         title: '编号'
                     },
                     {
+                        key: 'member',
+                        title: '会员号',
+                        render: function (h, params) {
+                            let text='';
+                            let member = this.row.member;
+                            if(member == undefined){
+                                text = "散客";
+                            }else{
+                                text = member.phone;
+                            }
+                            return h('div', text);
+                        }
+
+                    },
+                    {
                         key: 'items',
-                        title: '服务项目'
-                        // ,
-                        // render: function (h, params) {
-                        //     let text =''
-                        //     var str = this.row.items+"";
-                        //     let itemsArr = str.split(";");
-                        //     // for (let i = 0; i < itemsArr.length; i++) {
-                        //     //     text += itemsArr[i]+" \n "
-                        //     // }
-                        //
-                        //
-                        //     return h('ol',{style:{ type:1}}, itemsArr.map(function (item) {
-                        //         return h('li',{style:{ type:1}},item)
-                        //     }));
-                        //
-                        //     // return h('div', text);
-                        //     /*这里的this.row能够获取当前行的数据*/
-                        // }
+                        title: '服务项目',
+                        render: function (h, params) {
+                            let itemList = this.row.items;
+                            return h('ol',{style:{ type:1,listStyle:'blue'}}, itemList.map(function (item) {
+                                return h('li',{style:{ type:1,listStyle:"blue"}},item.item)
+                            }));
+
+                            // return h('div', text);
+                            /*这里的this.row能够获取当前行的数据*/
+                        }
 
                     },
                     {
@@ -204,7 +211,11 @@
         },
         methods: {
             init() {
-                this.Http.post(config.service.getOrderList, this.page).then((res) => {
+                let data = {
+                    pageVo:this.page,
+                    status:1
+                };
+                this.Http.post(config.service.getOrderList, data).then((res) => {
                     if (res.data.code == 100) {
                         this.data = this.initTable = res.data.data.rows;
                         this.page.total = res.data.data.total;
@@ -216,8 +227,6 @@
                     }
                 });
             },
-
-
             search(data, argumentObj) {
                 let res = data;
                 let dataClone = data;
@@ -273,7 +282,11 @@
 
                 if(this.chooseMonth == ''){
                     this.page.pageNumber = pageNo;
-                    this.Http.post(config.service.getOrderList, this.page).then((res) => {
+                    let data = {
+                        pageVo:this.page,
+                        status:1
+                    };
+                    this.Http.post(config.service.getOrderList, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
                             this.page.total = res.data.data.total;
@@ -309,7 +322,11 @@
                 if(this.chooseMonth == ''){
                     this.page.pageNumber = 1;
                     this.page.pageSize = pageSize;
-                    this.Http.post(config.service.getOrderList, this.page).then((res) => {
+                    let data = {
+                        pageVo:this.page,
+                        status:1
+                    };
+                    this.Http.post(config.service.getOrderList, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
                             this.page.total = res.data.data.total;
