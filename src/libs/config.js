@@ -50,6 +50,9 @@ var config = {
         //添加订单
         addOrder:'system/order/addOrder',
 
+        //支付挂单
+        toPayEntryOrders:'system/order/toPayEntryOrders',
+
         //根据日期查询订单
         getStatisticsOrdersByDay:'system/statistics/getStatisticsOrdersByDay',
 

@@ -266,8 +266,8 @@
                 };
                 orderItems.push(itemData);
 
-                if (this.user != null) {
-                    this.orderItem.userid = this.user.id;
+                if (this.member != null) {
+                    this.orderItem.userid = this.member.id;
                 }
                 this.orderItem.status = 1;
                 let user = Cookies.get('user');

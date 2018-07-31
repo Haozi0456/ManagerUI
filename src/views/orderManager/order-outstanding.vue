@@ -42,6 +42,54 @@
                 </Card>
             </Col>
         </Row>
+
+        <Modal
+                title="支付"
+                v-model="isPayShow"
+                :mask-closable="false"
+                :closable="false"
+                class-name="vertical-center-modal">
+            <Form ref="orderItem" :model="orderItem" :label-width="80">
+                <div v-if="orderItem.member != undefined">
+                    <FormItem label="会员号" prop="phone">
+                        <Input v-model="orderItem.member.phone" readonly></Input>
+                    </FormItem>
+                </div>
+                <div v-else>
+                    <FormItem label="会员号">
+                        <Input value="散客" readonly></Input>
+                    </FormItem>
+                </div>
+                <FormItem label="支付方式">
+                    <Select v-model="orderItem.payfrom"  placeholder="请选择...">
+                        <div v-if="orderItem.member != undefined">
+                            <Option value="0">账户余额</Option>
+                        </div>
+                        <Option value="1">支付宝</Option>
+                        <Option value="2">微信</Option>
+                        <Option value="3">现金</Option>
+                        <Option value="4">其它</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="支付金额">
+                    <InputNumber
+                            :min="0"
+                            :step="5"
+                            readonly
+                            v-model="orderItem.money"></InputNumber>
+                    <span style="margin-left: 5px">元</span>
+                </FormItem>
+                <FormItem label="备注">
+                    <Input v-model="orderItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                           placeholder="请输入备注信息..."></Input>
+                </FormItem>
+            </Form>
+            <div slot="footer">
+                <Button type="ghost" style="margin-right: 8px" @click="onCancel">取消</Button>
+                <Button type="primary" :loading="isLoading" @click="toPay">确认收款</Button>
+            </div>
+        </Modal>
+
     </div>
 </template>
 <script>
@@ -57,6 +105,8 @@
             return {
                 model: '',
                 loading: false,
+                isLoading:false,
+                isPayShow:false,
                 options: [],
                 searchName: '',
                 columns: [
@@ -84,7 +134,7 @@
                         title: '服务项目',
                         render: function (h, params) {
                             let itemList = this.row.items;
-                            return h('ol', {style: {type: 1,listStyle:'blue'}}, itemList.map(function (item) {
+                            return h('ol', {style: {type: 1,listStyleType:'decimal'}}, itemList.map(function (item) {
                                 return h('li', {style: {type: 1}}, item.item)
                             }));
                         }
@@ -127,7 +177,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.show(params.index)
+                                            this.showPay(params)
                                         }
                                     }
                                 }, '支付'),
@@ -173,6 +223,11 @@
                     }
                 ],
                 data: [],
+                orderItem: {
+                    payfrom: '0',
+                    money: 0.00,
+                    remark: ""
+                },
                 page: {
                     pageNumber: 1,
                     pageSize: 100,
@@ -183,10 +238,10 @@
         methods: {
             init() {
                 let data = {
-                    pageVo: this.page,
-                    status: 0
+                    page:this.page,
+                    code:0
                 };
-                this.Http.post(config.service.getOrderList, data).then((res) => {
+                this.Http.postJson(config.service.getOrderList, data).then((res) => {
                     if (res.data.code == 100) {
                         this.data = res.data.data.rows;
                         this.page.total = res.data.data.total;
@@ -202,12 +257,44 @@
                 this.$Message.success('删除了第' + (index + 1) + '行数据');
 
             },
-            show (index) {
-                this.$Modal.info({
-                    title: 'User Info',
-                    content: "sdfsf"
-                })
+
+            showPay (params) {
+                this.orderItem = params.row;
+                if(this.orderItem.member == undefined){
+                    this.orderItem.payfrom = '1';
+                }else{
+                    this.orderItem.payfrom = '0';
+                }
+                this.isPayShow = true;
+            },
+            onCancel() {
+                this.$Message.info('取消!');
+                this.isPayShow = false;
+                this.isLoading = false;
+            },
+            toPay(){
+                // 获取服务列表
+                this.Http.postJson(config.service.toPayEntryOrders, this.orderItem).then((res) => {
+                    if (res.data.code == 100) {
+                        this.$Message.success({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                        this.isPayShow = false;
+                        this.isLoading = false;
+                        this.init();
+                        // this.orderItem = null;
+
+                    } else {
+                        this.$Message.error({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                    }
+                });
             }
+
+
         },
         mounted() {
             this.init();

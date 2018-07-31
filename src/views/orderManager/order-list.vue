@@ -142,8 +142,8 @@
                         title: '服务项目',
                         render: function (h, params) {
                             let itemList = this.row.items;
-                            return h('ol',{style:{ type:1,listStyle:'blue'}}, itemList.map(function (item) {
-                                return h('li',{style:{ type:1,listStyle:"blue"}},item.item)
+                            return h('ol',{style:{ type:1,listStyleType:'decimal'}}, itemList.map(function (item) {
+                                return h('li',{style:{ type:1,listStyle:'decimal'}},item.item)
                             }));
 
                             // return h('div', text);
@@ -153,7 +153,11 @@
                     },
                     {
                         key: 'money',
-                        title: '消费金额'
+                        title: '金额(元)',
+                        render: function (h, params) {
+                            let price = parseFloat(params.row.money).toFixed(2);
+                            return h('div', price);
+                        }
                     },
                     {
                         key: 'payfrom',
@@ -212,10 +216,10 @@
         methods: {
             init() {
                 let data = {
-                    pageVo:this.page,
-                    status:1
+                    page:this.page,
+                    code:1
                 };
-                this.Http.post(config.service.getOrderList, data).then((res) => {
+                this.Http.postJson(config.service.getOrderList, data).then((res) => {
                     if (res.data.code == 100) {
                         this.data = this.initTable = res.data.data.rows;
                         this.page.total = res.data.data.total;
@@ -283,10 +287,10 @@
                 if(this.chooseMonth == ''){
                     this.page.pageNumber = pageNo;
                     let data = {
-                        pageVo:this.page,
-                        status:1
+                        page:this.page,
+                        code:1
                     };
-                    this.Http.post(config.service.getOrderList, data).then((res) => {
+                    this.Http.postJson(config.service.getOrderList, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
                             this.page.total = res.data.data.total;
@@ -323,10 +327,10 @@
                     this.page.pageNumber = 1;
                     this.page.pageSize = pageSize;
                     let data = {
-                        pageVo:this.page,
-                        status:1
+                        page:this.page,
+                        code:1
                     };
-                    this.Http.post(config.service.getOrderList, data).then((res) => {
+                    this.Http.postJson(config.service.getOrderList, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
                             this.page.total = res.data.data.total;
