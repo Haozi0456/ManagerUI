@@ -49,7 +49,7 @@
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">
                         <Icon type="plus-round"></Icon>
-                        添加会员
+                        添加服务
                     </a>
                     <div style="margin-top: 10px">
                         <Row>

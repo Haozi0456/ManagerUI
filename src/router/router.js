@@ -142,9 +142,10 @@ export const appRouter = [
         title: '配置管理',
         component: Main,
         children: [
-            {path: 'config_server', title: '服务项目', name: 'configServer_index', component: () => import('@/views/configManager/serverConfig.vue')}
-        ]
-    }
+            {path: 'config_server', title: '服务项目', name: 'configServer_index', component: () => import('@/views/configManager/serverConfig.vue')},
+            {path: 'config_test', title: '测试配置', name: 'configTest_index', component: () => import('@/views/configManager/testConfig.vue')}
+            ]
+}
     // ,
     // {
     //     path: '/access',

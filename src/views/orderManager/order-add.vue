@@ -321,10 +321,10 @@
                     },
                     {
                         key: 'result',
-                        title: '单价(元)',
+                        title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = parseFloat(params.row.result).toFixed(2);
+                            let price = "￥"+parseFloat(params.row.result).toFixed(2);
                             return h('div', price);
                             /*这里的this.row能够获取当前行的数据*/
                         }
@@ -341,10 +341,10 @@
                     },
                     {
                         key: 'outPrice',
-                        title: '单价(元)',
+                        title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = parseFloat(params.row.outPrice).toFixed(2);
+                            let price = "￥"+parseFloat(params.row.outPrice).toFixed(2);
                             return h('div', price);
                             /*这里的this.row能够获取当前行的数据*/
                         }
@@ -362,18 +362,18 @@
                     },
                     {
                         key: 'price',
-                        title: '单价(元)',
+                        title: '单价',
                         render: function (h, params) {
-                            let price = parseFloat(params.row.price).toFixed(2);
+                            let price = "￥"+parseFloat(params.row.price).toFixed(2);
                             return h('div', price);
                         }
                     },
                     {
                         key: 'cover',
-                        title: '服务费(元)',
+                        title: '服务费',
                         editable: true,
                         render: function (h, params) {
-                            let price = parseFloat(params.row.cover).toFixed(2);
+                            let price = "￥"+parseFloat(params.row.cover).toFixed(2);
                             return h('div', price);
                             /*这里的this.row能够获取当前行的数据*/
                         }
@@ -398,10 +398,10 @@
                     },
                     {
                         key: 'price',
-                        title: '单价(元)',
+                        title: '单价',
                         width:100,
                         render: function (h, params) {
-                            let price = parseFloat(params.row.price).toFixed(2);
+                            let price = "￥"+parseFloat(params.row.price).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -410,7 +410,7 @@
                         title: '服务费(元)',
                         width:100,
                         render: function (h, params) {
-                            let price = parseFloat(params.row.cover).toFixed(2);
+                            let price = "￥"+parseFloat(params.row.cover).toFixed(2);
                             return h('div', price);
                         }
                     },
