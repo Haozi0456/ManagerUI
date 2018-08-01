@@ -20,14 +20,14 @@
                 <Card>
                     <p slot="title">
                         <Icon type="person-stalker"></Icon>
-                        库存商品类型列表
+                        商品类型列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">
                         <Icon type="plus-round"></Icon>
-                        添加
+                        添加分类
                     </a>
                     <Modal
-                            title="添加会员"
+                            title="添加分类"
                             v-model="modal"
                             :mask-closable="false"
                             :closable="false"
@@ -48,7 +48,7 @@
                                placeholder="请输入类型名称搜搜..." style="width: 200px"/>
                     </Row>
                     <Row class="margin-top-10 searchable-table-con1">
-                        <Table stripe :columns="columns" :data="data" height="540"></Table>
+                        <Table border stripe :columns="columns" :data="data" height="540"></Table>
                     </Row>
                 </Card>
             </Col>
@@ -68,20 +68,23 @@
                 searchName: '',
                 columns: [
                     {
-                        key: 'id',
-                        title: '编号'
+                        type:'index',
+                        align:'center',
+                        width:60
                     },
                     {
                         key: 'partsName',
-                        title: '类别'
+                        title: '类别名称'
                     },
                     {
                         key: 'createTime',
-                        title: '入库时间'
+                        width:200,
+                        title: '加入时间'
                     },
                     {
-                        title: '查看详情',
+                        title: '操作',
                         key: 'show_more',
+                        width:120,
                         align: 'center',
                         render: (h, params) => {
                             return h('Button', {

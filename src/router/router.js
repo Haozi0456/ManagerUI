@@ -101,7 +101,7 @@ export const appRouter = [
         children: [
             {path: 'order_add', title: '快速收银', name: 'order-add', component: () => import('@/views/orderManager/order-add.vue')},
             {path: 'order-add-custom', title: '自定义收银', name: 'order-add-custom', component: () => import('@/views/orderManager/order-add-custom.vue')},
-            {path: 'order_outstanding', title: '挂单代结', name: 'order_outstanding', component: () => import('@/views/orderManager/order-outstanding.vue')},
+            {path: 'order_outstanding', title: '挂单待结', name: 'order_outstanding', component: () => import('@/views/orderManager/order-outstanding.vue')},
             {path: 'order_list', title: '营业明细', name: 'order_list', component: () => import('@/views/orderManager/order-list.vue')},
             {path: 'order_billing', title: '维修开单', name: 'order_billing', component: () => import('@/views/orderManager/order-billing.vue')}
         ]
@@ -134,6 +134,15 @@ export const appRouter = [
         children: [
             {path: 'store_goods', title: '商品列表', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
             {path: 'store_parts', title: '商品分类', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
+        ]
+    },{
+        path: '/configManager',
+        icon: 'ios-pie',
+        name: 'configManager',
+        title: '配置管理',
+        component: Main,
+        children: [
+            {path: 'config_server', title: '服务项目', name: 'configServer_index', component: () => import('@/views/configManager/serverConfig.vue')}
         ]
     }
     // ,

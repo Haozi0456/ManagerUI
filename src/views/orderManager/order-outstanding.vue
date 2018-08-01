@@ -22,10 +22,10 @@
                         <Icon type="android-map"></Icon>
                         挂单记录
                     </p>
-                    <a type="text" slot="extra" @click.prevent="isShow = true">
-                        <Icon type="plus-round"></Icon>
-                        添加订单
-                    </a>
+                    <!--<a type="text" slot="extra" @click.prevent="isShow = true">-->
+                        <!--<Icon type="plus-round"></Icon>-->
+                        <!--添加订单-->
+                    <!--</a>-->
                     <Row>
                         <Col span="12">
                             <DatePicker type="month" placeholder="请选择月份查询" @on-change="dateChange"
@@ -166,6 +166,7 @@
                         width: 200,
                         align: 'center',
                         render: (h, params) => {
+                            let currentRow = params.row;
                             return h('div', [
                                 h('Button', {
                                     props: {
@@ -203,7 +204,7 @@
                                     },
                                     on: {
                                         'on-ok': () => {
-
+                                            this.toDelete(currentRow)
                                         }
                                     }
                                 }, [
@@ -273,7 +274,7 @@
                 this.isLoading = false;
             },
             toPay(){
-                // 获取服务列表
+                // 支付挂单
                 this.Http.postJson(config.service.toPayEntryOrders, this.orderItem).then((res) => {
                     if (res.data.code == 100) {
                         this.$Message.success({
@@ -284,6 +285,25 @@
                         this.isLoading = false;
                         this.init();
                         // this.orderItem = null;
+
+                    } else {
+                        this.$Message.error({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                    }
+                });
+            },
+            toDelete(currentRow){
+                // 删除挂单
+                this.orderItem = currentRow;
+                this.Http.postJson(config.service.toDeleteEntryOrders, this.orderItem).then((res) => {
+                    if (res.data.code == 100) {
+                        this.$Message.success({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                        this.init();
 
                     } else {
                         this.$Message.error({

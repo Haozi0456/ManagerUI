@@ -78,13 +78,13 @@
             <Col :md="24" :lg="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
-                        快捷菜单
+                        <Icon type="podium"></Icon>
+                        营业概况
                     </p>
                     <Row :gutter="10">
                         <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                             <infor-card
-                                    id-name="user_created_count"
+                                    id-name="dayIncomed_count"
                                     :end-val="count.dayIncome"
                                     iconType="social-yen"
                                     color="#F78C68"
@@ -95,7 +95,18 @@
                         </Col>
                         <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                             <infor-card
-                                    id-name="visit_count"
+                                    id-name="outstanding_count"
+                                    :end-val="count.outstanding"
+                                    iconType="ios-compose"
+                                    color="#0BC9E2"
+                                    :decimals="decimals"
+                                    unit="元"
+                                    intro-text="挂单待结"
+                            ></infor-card>
+                        </Col>
+                        <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
+                            <infor-card
+                                    id-name="memberCount_count"
                                     :end-val="count.memberCount"
                                     iconType="ios-people"
                                     color="#F37276"
@@ -107,7 +118,7 @@
                         </Col>
                         <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                             <infor-card
-                                    id-name="collection_count"
+                                    id-name="orderCount_count"
                                     :end-val="count.orderCount"
                                     iconType="ios-paper"
                                     color="#22B9B0"
@@ -116,15 +127,7 @@
                                     intro-text="今日订单数量"
                             ></infor-card>
                         </Col>
-                        <Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-                            <infor-card
-                                    id-name="transfer_count"
-                                    :end-val="count.transfer"
-                                    iconType="shuffle"
-                                    color="#0BC9E2"
-                                    intro-text="今日服务调用量"
-                            ></infor-card>
-                        </Col>
+
                     </Row>
                 </Card>
             </Col>
@@ -164,7 +167,7 @@
                     dayIncome: 0,
                     memberCount: 0,
                     orderCount: 0,
-                    transfer: 395
+                    outstanding: 0.0
                 },
                 cityData: cityData,
                 showAddNewTodo: false,
@@ -191,13 +194,29 @@
             init() {
                 let date = new Date().format("yyyy-MM-dd");
                 let data = {
-                    day: date
+                    day: date,
+                    status:1,
                 };
-
                 //获取今日收入统计
                 this.Http.post(config.service.getStatisticsByDay, data).then((res) => {
                     if (res.data.code == 100) {
                         this.count.dayIncome = res.data.data.total;
+                    } else {
+                        this.$Message.error({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                    }
+                });
+
+                let data2 = {
+                    day: date,
+                    status:0,
+                };
+                //获取挂单待结金额
+                this.Http.post(config.service.getStatisticsByDay, data2).then((res) => {
+                    if (res.data.code == 100) {
+                        this.count.outstanding = res.data.data.total;
                     } else {
                         this.$Message.error({
                             content: res.data.msg,
@@ -254,7 +273,9 @@
                 });
             },
             toCollectMoney(){
-
+                this.$router.push({
+                    name: 'order-add'
+                });
             }
         },
         mounted() {

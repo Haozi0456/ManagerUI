@@ -26,9 +26,7 @@
                                     @on-change="chooseUser"
                                     @on-clear="onClear"
                                     :loading="loading">
-                                <Option v-for="(option, index) in options" :value="option" :key="index">
-                                    {{option.phone}}
-                                </Option>
+                                <Option v-for="(option, index) in options" :value="option" :key="index"> {{option.phone}}</Option>
                             </Select>
 
                             <Button type="primary" icon="search" style="margin: 0 5px;">查找会员</Button>
@@ -149,35 +147,35 @@
                     <!---->
                     <!--</p>-->
                     <div style="margin-top: 10px">
-                            <Tabs type="card">
-                                <TabPane label="服务项目">
-                                    <Row>
-                                        <Input v-model="searchName" @on-change="handleSearch" icon="search"
-                                               placeholder="请输入服务项目搜搜..." style="width: 200px; margin-bottom: 10px"/>
-                                    </Row>
-                                    <Row>
-                                        <div class="table_box">
-                                            <Table border stripe :columns="serverColumns" :data="serverData"
-                                                   height="280"
-                                                   @on-row-dblclick="addConsumeItem"></Table>
-                                        </div>
-                                    </Row>
-                                </TabPane>
-                                <TabPane label="商品列表">
-                                    <Row>
-                                        <Input v-model="searchName" @on-change="handleSearch" icon="search"
-                                               placeholder="请输入商品名称搜搜..." style="width: 200px; margin-bottom: 8px"/>
-                                    </Row>
-                                    <Row>
-                                        <div class="table_box">
-                                            <Table border stripe :columns="goodsColumns" :data="goodsData"
-                                                   height="280"
-                                                   @on-row-dblclick="addGoodsConsumeItem"></Table>
-                                        </div>
-                                    </Row>
-                                </TabPane>
-                                <TabPane label="标签三">标签三的内容</TabPane>
-                            </Tabs>
+                        <Tabs type="card">
+                            <TabPane label="服务项目">
+                                <Row>
+                                    <Input v-model="searchName" @on-change="handleSearch" icon="search"
+                                           placeholder="请输入服务项目搜搜..." style="width: 200px; margin-bottom: 10px"/>
+                                </Row>
+                                <Row>
+                                    <div class="table_box">
+                                        <Table border stripe :columns="serverColumns" :data="serverData"
+                                               height="280"
+                                               @on-row-dblclick="addConsumeItem"></Table>
+                                    </div>
+                                </Row>
+                            </TabPane>
+                            <TabPane label="商品列表">
+                                <Row>
+                                    <Input v-model="searchName" @on-change="handleSearch" icon="search"
+                                           placeholder="请输入商品名称搜搜..." style="width: 200px; margin-bottom: 8px"/>
+                                </Row>
+                                <Row>
+                                    <div class="table_box">
+                                        <Table border stripe :columns="goodsColumns" :data="goodsData"
+                                               height="280"
+                                               @on-row-dblclick="addGoodsConsumeItem"></Table>
+                                    </div>
+                                </Row>
+                            </TabPane>
+                            <TabPane label="标签三">标签三的内容</TabPane>
+                        </Tabs>
 
                     </div>
                 </Card>
@@ -207,14 +205,11 @@
                                     </span>
                                 </div>
 
-                                <Button type="primary" :disabled="isEnablePreview">打印预览</Button>
+                                <Button type="primary"  :disabled="isEnablePreview" @click="toPreview">打印预览</Button>
 
-                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px" @click="onOK(0)">挂单带结
-                                </Button>
+                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px" @click="onOK(0)">挂单带结</Button>
 
-                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px"
-                                        @click="toShowPayModal">结账
-                                </Button>
+                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px"  @click="toShowPayModal">结账</Button>
                             </div>
                         </Col>
                     </Row>
@@ -258,6 +253,41 @@
                 <Button type="primary" :loading="isLoading" @click="onOK(1)">确认收款</Button>
             </div>
         </Modal>
+
+        <Modal :width="900" title="打印预览" v-model="isPreview">
+            <Row>
+                <Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">
+                    <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;">
+                        <span style="margin-right: 10px; font-size:x-large; font-weight: bolder;"> 消费清单</span>
+                    </div>
+                </Col>
+                <Col :md="24" :lg="24" align="middle">
+                    <div style="display: inline-flex; float: right; text-align:right; vertical-align: bottom ">
+                                    <span style="margin-right: 10px; font-weight: 400; font-size: small; vertical-align: bottom;">结算日期:
+                                        <span class="pre-date">{{createDate}}</span>
+                                    </span>
+                    </div>
+                </Col>
+            </Row>
+            <Row class="margin-top-10 searchable-table-con1">
+                <can-edit-table refs="table5" v-model="consumeData"
+                                :columns-list="previewColumns"></can-edit-table>
+            </Row>
+            <Row>
+                <Col :md="24" :lg="24" align="right" :style="{marginTop: '8px'}">
+                    <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;">
+                                    <span class="pre-lable">总计:
+                                        <span class="pre-total-value">{{totalPrice.toFixed(2)}}</span>元
+                                    </span>
+                    </div>
+
+                </Col>
+            </Row>
+            <div slot="footer">
+                <Button type="ghost" style="margin-right: 8px" @click="">导出打印</Button>
+                <Button type="primary" :loading="isLoading" @click="onCancel">关闭</Button>
+            </div>
+        </Modal>
     </div>
 
 
@@ -276,7 +306,9 @@
         data() {
             return {
                 model: '',
+                createDate:'',
                 isPayShow: false,
+                isPreview: false,
                 loading: false,
                 isLoading: false,
                 options: [],
@@ -285,12 +317,12 @@
                 serverColumns: [
                     {
                         key: 'title',
-                        title: '服务项目'
+                        title: '服务名称'
                     },
                     {
                         key: 'result',
                         title: '单价(元)',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
                             let price = parseFloat(params.row.result).toFixed(2);
                             return h('div', price);
@@ -310,7 +342,7 @@
                     {
                         key: 'outPrice',
                         title: '单价(元)',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
                             let price = parseFloat(params.row.outPrice).toFixed(2);
                             return h('div', price);
@@ -359,11 +391,41 @@
                         handle: ['delete']
                     }
                 ],
+                previewColumns: [
+                    {
+                        key: 'title',
+                        title: '项目名称'
+                    },
+                    {
+                        key: 'price',
+                        title: '单价(元)',
+                        width:100,
+                        render: function (h, params) {
+                            let price = parseFloat(params.row.price).toFixed(2);
+                            return h('div', price);
+                        }
+                    },
+                    {
+                        key: 'cover',
+                        title: '服务费(元)',
+                        width:100,
+                        render: function (h, params) {
+                            let price = parseFloat(params.row.cover).toFixed(2);
+                            return h('div', price);
+                        }
+                    },
+                    {
+                        key: 'count',
+                        title: '数量',
+                        width:80,
+                        editable: true
+                    }
+                ],
                 consumeData: [],
                 serverData: [],
                 goodsData: [],
                 initServerData: [],
-                initGoodsData:[],
+                initGoodsData: [],
                 totalPrice: 0.00,
                 isEnablePreview: true,
                 count: {
@@ -372,7 +434,7 @@
                     collection: 0,
                     transfer: 0
                 },
-                member:{
+                member: {
                     carnum: "",
                     createtime: "",
                     lastvisittime: "",
@@ -411,8 +473,8 @@
                 });
 
                 let goodsData = {
-                    pageNumber:1,
-                    pageSize:100,
+                    pageNumber: 1,
+                    pageSize: 100,
                 };
                 //获取商品列表
                 this.Http.post(config.service.getGoodsList, goodsData).then((res) => {
@@ -427,14 +489,13 @@
                 });
             },
             addConsumeItem(data) { // 添加服务消费条目
-
-                let itemData= {
-                    goodsId:-1,
-                    title:data.title,
-                    price:data.result,
-                    cover:0,
-                    count:1,
-                    type:0
+                let itemData = {
+                    goodsId: -1,
+                    title: data.title,
+                    price: data.result,
+                    cover: 0,
+                    count: 1,
+                    type: 0
                 };
 
                 this.consumeData.push(itemData);
@@ -443,26 +504,26 @@
                     this.isEnablePreview = false;
                     var totalConsumeData = 0.00;
                     for (let i = 0; i < this.consumeData.length; i++) {
-                        totalConsumeData += parseFloat(this.consumeData[i].price)*parseFloat(this.consumeData[i].count) + parseFloat(this.consumeData[i].cover);
+                        totalConsumeData += parseFloat(this.consumeData[i].price) * parseFloat(this.consumeData[i].count) + parseFloat(this.consumeData[i].cover);
                     }
                     this.totalPrice = totalConsumeData;
                 }
             },
             addGoodsConsumeItem(data) { // 添加商品消费条目
-                let itemData= {
-                    goodsId:data.id,
-                    title:data.category+"_"+data.type,
-                    price:data.outPrice,
-                    cover:data.workPrice,
-                    count:1,
-                    type:1
+                let itemData = {
+                    goodsId: data.id,
+                    title: data.category + "_" + data.type,
+                    price: data.outPrice,
+                    cover: data.workPrice,
+                    count: 1,
+                    type: 1
                 };
                 this.consumeData.push(itemData);
                 if (this.consumeData.length > 0) {
                     this.isEnablePreview = false;
                     var totalConsumeData = 0.00;
                     for (let i = 0; i < this.consumeData.length; i++) {
-                        totalConsumeData += parseFloat(this.consumeData[i].price)*parseFloat(this.consumeData[i].count)+ parseFloat(this.consumeData[i].cover);
+                        totalConsumeData += parseFloat(this.consumeData[i].price) * parseFloat(this.consumeData[i].count) + parseFloat(this.consumeData[i].cover);
                     }
                     this.totalPrice = totalConsumeData;
                 }
@@ -474,7 +535,7 @@
                 } else {
                     var totalConsumeData = 0.00;
                     for (let i = 0; i < this.consumeData.length; i++) {
-                        totalConsumeData += parseFloat(this.consumeData[i].price)*parseFloat(this.consumeData[i].count)+ parseFloat(this.consumeData[i].cover);
+                        totalConsumeData += parseFloat(this.consumeData[i].price) * parseFloat(this.consumeData[i].count) + parseFloat(this.consumeData[i].cover);
                     }
                     this.totalPrice = totalConsumeData;
                 }
@@ -483,8 +544,8 @@
                 for (let i = 0; i < val.length; i++) {
                     let res = val[i];
                     res.count = parseInt(res.count);
-                    if(key == 'count'){
-                        if(isNaN(res.count)){
+                    if (key == 'count') {
+                        if (isNaN(res.count)) {
                             this.consumeData[index].count = 1;
                             this.$Message.error('请输入数字!');
                         }
@@ -494,7 +555,7 @@
                     this.isEnablePreview = false;
                     var totalConsumeData = 0.00;
                     for (let i = 0; i < this.consumeData.length; i++) {
-                        totalConsumeData += parseFloat(this.consumeData[i].price)*parseFloat(this.consumeData[i].count)+ parseFloat(this.consumeData[i].cover);
+                        totalConsumeData += parseFloat(this.consumeData[i].price) * parseFloat(this.consumeData[i].count) + parseFloat(this.consumeData[i].cover);
                     }
                     this.totalPrice = totalConsumeData;
                 }
@@ -529,12 +590,12 @@
                 let orderItems = [];
                 for (let i = 0; i < this.consumeData.length; i++) {
                     let temp = this.consumeData[i]
-                    let itemData= {
-                        item:temp.title,
-                        goodsId:temp.goodsId,
-                        goodsCount:temp.count,
-                        cost:(parseFloat(temp.price)*parseFloat(temp.count)+ parseFloat(temp.cover)),
-                        type:temp.type
+                    let itemData = {
+                        item: temp.title,
+                        goodsId: temp.goodsId,
+                        goodsCount: temp.count,
+                        cost: (parseFloat(temp.price) * parseFloat(temp.count) + parseFloat(temp.cover)),
+                        type: temp.type
                     };
                     orderItems.push(itemData);
                 }
@@ -548,8 +609,8 @@
                 this.orderItem.money = this.totalPrice;
 
                 let data = {
-                    order:this.orderItem,
-                    items:orderItems
+                    order: this.orderItem,
+                    items: orderItems
                 }
 
                 this.Http.postJson(config.service.addOrder, data).then((res) => {
@@ -572,9 +633,10 @@
                 });
             },
             onCancel() {
-                this.$Message.info('取消添加!');
+                this.$Message.info('取消!');
                 this.isPayShow = false;
                 this.isLoading = false;
+                this.isPreview = false;
             },
             remoteMethod(query) {
                 if (query !== '' && query.length > 3) {
@@ -635,6 +697,10 @@
                     totalConsume: 0.00,
                     userid: 0
                 }
+            },
+            toPreview(){
+                this.createDate = new Date().format('yyyy-MM-dd');
+                this.isPreview = true;
             }
         },
         mounted() {

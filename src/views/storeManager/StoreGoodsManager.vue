@@ -20,11 +20,11 @@
                 <Card>
                     <p slot="title">
                         <Icon type="person-stalker"></Icon>
-                        库存列表
+                        库存商品列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">
                         <Icon type="plus-round"></Icon>
-                        入库
+                        添加商品
                     </a>
                     <Modal
                             title="入库"
@@ -33,13 +33,13 @@
                             :closable="false"
                             class-name="vertical-center-modal">
                         <Form ref="formItem" :model="formItem" :label-width="80" >
-                            <FormItem label="配件类型">
+                            <FormItem label="商品类型">
                                 <Select v-model="formItem.partsId" filterable placeholder="请选择或检索类型...">
                                     <Option v-for="item in partsList" :value="item.id" :key="item.id">{{ item.partsName }}</Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="配件型号" >
-                                <Input v-model="formItem.type" placeholder="请输入配件型号..."></Input>
+                            <FormItem label="商品名称" >
+                                <Input v-model="formItem.type" placeholder="请输入名称..."></Input>
                             </FormItem>
                             <FormItem label="进货价格">
                                 <InputNumber
@@ -91,7 +91,7 @@
                     </Row>
                     <Row class="margin-top-10 searchable-table-con1">
                         <Col :md="24" :lg="24">
-                            <Table stripe :columns="columns" :data="data"></Table>
+                            <Table border stripe :columns="columns" :data="data"></Table>
                         </Col>
                         <Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">
                             <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;"><span
@@ -122,7 +122,9 @@
                 columns: [
                     {
                         key: 'id',
-                        title: '编号'
+                        width:60,
+                        sortType:'asc',
+                        align:'center'
                     },
                     {
                         key: 'category',
@@ -134,44 +136,116 @@
                     },
                     {
                         key: 'inPrice',
-                        title: '进货价(元)'
+                        title: '进价(元)',
+                        width:100,
+                        render: function (h, params) {
+                            let price = parseFloat(params.row.inPrice).toFixed(2);
+                            return h('div', price);
+                        }
                     },
                     {
                         key: 'outPrice',
-                        title: '销售价(元)'
+                        title: '售价(元)',
+                        width:100,
+                        render: function (h, params) {
+                            let price = parseFloat(params.row.outPrice).toFixed(2);
+                            return h('div', price);
+                        }
                     },
                     {
                         key: 'workPrice',
-                        title: '工时费(元)'
+                        title: '服务费(元)',
+                        width:100,
+                        render: function (h, params) {
+                            let price = parseFloat(params.row.workPrice).toFixed(2);
+                            return h('div', price);
+                        }
                     },
                     {
                         key: 'stockCount',
-                        title: '库存(个)'
+                        title: '库存',
+                        width:100
                     },
                     {
                         key: 'operator',
-                        title: '经办人'
+                        title: '经办人',
+                        width:120
                     },
                     {
-                        title: '查看详情',
+                        title: '操作',
                         key: 'show_more',
+                        width:140,
                         align: 'center',
                         render: (h, params) => {
-                            return h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small'
-                                },
-                                on: {
-                                    click: () => {
-                                        let query = {user_id: params.row.id};
-                                        this.$router.push({
-                                            name: 'member_details',
-                                            query: query
-                                        });
+                            let currentRow = params.row;
+                            let index = params.index;
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'success',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        margin: '4px'
+                                    },
+                                    on: {
+                                        click: () => {
+
+                                        }
                                     }
-                                }
-                            }, '详情');
+                                }, '入库'),
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        margin: '4px'
+                                    },
+                                    on: {
+                                        click: () => {
+
+                                        }
+                                    }
+                                }, '出库'),
+                                h('Button', {
+                                    props: {
+                                        type: 'info',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        margin: '4px'
+                                    },
+                                    on: {
+                                        click: () => {
+
+                                        }
+                                    }
+                                }, '编辑'),
+                                h('Poptip', {
+                                    props: {
+                                        confirm: true,
+                                        title: '您确定要删除这条数据吗?',
+                                        transfer: true
+                                    },
+                                    on: {
+                                        'on-ok': () => {
+                                            this.toDelete(currentRow,index)
+                                        }
+                                    }
+                                }, [
+                                    h('Button', {
+                                        style: {
+                                            margin: '4px'
+                                        },
+                                        props: {
+                                            type: 'error',
+                                            size: 'small',
+                                            placement: 'top'
+                                        }
+                                    }, '删除')
+                                ])
+                            ]);
                         }
                     }
 
@@ -347,7 +421,7 @@
                 this.data = this.search(this.data, {name: this.searchConName});
             },
             handleCancel () {
-                this.data = this.initTable;
+
             },
             typeChange(partsId){
                 this.choosePartsTypeId = partsId;

@@ -53,6 +53,9 @@ var config = {
         //支付挂单
         toPayEntryOrders:'system/order/toPayEntryOrders',
 
+        //删除挂单
+        toDeleteEntryOrders:'system/order/toDeleteEntryOrders',
+
         //根据日期查询订单
         getStatisticsOrdersByDay:'system/statistics/getStatisticsOrdersByDay',
 
@@ -92,7 +95,13 @@ var config = {
 
 
         //根据类型获取配置记录
-        getConfigsByType:'/system/congfig/getConfigsByType'
+        getConfigsByType:'/system/congfig/getConfigsByType',
+
+        //添加配置
+        addConfig:'/system/congfig/addConfig',
+
+        //根据id删除
+        deleteConfigById:'/system/congfig/deleteConfigById'
     }
 };
 

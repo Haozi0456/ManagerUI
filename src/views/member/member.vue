@@ -122,9 +122,8 @@
                 searchCarNo: '',
                 columns: [
                     {
-                        title: '序号',
                         type: 'index',
-                        width: 80,
+                        width: 60,
                         align: 'center'
                     },
                     {
@@ -133,7 +132,7 @@
                     },
                     {
                         key: 'phone',
-                        title: '电话号码'
+                        title: '会员号(手机号)'
                     },
                     {
                         key: 'carnum',
