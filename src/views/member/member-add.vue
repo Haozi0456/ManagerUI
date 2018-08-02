@@ -43,7 +43,7 @@
                                         :max="5000"
                                         :min="0"
                                         :step="5"
-                                        v-model="accountItem.submoney"></InputNumber> <span>选填，不赠送即不填写.</span>
+                                        v-model="accountItem.submoney"></InputNumber> <span style="margin-left: 5px; color:#9ea7b4; ">选填，不赠送即为0.</span>
                             </FormItem>
                             <FormItem label="备注">
                                 <Input v-model="accountItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"

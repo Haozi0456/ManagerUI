@@ -26,7 +26,7 @@
                                     @on-change="chooseUser"
                                     @on-clear="onClear"
                                     :loading="loading">
-                                <Option v-for="(option, index) in options" :value="option" :key="index"> {{option.phone}}</Option>
+                                <Option v-for="(option, index) in options" :value="option" :key="index">{{option.phone}}</Option>
                             </Select>
 
                             <Button type="primary" icon="search" style="margin: 0 5px;">查找会员</Button>
@@ -35,105 +35,79 @@
                         </Col>
                     </Row>
                     <div class="divide_line"></div>
-                    <Row type="flex" class="member-user-infor">
-                        <Col :md="12" :lg="6" :xs="12">
+                    <Row type="flex" align="middle" justify="start">
+                        <Col :md="4" :lg="3"  :xs="4">
                             <Col span="24" align="middle">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                    <div style="display: flex;">
-                                        <div>
-                                            <img class="avator-img" src="../../images/ic_member.png"/>
-                                        </div>
-                                        <div style="text-align: center; vertical-align: center">
-                                            <b class="member-card-user-infor-name" style="text-align: center">{{member.name}}</b>
-                                            <p>普通会员</p>
-                                        </div>
-                                    </div>
+                                <div style="align-items: center">
+                                        <img class="avator-img" src="../../images/ic_member.png"/>
+                                </div>
+                            </Col>
+                        </Col>
+                        <Col :md="20" :lg="21" :xs="20" >
+                            <Row type="flex" align="middle" gutter="8">
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="会员姓名:"
+                                            container-width="160px"
+                                            :text-lable="member.name"
+                                            text-color="#2d8cf0"></info-item>
+                                </Col >
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="会员号:"
+                                            container-width="160px"
+                                            :text-lable="member.phone"
+                                            text-color="#2d8cf0"></info-item>
+                                </Col>
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="车牌号码:"
+                                            container-width="160px"
+                                            :text-lable="member.carnum"
+                                            text-color="#2d8cf0"></info-item>
+                                </Col>
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="车辆品牌:"
+                                            container-width="160px"
+                                            :text-lable="member.carmake"
+                                            text-color="#2d8cf0"></info-item>
+                                </Col>
+                            </Row>
+                            <div class="line-gray"></div>
+                            <Row type="flex" align="middle" gutter="8">
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="会员等级:"
+                                            container-width="160px"
+                                            text-lable="普通会员"
+                                            text-color="#2d8cf0"></info-item>
+                                </Col>
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="账户余额:"
+                                            container-width="160px"
+                                            :text-lable="account.money.toFixed(2)"
+                                            unit="元"
+                                            text-color="#2d8cf0"></info-item>
+                                </Col>
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="总消费金额:"
+                                            container-width="160px"
+                                            :text-lable="account.totalConsume.toFixed(2)"
+                                            unit="元"
+                                            text-color="#2d8cf0"></info-item>
+                                </Col>
+                                <Col :lg="6" :md="6" :xs="12">
+                                    <info-item
+                                            title="入会时间:"
+                                            container-width="160px"
+                                            :text-lable="member.createtime"
+                                            text-color="#2d8cf0"></info-item>
 
-                                </Row>
-                            </Col>
-                            <!--<Col span="12" style="padding-left:6px; margin-top: 10px" align="middle">-->
-                            <!--&lt;!&ndash;&lt;!&ndash;<Row class-name="made-child-con-middle" type="flex" align="middle">&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;&lt;!&ndash;<div>&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;&lt;!&ndash;<b class="member-card-user-infor-name" style="text-align: center">{{user.name}}随身带</b>&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;&lt;!&ndash;<p >普通会员</p>&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
-                            <!--&lt;!&ndash;&lt;!&ndash;</Row>&ndash;&gt;&ndash;&gt;-->
-                            <!--</Col>-->
-                        </Col>
-                        <Col :md="12" :lg="6" :xs="12">
-                            <Col span="12" align="middle">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                     :style="{marginBottom: '5px'}">
-                                    <div v-if="member.phone!=''">
-                                        <p style="text-align: left;">手机号码:</p>
-                                        <b class="member-card-user-infor-name">{{member.phone}}</b>
-                                    </div>
-                                    <div v-else>
-                                        <p style="text-align: left;">手机号码:</p>
-                                        <b class="member-card-user-infor-name">无</b>
-                                    </div>
-                                </Row>
-                                <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                     :style="{marginBottom: '5px'}">
-                                    <div v-if="account.money!=''">
-                                        <p style="text-align: left">账户余额:</p>
-                                        <b class="member-card-user-infor-name">{{account.money.toFixed(2)}}</b>
-                                    </div>
-                                    <div v-else>
-                                        <p style="text-align: left;">账户余额:</p>
-                                        <b class="member-card-user-infor-name">0.00</b>
-                                    </div>
-                                </Row>
-                            </Col>
-
-                        </Col>
-                        <!--</Row>-->
-                        <!--<div class="line-gray" :style="{marginBottom: '5px'}"></div>-->
-                        <!--<Row>-->
-                        <Col :md="12" :lg="6" :xs="12">
-                            <Col span="24" :md="12" :lg="12" :xs="12">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                     :style="{marginBottom: '5px'}">
-                                    <div v-if="member.carmake!=''">
-                                        <p style="text-align: left">车辆品牌:</p>
-                                        <b class="member-card-user-infor-name">{{member.carmake}}</b>
-                                    </div>
-                                    <div v-else>
-                                        <p style="text-align: left;">车辆品牌:</p>
-                                        <b class="member-card-user-infor-name">无</b>
-                                    </div>
-                                </Row>
-                                <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                     :style="{marginBottom: '5px'}">
-                                    <div>
-                                        <p style="text-align: left;">入会时间:</p>
-                                        <b class="member-card-user-infor-name">{{member.createtime}}</b>
-                                    </div>
-                                </Row>
-                            </Col>
-                        </Col>
-                        <Col :md="12" :lg="6" :xs="12">
-                            <Col span="24" :md="12" :lg="12" :xs="12">
-                                <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                     :style="{marginBottom: '5px'}">
-                                    <div v-if="member.carnum!=''">
-                                        <p style="text-align: left;">车牌号码:</p>
-                                        <b class="member-card-user-infor-name"
-                                           style="text-align: left">{{member.carnum}}</b>
-                                    </div>
-                                    <div v-else>
-                                        <p style="text-align: left">车牌号码:</p>
-                                        <b class="member-card-user-infor-name">无</b>
-                                    </div>
-                                </Row>
-                                <Row class-name="made-child-con-middle" type="flex" align="middle"
-                                     :style="{marginBottom: '5px'}">
-                                    <div>
-                                        <p style="text-align: left;">总消费金额:</p>
-                                        <b class="member-card-user-infor-name">{{account.totalConsume.toFixed(2)}}</b>
-                                    </div>
-                                </Row>
-                            </Col>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
                 </Card>
@@ -205,11 +179,15 @@
                                     </span>
                                 </div>
 
-                                <Button type="primary"  :disabled="isEnablePreview" @click="toPreview">打印预览</Button>
+                                <Button type="primary" :disabled="isEnablePreview" @click="toPreview">打印预览</Button>
 
-                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px" @click="onOK(0)">挂单带结</Button>
+                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px"
+                                        @click="onOK(0)">挂单带结
+                                </Button>
 
-                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px"  @click="toShowPayModal">结账</Button>
+                                <Button type="primary" :disabled="isEnablePreview" style="margin-left: 10px"
+                                        @click="toShowPayModal">结账
+                                </Button>
                             </div>
                         </Col>
                     </Row>
@@ -296,17 +274,19 @@
 <script>
     import config from '../../libs/config';
     import canEditTable from './components/canEditTable.vue';
+    import infoItem from '../custom-component/infoItem.vue';
     import Cookies from 'js-cookie';
 
     export default {
         name: "add-order",
         components: {
-            canEditTable
+            canEditTable,
+            infoItem
         },
         data() {
             return {
                 model: '',
-                createDate:'',
+                createDate: '',
                 isPayShow: false,
                 isPreview: false,
                 loading: false,
@@ -324,7 +304,7 @@
                         title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.result).toFixed(2);
+                            let price = "￥" + parseFloat(params.row.result).toFixed(2);
                             return h('div', price);
                             /*这里的this.row能够获取当前行的数据*/
                         }
@@ -344,7 +324,7 @@
                         title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.outPrice).toFixed(2);
+                            let price = "￥" + parseFloat(params.row.outPrice).toFixed(2);
                             return h('div', price);
                             /*这里的this.row能够获取当前行的数据*/
                         }
@@ -364,7 +344,7 @@
                         key: 'price',
                         title: '单价',
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.price).toFixed(2);
+                            let price = "￥" + parseFloat(params.row.price).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -373,7 +353,7 @@
                         title: '服务费',
                         editable: true,
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.cover).toFixed(2);
+                            let price = "￥" + parseFloat(params.row.cover).toFixed(2);
                             return h('div', price);
                             /*这里的this.row能够获取当前行的数据*/
                         }
@@ -399,25 +379,25 @@
                     {
                         key: 'price',
                         title: '单价',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.price).toFixed(2);
+                            let price = "￥" + parseFloat(params.row.price).toFixed(2);
                             return h('div', price);
                         }
                     },
                     {
                         key: 'cover',
                         title: '服务费(元)',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.cover).toFixed(2);
+                            let price = "￥" + parseFloat(params.row.cover).toFixed(2);
                             return h('div', price);
                         }
                     },
                     {
                         key: 'count',
                         title: '数量',
-                        width:80,
+                        width: 80,
                         editable: true
                     }
                 ],
@@ -698,7 +678,7 @@
                     userid: 0
                 }
             },
-            toPreview(){
+            toPreview() {
                 this.createDate = new Date().format('yyyy-MM-dd');
                 this.isPreview = true;
             }

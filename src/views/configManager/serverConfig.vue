@@ -23,13 +23,6 @@
                             :step="5"
                             v-model="configModel.result"></InputNumber>
                 </FormItem>
-                <!--<FormItem align="right">-->
-                <!--<Button type="ghost" style="margin-right: 15px">取消</Button>-->
-                <!--<Button type="primary" :loading="isLoading" @click="onOK('configModel')">-->
-                <!--<span v-if="!isLoading">添加</span>-->
-                <!--<span v-else>提交中...</span>-->
-                <!--</Button>-->
-                <!--</FormItem>-->
             </Form>
             <div slot="footer">
                 <Button type="ghost" style="margin-left: 8px" @click="onCancel">取消</Button>
@@ -54,8 +47,6 @@
                     <div style="margin-top: 10px">
                         <Row>
                             <div class="table_box">
-                                <!--<can-edit-table refs="table1" v-model="serverData" :columns-list="serverColumns"-->
-                                <!--@on-delete="handleDel" :max-height="tableHeight"></can-edit-table>-->
                                 <Table stripe border :columns="serverColumns" :data="serverData" :height="tableHeight"></Table>
                             </div>
                             <div style="padding: 5px; font-weight: 400;">共{{totalItems}}条</div>
@@ -68,7 +59,6 @@
 </template>
 
 <script>
-    import table from './data/table.js'
     import config from '../../libs/config';
     import canEditTable from '../custom-component/canEditTable.vue';
     import Cookies from 'js-cookie';
@@ -83,7 +73,8 @@
                 tableHeight: 480,
                 modal: false,
                 isLoading: false,
-                serverColumns: [{
+                serverColumns: [
+                    {
                         type: "index",
                         width: 80,
                         align: 'center',
@@ -132,7 +123,7 @@
                                     },
                                     on: {
                                         'on-ok': () => {
-                                            this.toDelete(currentRow,index)
+                                            this.toDelete(currentRow, index)
                                         }
                                     }
                                 }, [
@@ -166,7 +157,7 @@
             init() {
                 let data = {
                     type: 'server'
-                }
+                };
                 // 获取服务列表
                 this.Http.post(config.service.getConfigsByType, data).then((res) => {
                     if (res.data.code == 100) {
@@ -180,7 +171,7 @@
                     }
                 });
             },
-            toDelete(row,index) {
+            toDelete(row, index) {
                 // 删除
                 let data = {
                     id: row.id

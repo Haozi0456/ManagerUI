@@ -79,7 +79,7 @@
                     {
                         key: 'createTime',
                         width:200,
-                        title: '加入时间'
+                        title: '创建时间'
                     },
                     {
                         title: '操作',
