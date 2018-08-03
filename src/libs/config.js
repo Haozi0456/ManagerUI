@@ -14,6 +14,12 @@ var config = {
         // 修改密码
         resetPassword: 'system/manager/resetPassword',
 
+        //获取员工列表
+        getManagerListByRoleType:'system/manager/getManagerListByRoleType',
+
+        //添加员工
+        addManager:'system/manager/addManager',
+
         //获取所有会员
         getAllMembers:'system/user/getAllUsers',
 

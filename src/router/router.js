@@ -136,6 +136,16 @@ export const appRouter = [
             {path: 'store_parts', title: '商品分类', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
         ]
     },{
+        path: '/employeeManager',
+        icon: 'ios-pie',
+        name: 'employeeManager',
+        title: '员工管理',
+        component: Main,
+        children: [
+            {path: 'employee_list', title: '员工列表', name: 'employee_index', component: () => import('@/views/employeeManager/employeeList.vue')},
+            {path: 'position_list', title: '职位管理', name: 'position_index', component: () => import('@/views/employeeManager/positionList.vue')}
+        ]
+    },{
         path: '/configManager',
         icon: 'ios-pie',
         name: 'configManager',
