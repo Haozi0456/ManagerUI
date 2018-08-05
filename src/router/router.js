@@ -85,7 +85,7 @@ export const otherRouter = {
             path: 'member_details',
             title: '会员详情',
             name: 'member_details',
-            component: () => import('@/views/member/member-details.vue')
+            component: () => import('@/views/memberManager/member-details.vue')
         }
     ]
 };
@@ -102,32 +102,57 @@ export const appRouter = [
             {path: 'order_add', title: '快速收银', name: 'order-add', component: () => import('@/views/orderManager/order-add.vue')},
             {path: 'order-add-custom', title: '自定义收银', name: 'order-add-custom', component: () => import('@/views/orderManager/order-add-custom.vue')},
             {path: 'order_outstanding', title: '挂单待结', name: 'order_outstanding', component: () => import('@/views/orderManager/order-outstanding.vue')},
-            {path: 'order_list', title: '营业明细', name: 'order_list', component: () => import('@/views/orderManager/order-list.vue')},
             {path: 'order_billing', title: '维修开单', name: 'order_billing', component: () => import('@/views/orderManager/order-billing.vue')}
+
         ]
     },
     {
-        path: '/member',
+        path: '/memberManager',
         icon: 'person-stalker',
-        name: 'member',
+        name: 'memberManager',
         title: '会员管理',
         component: Main,
         children: [
-            {path: 'member_index', icon:'ios-person', title: '会员列表', name: 'member_index', component: () => import('@/views/member/member.vue')},
-            {path: 'member_add', icon:'android-person-add', title: '会员办理', name: 'member_add', component: () => import('@/views/member/member-add.vue')}
+            {path: 'member_index', icon:'ios-person', title: '会员列表', name: 'member_index', component: () => import('@/views/memberManager/member.vue')},
+            {path: 'member_add', icon:'android-person-add', title: '会员办理', name: 'member_add', component: () => import('@/views/memberManager/member-add.vue')}
         ]
-    },{
-        path: '/statistics',
+    },
+    {
+        path: '/record',
+        icon: 'navicon-round',
+        name: 'record',
+        title: '营业记录',
+        component: Main,
+        children: [
+            {path: 'order_list', title: '订单记录', name: 'order_list', component: () => import('@/views/orderManager/order-list.vue')},
+            {path: 'member-recharge-list', title: '会员充值记录', name: 'member-recharge-list', component: () => import('@/views/memberManager/member-recharge-list.vue')},
+        ]
+    },
+    {
+        path: '/income',
+        icon: 'calendar',
+        name: 'income',
+        title: '收支管理',
+        component: Main,
+        children: [
+            {path: 'inOut_list', title: '收支列表', name: 'inOut_list', component: () => import('@/views/incomeManager/inOut-list.vue')},
+            {path: 'inOut_add', title: '添加收支', name: 'inOut_add', component: () => import('@/views/incomeManager/inOut-add.vue')}
+        ]
+    },
+    {
+        path: '/statisticsManager',
         icon: 'ios-pie',
-        name: 'statistics',
+        name: 'statisticsManager',
         title: '数据统计',
         component: Main,
         children: [
-            {path: 'index', title: '数据统计', name: 'statistics_index', component: () => import('@/views/statistics/statistics.vue')}
+            {path: 'statistics_30days', title: '近30日收入', name: 'statistics_30days', component: () => import('@/views/statisticsManager/statistics_30days.vue')},
+            {path: 'statistics_index', title: '月度统计', name: 'statistics_index', component: () => import('@/views/statisticsManager/statistics.vue')}
         ]
-    },{
+    },
+    {
         path: '/storeManager',
-        icon: 'ios-pie',
+        icon: 'soup-can',
         name: 'storeManager',
         title: '商品库存',
         component: Main,
@@ -135,9 +160,10 @@ export const appRouter = [
             {path: 'store_goods', title: '商品列表', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
             {path: 'store_parts', title: '商品分类', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
         ]
-    },{
+    },
+    {
         path: '/employeeManager',
-        icon: 'ios-pie',
+        icon: 'android-person',
         name: 'employeeManager',
         title: '员工管理',
         component: Main,
@@ -145,9 +171,10 @@ export const appRouter = [
             {path: 'employee_list', title: '员工列表', name: 'employee_index', component: () => import('@/views/employeeManager/employeeList.vue')},
             {path: 'position_list', title: '职位管理', name: 'position_index', component: () => import('@/views/employeeManager/positionList.vue')}
         ]
-    },{
+    },
+    {
         path: '/configManager',
-        icon: 'ios-pie',
+        icon: 'android-settings',
         name: 'configManager',
         title: '配置管理',
         component: Main,
@@ -155,7 +182,7 @@ export const appRouter = [
             {path: 'config_server', title: '服务项目', name: 'configServer_index', component: () => import('@/views/configManager/serverConfig.vue')},
             {path: 'config_test', title: '测试配置', name: 'configTest_index', component: () => import('@/views/configManager/testConfig.vue')}
             ]
-}
+    }
     // ,
     // {
     //     path: '/access',

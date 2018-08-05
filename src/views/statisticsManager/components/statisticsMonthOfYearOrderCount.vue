@@ -4,7 +4,7 @@
 
 <script>
     import echarts from 'echarts';
-    import config from '../../libs/config';
+    import config from '../../../libs/config';
 
     export default {
         name: "statisticsMonthOfYearOrderCount",

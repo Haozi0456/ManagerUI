@@ -1,6 +1,11 @@
 <style lang="less">
     @import '../../styles/common.less';
-    @import './components/styles/order.less';
+
+    .searchable-table{
+        &-con1{
+            height: auto !important;
+        }
+    }
 
     .vertical-center-modal {
         display: flex;
@@ -119,58 +124,36 @@
                 searchName: '',
                 columns: [
                     {
-                        key: 'orderno',
-                        title: '编号'
-                    },
-                    {
-                        key: 'member',
-                        title: '会员号',
-                        render: function (h, params) {
-                            let text='';
-                            let member = this.row.member;
-                            if(member == undefined){
-                                text = "散客";
-                            }else{
-                                text = member.phone;
-                            }
-                            return h('div', text);
-                        }
-
-                    },
-                    {
-                        key: 'items',
-                        title: '服务项目',
-                        render: function (h, params) {
-                            let itemList = this.row.items;
-                            return h('ol',{style:{ type:1,listStyleType:'decimal'}}, itemList.map(function (item) {
-                                return h('li',{style:{ type:1,listStyle:'decimal'}},item.item)
-                            }));
-
-                            // return h('div', text);
-                            /*这里的this.row能够获取当前行的数据*/
-                        }
-
+                        type:'index',
+                        align:'center',
+                        width:60
                     },
                     {
                         key: 'money',
-                        title: '金额(元)',
+                        title: '充值金额',
                         render: function (h, params) {
-                            let price = parseFloat(params.row.money).toFixed(2);
+                            let price = "￥"+parseFloat(params.row.money).toFixed(2);
                             return h('div', price);
                         }
                     },
                     {
-                        key: 'payfrom',
+                        key: 'subMoney',
+                        title: '赠送金额',
+                        render: function (h, params) {
+                            let price = "￥"+parseFloat(params.row.subMoney).toFixed(2);
+                            return h('div', price);
+                        }
+                    },
+                    {
+                        key: 'type',
                         title: '支付方式',
                         render: function (h, params) {
                             let text = '';
-                            if (this.row.payfrom == 0) {
-                                text = "账户余额"
-                            } else if (this.row.payfrom == 1) {
+                            if (this.row.type == 1) {
                                 text = "支付宝"
-                            } else if (this.row.payfrom == 2) {
+                            } else if (this.row.type == 2) {
                                 text = "微信"
-                            } else if (this.row.payfrom == 3) {
+                            } else if (this.row.type == 3) {
                                 text = "现金"
                             } else {
                                 text = "其它"
@@ -179,18 +162,19 @@
                         }
                     },
                     {
-                        key: 'createtime',
-                        title: '消费时间'
+                        key: 'createTime',
+                        title: '充值时间',
+                        width:100
                     },
                     {
                         key: 'operator',
-                        title: '经办人'
+                        title: '经办人',
+                        width:100
                     },
                     {
                         key: 'remark',
                         title: '备注'
                     }
-
                 ],
                 data: [],
                 initTable: [],
@@ -217,9 +201,9 @@
             init() {
                 let data = {
                     page:this.page,
-                    code:1
+                    key:this.chooseMonth
                 };
-                this.Http.postJson(config.service.getOrderList, data).then((res) => {
+                this.Http.postJson(config.service.getRechargeListByMonth, data).then((res) => {
                     if (res.data.code == 100) {
                         this.data = this.initTable = res.data.data.rows;
                         this.page.total = res.data.data.total;
@@ -283,110 +267,19 @@
                 this.isLoading = false;
             },
             onPageChange(pageNo){
-
-                if(this.chooseMonth == ''){
-                    this.page.pageNumber = pageNo;
-                    let data = {
-                        page:this.page,
-                        code:1
-                    };
-                    this.Http.postJson(config.service.getOrderList, data).then((res) => {
-                        if (res.data.code == 100) {
-                            this.data = this.initTable = res.data.data.rows;
-                            this.page.total = res.data.data.total;
-                        } else {
-                            this.$Message.error({
-                                content: res.data.msg,
-                                duration: 2
-                            });
-                        }
-                    });
-                }else{
-                    this.page.pageNumber = pageNo;
-                    let data = {
-                        pageNumber:pageNo,
-                        pageSize:this.page.pageSize,
-                        month:this.chooseMonth
-                    }
-                    this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
-                        if (res.data.code == 100) {
-                            this.data = this.initTable = res.data.data.rows;
-                            this.page.total = res.data.data.total;
-                        } else {
-                            this.$Message.error({
-                                content: res.data.msg,
-                                duration: 2
-                            });
-                        }
-                    });
-                }
-
+                this.page.pageNumber = pageNo;
+                this.init();
             },
             onPageSizeChange(pageSize){
-                if(this.chooseMonth == ''){
                     this.page.pageNumber = 1;
                     this.page.pageSize = pageSize;
-                    let data = {
-                        page:this.page,
-                        code:1
-                    };
-                    this.Http.postJson(config.service.getOrderList, data).then((res) => {
-                        if (res.data.code == 100) {
-                            this.data = this.initTable = res.data.data.rows;
-                            this.page.total = res.data.data.total;
-                        } else {
-                            this.$Message.error({
-                                content: res.data.msg,
-                                duration: 2
-                            });
-                        }
-                    });
-                }else{
-                    this.page.pageNumber = 1;
-                    this.page.pageSize = pageSize;
-                    let data = {
-                        pageVO:this.page,
-                        month:this.chooseMonth
-                    }
-
-                    this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
-                        if (res.data.code == 100) {
-                            this.data = this.initTable = res.data.data.rows;
-                            this.page.total = res.data.data.total;
-                        } else {
-                            this.$Message.error({
-                                content: res.data.msg,
-                                duration: 2
-                            });
-                        }
-                    });
-                }
+                    this.init();
 
             },
             dateChange(dateValue) {
                 this.chooseMonth = dateValue;
-                if(dateValue != ''){
-                    this.page.pageNumber = 1;
-                    let data = {
-                        pageNumber:this.page.pageNumber,
-                        pageSize:this.page.pageSize,
-                        month:dateValue
-                    }
-                    this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
-                        if (res.data.code == 100) {
-                            this.data = this.initTable = res.data.data.rows;
-                            this.page.total = res.data.data.total;
-                        } else {
-                            this.$Message.error({
-                                content: res.data.msg,
-                                duration: 2
-                            });
-                        }
-                    });
-                }else{
-                    this.onPageChange(1);
-                }
-
+                this.page.pageNumber = 1;
+                this.init();
             }
         },
         mounted() {

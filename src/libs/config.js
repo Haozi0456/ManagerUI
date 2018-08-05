@@ -15,7 +15,16 @@ var config = {
         resetPassword: 'system/manager/resetPassword',
 
         //获取员工列表
-        getManagerListByRoleType:'system/manager/getManagerListByRoleType',
+        getManagerListByType:'system/manager/getManagerListByType',
+
+        //获取角色列表
+        getRolesByStatus:'system/role/getRolesByStatus',
+
+        //添加角色
+        addRole:'system/role/addRole',
+
+        //禁用 启用 角色
+        disableOrEnableRole:'system/role/disableOrEnableRole',
 
         //添加员工
         addManager:'system/manager/addManager',
@@ -41,8 +50,11 @@ var config = {
         //充值
         toRecharge:'system/account/toRecharge',
 
-        //充值记录
+        //会员个人充值记录
         getRechargeList:'system/account/getRechargeList',
+
+        //会员充值记录
+        getRechargeListByMonth:'system/account/getRechargeListByMonth',
 
         //获取我的订单userId
         getMyOrders:'system/order/getMyOrders',
@@ -99,6 +111,14 @@ var config = {
         //添加维修工单记录
         addRepairRecord:'system/repair/addRepairRecord',
 
+        //获取收支列表 0 全部 1收入  2支出
+        getInOutByType:'/system/inout/getInOutByType',
+
+        //添加收支  1收入  2支出
+        addInOut:'/system/inout/addInOut',
+
+        //删除收支
+        deleteInOutById:'/system/inout/deleteInOut',
 
         //根据类型获取配置记录
         getConfigsByType:'/system/congfig/getConfigsByType',

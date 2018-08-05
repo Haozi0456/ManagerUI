@@ -76,18 +76,19 @@
                                     content: '登录成功!',
                                     duration: 2
                                 });
-                                Cookies.set('user', this.form.userName);
+                                Cookies.set('user', user.name);
                                 Cookies.set('password', this.form.password);
-                                Cookies.set('lastTime',user.lastvisittime);
+                                Cookies.set('lastTime',user.lastVisitTime);
+                                Cookies.set('role',user.role);
                                 Cookies.set('phone',user.phone);
                                 Cookies.set('userId',user.id);
                                 this.$store.commit('setAvator', '../../images/ic-manager.png');
                                 if (this.form.userName === 'admin') {
                                     Cookies.set('access', 0);
-                                    Cookies.set('role', "超级管理员");
+                                    // Cookies.set('role', "超级管理员");
                                 } else {
                                     Cookies.set('access', 1);
-                                    Cookies.set('role', "员工");
+                                    // Cookies.set('role', "员工");
                                 }
                                 this.$router.push({
                                     name: 'home_index'

@@ -70,6 +70,7 @@
 <script>
     import config from '../../libs/config';
     import utils from '../../libs/util';
+    import Cookies from 'js-cookie';
 
     export default {
         name: "member-add",
@@ -119,6 +120,8 @@
                     money: 100,
                     submoney:0,
                     type: '1',
+                    operator:'',
+                    operation:1,
                     remark: ''
                 }
             };
@@ -133,6 +136,10 @@
                             this.isLoading = false;
                             return;
                         }
+
+                        let user = Cookies.get('user');
+                        this.accountItem.operator = user;
+
                         let data = {
                             user: this.memberItem,
                             account: this.accountItem

@@ -1,22 +1,31 @@
 <template>
-    <div style="width:100%; height:100%; " id="chart"></div>
+    <div style="width:100%; height:100%; " id="monthOfYearChart"></div>
 </template>
 
 <script>
     import echarts from 'echarts';
-    import config from '../../libs/config';
+    import config from '../../../libs/config';
 
     export default {
-        name: "statisticsNear30Days",
+        name: "statisticsMonthOfYear",
         data () {
             return {
+                year:2018,
                 chart:null,
                 chartData:{
-                    xValues:[],
-                    yValues:[]
+                    datelines:[],
+                    totals:[],
+                    counts:[]
                 }
 
             };
+        },
+        props:{
+          yearVal:{
+              type:Number,
+              required:true,
+              default:2018
+          }
         },
         methods:{
           init() {
@@ -55,8 +64,8 @@
                     series: [
                         {
                             name: '月收入',
-                            type: 'line',
-                            barWidth: 60,
+                            type: 'bar',
+                            barWidth: 40,
                             label: {
                                 normal: {
                                     show: true,
@@ -71,7 +80,7 @@
                         }
                     ]
                 };
-                let statisticsCharts = echarts.init(document.getElementById('chart'));
+                let statisticsCharts = echarts.init(document.getElementById('monthOfYearChart'));
                 this.chart = statisticsCharts;
                 statisticsCharts.setOption(option);
 
@@ -79,33 +88,39 @@
                     statisticsCharts.resize();
                 });
 
-
-              this.refresh();
+              let dateValue = new Date().format("yyyy");
+              this.refresh(dateValue);
             },
-            refresh () {
-                this.Http.post(config.service.getStatisticsByNearOneMonth, '').then((res) => {
+            refresh (val) {
+                let data = {
+                    year: val
+                };
+                this.Http.post(config.service.getStatisticsByMonthInYear, data).then((res) => {
                     if (res.data.code == 100) {
                         let result = res.data.data;
-                        var xValue =[];
-                        var yValue =[];
+                        var datelines =[];
+                        var totals =[];
+                        var counts = [];
                         for (var i = 0; i < result.length; i++) {
-                            xValue.push(result[i].dateline);
-                            yValue.push(result[i].total);
+                            datelines.push(result[i].dateline);
+                            totals.push(result[i].total);
+                            counts.push(result[i].count);
                         }
-                        this.chartData.xValues = xValue;
-                        this.chartData.yValues = yValue;
-                        let titleLable ='近30天收入(单位:元)';
+                        this.chartData.datelines = datelines;
+                        this.chartData.totals = totals;
+                        this.chartData.counts = counts;
+                        let titleLable = val+'年月收入(单位:元)';
                         this.chart.setOption({
                             title:{
                                 text:titleLable
                             },
                             xAxis: {
-                                data: this.chartData.xValues
+                                data: this.chartData.datelines
                             },
                             series: [{
-                                name: '日收入',
-                                type: 'line',
-                                data: this.chartData.yValues
+                                name: '月收入',
+                                type: 'bar',
+                                data: this.chartData.totals
                             }]
                         });
 
@@ -120,6 +135,11 @@
         },
         mounted () {
             this.init();
+        },
+        watch: {
+            yearVal (val) {
+                this.refresh(val);
+            }
         }
     };
 </script>

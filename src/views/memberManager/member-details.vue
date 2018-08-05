@@ -403,12 +403,12 @@
                 chargeColumns: [
                     {
                         type:'index',
+                        align:'center',
                         width:60
                     },
                     {
                         key: 'money',
                         title: '充值金额',
-                        width:100,
                         render: function (h, params) {
                             let price = "￥"+parseFloat(params.row.money).toFixed(2);
                             return h('div', price);
@@ -417,7 +417,6 @@
                     {
                         key: 'subMoney',
                         title: '赠送金额',
-                        width:100,
                         render: function (h, params) {
                             let price = "￥"+parseFloat(params.row.subMoney).toFixed(2);
                             return h('div', price);
@@ -426,7 +425,6 @@
                     {
                         key: 'type',
                         title: '支付方式',
-                        width:100,
                         render: function (h, params) {
                             let text = '';
                             if (this.row.type == 1) {
@@ -443,12 +441,13 @@
                     },
                     {
                         key: 'createTime',
-                        title: '充值时间'
+                        title: '充值时间',
+                        width:100
                     },
                     {
                         key: 'operator',
                         title: '经办人',
-                        width:100,
+                        width:100
                     },
                     {
                         key: 'remark',

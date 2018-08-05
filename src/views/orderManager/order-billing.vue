@@ -119,7 +119,7 @@
                         <Row>
                             <Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">
                                 <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;">
-                                    <span style="margin-right: 10px; font-size:x-large; font-weight: bolder;">维修费用结算单</span>
+                                    <span style="margin-right: 10px; font-size:x-large; font-weight: bolder;">费用结算单</span>
                                 </div>
                             </Col>
                             <Col :md="24" :lg="24" align="middle" >
@@ -150,7 +150,7 @@
                     <Row class="margin-top-10">
                         <Col :md="24" :lg="24" align="middle" :style="{marginTop: '8px'}">
                             <div style="display: inline-flex; text-align:center; margin:0; align-items: baseline;">
-                                <span style="margin-right: 10px; font-size:x-large; font-weight: bolder;">维修费用结算单</span>
+                                <span style="margin-right: 10px; font-size:x-large; font-weight: bolder;">费用结算单</span>
                             </div>
 
                         </Col>

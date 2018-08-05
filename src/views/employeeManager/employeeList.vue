@@ -16,7 +16,7 @@
     <div>
         <Row :gutter="10">
             <Col span="24">
-                <Card>
+                <Card :padding="8">
                     <p slot="title">
                         <Icon type="person-stalker"></Icon>
                         员工列表
@@ -38,10 +38,14 @@
                             <FormItem label="手机号码">
                                 <Input v-model="manager.account" placeholder="请输入手机号..." style="width: 200px;"></Input><span style="margin-left: 5px; color:#9ea7b4; ">* 手机号作为登录账号</span>
                             </FormItem>
-                            <FormItem label="职位">
-                                <Select v-model="manager.roleType" filterable placeholder="请选择职位类型..." style="width: 120px;">
-                                    <Option v-for="item in roleTypes" :value="item.id" :key="item.id">{{ item.title }}</Option>
+                            <FormItem label="职位类型">
+                                <Select v-model="manager.roleType" filterable placeholder="请选择职位类型..." style="width: 200px;">
+                                    <Option v-for="item in roleTypes" :value="item.id" :key="item.id">{{ item.roleName }}</Option>
                                 </Select>
+                            </FormItem>
+                            <FormItem label="入职时间">
+                                <!--<DatePicker :v-model="manager.entryTime" type="datetime" placeholder="请选择入职时间..." style="width: 200px"></DatePicker>-->
+                                <DatePicker placeholder="请选择入职时间..." type="datetime" format="yyyy-MM-dd HH:mm:ss"  @on-change="onDataChoose" style="width: 200px"></DatePicker>
                             </FormItem>
                             <FormItem label="岗位状态">
                                 <Select v-model="manager.dataFlag" filterable placeholder="请选择岗位状态" style="width: 120px;">
@@ -54,10 +58,7 @@
                                         :step="5"
                                         v-model="manager.salary"></InputNumber><label style="margin-left: 5px">元</label>
                             </FormItem>
-                            <FormItem label="入职时间">
-                                <!--<DatePicker :v-model="manager.entryTime" type="datetime" placeholder="请选择入职时间..." style="width: 200px"></DatePicker>-->
-                                <DatePicker placeholder="请选择入职时间..." type="datetime" format="yyyy-MM-dd HH:mm:ss"  @on-change="onDataChoose" style="width: 200px"></DatePicker>
-                            </FormItem>
+
                         </Form>
                         <div slot="footer">
                             <Button type="ghost" style="margin-left: 8px" @click="onCancel">取消</Button>
@@ -66,9 +67,11 @@
                     </Modal>
 
                     <Row>
-                        <Input v-model="searchName" placeholder="请输姓名搜搜..." style="width: 200px;" />
-                        <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
-                        <Button @click="handleCancel" type="ghost" >取消</Button>
+                        <Col :md="24" :lg="24" style="padding: 0px 5px;">
+                            <Input v-model="searchName" placeholder="请输姓名搜搜..." style="width: 200px;" />
+                            <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
+                            <Button @click="handleCancel" type="ghost" >取消</Button>
+                        </Col>
                     </Row>
                     <Row class="margin-top-10 searchable-table-con1">
                         <Col :md="24" :lg="24">
@@ -113,16 +116,9 @@
                         title: '账号(手机号)'
                     },
                     {
-                        key: 'roleType',
+                        key: 'role',
                         title: '职位',
-                        align:'center',
-                        render: function (h, params) {
-                            let text ='';
-                            if(params.row.roleType == 2){
-                                text = "员工";
-                            }
-                            return h('div', text);
-                        }
+                        align:'center'
                     },
                     {
                         key: 'salary',
@@ -215,7 +211,7 @@
                     id:0,
                     name: '',
                     account: '',
-                    roleType: 2,
+                    roleType: 0,
                     salary:2000,
                     password:'',
                     createTime:'',
@@ -232,12 +228,27 @@
         },
         methods: {
             init () {
-                let positionData = {
-                    type: 'role'
+                // let positionData = {
+                //     type: 'role'
+                // };
+                // // 获取职位列表
+                // this.Http.post(config.service.getConfigsByType, positionData).then((res) => {
+                //     if (res.data.code == 100) {
+                //         this.roleTypes = res.data.data;
+                //     } else {
+                //         this.$Message.error({
+                //             content: res.data.msg,
+                //             duration: 2
+                //         });
+                //     }
+                // });
+
+                let roleType = {
+                    status: 1
                 };
-                // 获取职位列表
-                this.Http.post(config.service.getConfigsByType, positionData).then((res) => {
-                    if (res.data.code == 100) {
+                // 获取角色列表
+                this.Http.post(config.service.getRolesByStatus, roleType).then((res) => {
+                    if (res.data.code === 100) {
                         this.roleTypes = res.data.data;
                     } else {
                         this.$Message.error({
@@ -249,10 +260,10 @@
 
                 let data = {
                     page:this.page,
-                    code:2
+                    code:0 //全部员工
                 };
                 // 获取员工列表
-                this.Http.postJson(config.service.getManagerListByRoleType, data).then((res) => {
+                this.Http.postJson(config.service.getManagerListByType, data).then((res) => {
                     if (res.data.code == 100) {
                         this.data = res.data.data.rows;
                         this.page.total = res.data.data.total;
@@ -290,6 +301,12 @@
                     return;
                 }
 
+                if (this.manager.roleType == 0) {
+                    this.$Message.info('请输入职位类型');
+                    this.isLoading = false;
+                    return;
+                }
+
                 this.Http.post(config.service.addManager, this.manager).then((res) => {
                     if (res.data.code === 100) {
                         this.$Message.success({
@@ -298,6 +315,18 @@
                         });
                         this.isLoading = false;
                         this.modal = false;
+                        this.manager = {
+                            id:0,
+                            name: '',
+                            account: '',
+                            roleType: 0,
+                            salary:2000,
+                            password:'',
+                            createTime:'',
+                            entryTime:'',
+                            dataFlag:1,
+                            lastVisitTime:''
+                        };
                         // 添加数据
                         this.onPageChange(1);
                     } else {

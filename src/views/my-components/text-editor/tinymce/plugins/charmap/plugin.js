@@ -285,7 +285,7 @@ jsc */
         ['8801', 'identical to'],
         ['8712', 'element of'],
         ['8713', 'not an element of'],
-        ['8715', 'contains as member'],
+        ['8715', 'contains as memberManager'],
         ['8719', 'n-ary product'],
         ['8743', 'logical and'],
         ['8744', 'logical or'],

@@ -13,14 +13,13 @@
                :mask-closable="false"
                :closable="false"
                class-name="vertical-center-modal">
-            <Form ref="configModel" :model="configModel" :label-width="80">
+            <Form ref="roleModel" :model="roleModel" :label-width="80">
                 <FormItem label="职位名称">
-                    <Input v-model="configModel.title" placeholder="请职位名称..."></Input>
+                    <Input v-model="roleModel.roleName" placeholder="请职位名称..."></Input>
                 </FormItem>
-                <FormItem label="职位类型">
-                    <Select v-model="configModel.result"  placeholder="请选择...">
-                        <Option v-for="item in roleTypes" :value="item.id" :key="item.id">{{ item.name }}</Option>
-                    </Select>
+                <FormItem label="职位描述">
+                    <Input v-model="roleModel.roleDes" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                           placeholder="请输入备注信息..."></Input>
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -75,14 +74,34 @@
                 serverColumns: [
                     {
                         type: "index",
-                        width: 80,
+                        width: 60,
                         align: 'center',
-                        title: '序号'
                     },
                     {
-                        key: 'title',
+                        key: 'roleName',
                         align: 'center',
                         title: '职位名称'
+                    },
+                    {
+                        key: 'roleDes',
+                        align: 'center',
+                        title: '职位描述'
+                    },
+                    {
+                        key: 'dataFlag',
+                        align: 'center',
+                        title: '状态',
+                        width:100,
+                        render: function (h, params) {
+                            let text='';
+                            let dataFlag = this.row.dataFlag;
+                            if(dataFlag === 1){
+                                text = "启用";
+                            }else{
+                                text = "禁用";
+                            }
+                            return h('div', text);
+                        }
                     },
                     {
                         title: '操作',
@@ -92,40 +111,71 @@
                         render: (h, params) => {
                             let currentRow = params.row;
                             let index = params.index;
-                            return h('div', [
-                                h('Poptip', {
-                                    props: {
-                                        confirm: true,
-                                        title: '您确定要删除这条数据吗?',
-                                        transfer: true
-                                    },
-                                    on: {
-                                        'on-ok': () => {
-                                            this.toDelete(currentRow, index)
-                                        }
-                                    }
-                                }, [
-                                    h('Button', {
-                                        style: {
-                                            margin: '0 5px'
-                                        },
+                            let dataFlag = params.row.dataFlag;
+                            if(dataFlag === 1){
+                                return h('div', [
+                                    h('Poptip', {
                                         props: {
-                                            type: 'error',
-                                            size: 'small',
-                                            placement: 'top'
+                                            confirm: true,
+                                            title: '您确定要禁用这条数据吗?',
+                                            transfer: true
+                                        },
+                                        on: {
+                                            'on-ok': () => {
+                                                this.disableOrEnableRole(currentRow, index)
+                                            }
                                         }
-                                    }, '删除')
-                                ])
-                            ]);
+                                    }, [
+                                        h('Button', {
+                                            style: {
+                                                margin: '0 5px'
+                                            },
+                                            props: {
+                                                type: 'error',
+                                                size: 'small',
+                                                placement: 'top'
+                                            }
+                                        }, '禁用')
+                                    ])
+                                ]);
+                            }else if(dataFlag === -1){
+                                return h('div', [
+                                    h('Poptip', {
+                                        props: {
+                                            confirm: true,
+                                            title: '您确定要启用这条数据吗?',
+                                            transfer: true
+                                        },
+                                        on: {
+                                            'on-ok': () => {
+                                                this.disableOrEnableRole(currentRow, index)
+                                            }
+                                        }
+                                    }, [
+                                        h('Button', {
+                                            style: {
+                                                margin: '0 5px'
+                                            },
+                                            props: {
+                                                type: 'primary',
+                                                size: 'small',
+                                                placement: 'top'
+                                            }
+                                        }, '启用')
+                                    ])
+                                ]);
+                            }
+
                         }
                     }],
                 serverData: [],
+                dataFlags:[{ id:1, name:'启用'},{ id:2, name:'弃用'}],
                 roleTypes:[{ id:1, name:'管理员'},{ id:2, name:'员工'}],
                 totalItems: 0,
-                configModel: {
-                    type: 'role',
-                    title: '',
-                    result: 2
+                roleModel: {
+                    roleName:'',
+                    roleDes:'',
+                    dataFlag:1
                 }
             };
         },
@@ -135,17 +185,17 @@
             },
             init() {
                 let data = {
-                    type: 'role'
+                    status: 0
                 };
-                // 获取服务列表
-                this.Http.post(config.service.getConfigsByType, data).then((res) => {
-                    if (res.data.code == 100) {
+                // 获取角色列表
+                this.Http.post(config.service.getRolesByStatus, data).then((res) => {
+                    if (res.data.code === 100) {
                         this.serverData = res.data.data;
                         this.totalItems = this.serverData.length;
-                        this.configModel= {
-                            type: 'role',
-                            title: '',
-                            result: 2
+                        this.roleModel= {
+                            roleName:'',
+                            roleDes:'',
+                            dataFlag:1
                         };
                     } else {
                         this.$Message.error({
@@ -155,15 +205,15 @@
                     }
                 });
             },
-            toDelete(row, index) {
-                // 删除
-                let data = {
-                    id: row.id
-                };
-                this.Http.post(config.service.deleteConfigById, data).then((res) => {
+            disableOrEnableRole(rowData, index) {
+                if(rowData.dataFlag === 1){
+                    rowData.dataFlag = -1;
+                }else if(rowData.dataFlag === -1){
+                    rowData.dataFlag = 1;
+                }
+                this.Http.post(config.service.disableOrEnableRole, rowData).then((res) => {
                     if (res.data.code == 100) {
-                        this.serverData.splice(index, 1);
-                        this.totalItems = this.serverData.length;
+                        this.init();
                         this.$Message.success({
                             content: res.data.msg,
                             duration: 2
@@ -178,12 +228,12 @@
 
             },
             onSubmint() {
-                if (this.configModel.title == '') {
+                if (this.roleModel.roleName == '') {
                     this.$Message.error("请输入职位名称!");
                     return;
                 }
 
-                this.Http.post(config.service.addConfig, this.configModel).then((res) => {
+                this.Http.post(config.service.addRole, this.roleModel).then((res) => {
                     if (res.data.code == 100) {
                         this.init();
                         this.modal = false;
