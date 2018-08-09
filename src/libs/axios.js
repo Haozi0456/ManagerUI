@@ -117,7 +117,7 @@ function formatReqExcel (type, url, data) {
             headers: { 'content-Type': 'application/json; charset=utf-8' },
             cancelToken: source.token,
             data: JSON.stringify(data), // 转成json字符串
-            responseType: 'blob'
+            responseType: 'arraybuffer'
         })
             .then(res => {
                 // store.commit('UPDATE_LOADING', false); // 隐藏loading

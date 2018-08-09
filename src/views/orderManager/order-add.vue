@@ -690,9 +690,7 @@
                 this.createDate = new Date().format('yyyy-MM-dd');
                 this.isPreview = true;
             },
-            toPrint () {
-                this.isLoading = true;
-
+            toPrint () {//下载打印
                 let orderItems = [];
                 for (let i = 0; i < this.consumeData.length; i++) {
                     let temp = this.consumeData[i];
@@ -746,15 +744,19 @@
                     return
                 }
                 //这里res.data是返回的blob对象
-                var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
-                var downloadElement = document.createElement('a');
-                var href = window.URL.createObjectURL(blob); //创建下载的链接
-                downloadElement.href = href;
-                downloadElement.download = 'xxx.xlsx'; //下载后文件名
-                document.body.appendChild(downloadElement);
-                downloadElement.click(); //点击下载
-                document.body.removeChild(downloadElement); //下载完成移除元素
-                window.URL.revokeObjectURL(href); //释放掉blob对象
+                // var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+                // var downloadElement = document.createElement('a');
+                // var href = window.URL.createObjectURL(blob); //创建下载的链接
+                // downloadElement.href = href;
+                // downloadElement.download = 'xxx.xlsx'; //下载后文件名
+                // document.body.appendChild(downloadElement);
+                // downloadElement.click(); //点击下载
+                // document.body.removeChild(downloadElement); //下载完成移除元素
+                // window.URL.revokeObjectURL(href); //释放掉blob对象
+
+                let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
+                let objectUrl = URL.createObjectURL(blob);
+                window.location.href = objectUrl;
             }
         },
         mounted () {
