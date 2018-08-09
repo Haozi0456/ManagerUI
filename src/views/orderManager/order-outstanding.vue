@@ -97,16 +97,16 @@
     import config from '../../libs/config';
 
     export default {
-        name: "order-outstanding",
+        name: 'order-outstanding',
         components: {
             canEditTable
         },
-        data() {
+        data () {
             return {
                 model: '',
                 loading: false,
-                isLoading:false,
-                isPayShow:false,
+                isLoading: false,
+                isPayShow: false,
                 options: [],
                 searchName: '',
                 columns: [
@@ -118,11 +118,11 @@
                         key: 'member',
                         title: '会员号',
                         render: function (h, params) {
-                            let text='';
+                            let text = '';
                             let member = this.row.member;
-                            if(member == undefined){
-                                text = "散客";
-                            }else{
+                            if (member == undefined) {
+                                text = '散客';
+                            } else {
                                 text = member.phone;
                             }
                             return h('div', text);
@@ -134,8 +134,8 @@
                         title: '服务项目',
                         render: function (h, params) {
                             let itemList = this.row.items;
-                            return h('ol', {style: {type: 1,listStyleType:'decimal'}}, itemList.map(function (item) {
-                                return h('li', {style: {type: 1}}, item.item)
+                            return h('ol', {style: {type: 1, listStyleType: 'decimal'}}, itemList.map(function (item) {
+                                return h('li', {style: {type: 1}}, item.item);
                             }));
                         }
 
@@ -178,7 +178,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.showPay(params)
+                                            this.showPay(params);
                                         }
                                     }
                                 }, '支付'),
@@ -192,7 +192,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.show(params.index)
+                                            this.show(params.index);
                                         }
                                     }
                                 }, '详情'),
@@ -204,7 +204,7 @@
                                     },
                                     on: {
                                         'on-ok': () => {
-                                            this.toDelete(currentRow)
+                                            this.toDelete(currentRow);
                                         }
                                     }
                                 }, [
@@ -227,20 +227,20 @@
                 orderItem: {
                     payfrom: '0',
                     money: 0.00,
-                    remark: ""
+                    remark: ''
                 },
                 page: {
                     pageNumber: 1,
                     pageSize: 100,
                     total: 0
                 }
-            }
+            };
         },
         methods: {
-            init() {
+            init () {
                 let data = {
-                    page:this.page,
-                    code:0
+                    page: this.page,
+                    code: 0
                 };
                 this.Http.postJson(config.service.getOrderList, data).then((res) => {
                     if (res.data.code == 100) {
@@ -254,26 +254,25 @@
                     }
                 });
             },
-            handleDel(val, index) {
+            handleDel (val, index) {
                 this.$Message.success('删除了第' + (index + 1) + '行数据');
-
             },
 
             showPay (params) {
                 this.orderItem = params.row;
-                if(this.orderItem.member == undefined){
+                if (this.orderItem.member == undefined) {
                     this.orderItem.payfrom = '1';
-                }else{
+                } else {
                     this.orderItem.payfrom = '0';
                 }
                 this.isPayShow = true;
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消!');
                 this.isPayShow = false;
                 this.isLoading = false;
             },
-            toPay(){
+            toPay () {
                 // 支付挂单
                 this.Http.postJson(config.service.toPayEntryOrders, this.orderItem).then((res) => {
                     if (res.data.code == 100) {
@@ -285,7 +284,6 @@
                         this.isLoading = false;
                         this.init();
                         // this.orderItem = null;
-
                     } else {
                         this.$Message.error({
                             content: res.data.msg,
@@ -294,7 +292,7 @@
                     }
                 });
             },
-            toDelete(currentRow){
+            toDelete (currentRow) {
                 // 删除挂单
                 this.orderItem = currentRow;
                 this.Http.postJson(config.service.toDeleteEntryOrders, this.orderItem).then((res) => {
@@ -304,7 +302,6 @@
                             duration: 2
                         });
                         this.init();
-
                     } else {
                         this.$Message.error({
                             content: res.data.msg,
@@ -314,11 +311,9 @@
                 });
             }
 
-
         },
-        mounted() {
+        mounted () {
             this.init();
-
         }
-    }
+    };
 </script>

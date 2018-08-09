@@ -278,12 +278,12 @@
     import Cookies from 'js-cookie';
 
     export default {
-        name: "add-order",
+        name: 'add-order',
         components: {
             canEditTable,
             infoItem
         },
-        data() {
+        data () {
             return {
                 model: '',
                 createDate: '',
@@ -304,9 +304,9 @@
                         title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = "￥" + parseFloat(params.row.result).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.result).toFixed(2);
                             return h('div', price);
-                            /*这里的this.row能够获取当前行的数据*/
+                            /* 这里的this.row能够获取当前行的数据 */
                         }
                     }
                 ],
@@ -324,16 +324,16 @@
                         title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = "￥" + parseFloat(params.row.outPrice).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.outPrice).toFixed(2);
                             return h('div', price);
-                            /*这里的this.row能够获取当前行的数据*/
+                            /* 这里的this.row能够获取当前行的数据 */
                         }
                     },
                     {
                         key: 'stockCount',
                         width: 60,
                         title: '库存'
-                    },
+                    }
                 ],
                 consumeColumns: [
                     {
@@ -344,7 +344,7 @@
                         key: 'price',
                         title: '单价',
                         render: function (h, params) {
-                            let price = "￥" + parseFloat(params.row.price).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.price).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -353,9 +353,9 @@
                         title: '服务费',
                         editable: true,
                         render: function (h, params) {
-                            let price = "￥" + parseFloat(params.row.cover).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.cover).toFixed(2);
                             return h('div', price);
-                            /*这里的this.row能够获取当前行的数据*/
+                            /* 这里的this.row能够获取当前行的数据 */
                         }
                     },
                     {
@@ -381,7 +381,7 @@
                         title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = "￥" + parseFloat(params.row.price).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.price).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -390,7 +390,7 @@
                         title: '服务费(元)',
                         width: 100,
                         render: function (h, params) {
-                            let price = "￥" + parseFloat(params.row.cover).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.cover).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -415,14 +415,14 @@
                     transfer: 0
                 },
                 member: {
-                    carnum: "",
-                    createtime: "",
-                    lastvisittime: "",
-                    name: "",
-                    phone: ""
+                    carnum: '',
+                    createtime: '',
+                    lastvisittime: '',
+                    name: '',
+                    phone: ''
                 },
                 account: {
-                    createtime: "",
+                    createtime: '',
                     id: 0,
                     money: 0.00,
                     totalConsume: 0.00,
@@ -431,15 +431,15 @@
                 orderItem: {
                     payfrom: 0,
                     money: this.totalPrice,
-                    remark: ""
-                },
-            }
+                    remark: ''
+                }
+            };
         },
         methods: {
-            init() {
+            init () {
                 let data = {
                     type: 'server'
-                }
+                };
                 // 获取服务列表
                 this.Http.post(config.service.getConfigsByType, data).then((res) => {
                     if (res.data.code == 100) {
@@ -454,9 +454,9 @@
 
                 let goodsData = {
                     pageNumber: 1,
-                    pageSize: 100,
+                    pageSize: 100
                 };
-                //获取商品列表
+                // 获取商品列表
                 this.Http.post(config.service.getGoodsList, goodsData).then((res) => {
                     if (res.data.code == 100) {
                         this.goodsData = this.initGoodsData = res.data.data.rows;
@@ -468,7 +468,7 @@
                     }
                 });
             },
-            addConsumeItem(data) { // 添加服务消费条目
+            addConsumeItem (data) { // 添加服务消费条目
                 let itemData = {
                     goodsId: -1,
                     title: data.title,
@@ -489,10 +489,10 @@
                     this.totalPrice = totalConsumeData;
                 }
             },
-            addGoodsConsumeItem(data) { // 添加商品消费条目
+            addGoodsConsumeItem (data) { // 添加商品消费条目
                 let itemData = {
                     goodsId: data.id,
-                    title: data.category + "_" + data.type,
+                    title: data.category + '_' + data.type,
                     price: data.outPrice,
                     cover: data.workPrice,
                     count: 1,
@@ -508,7 +508,7 @@
                     this.totalPrice = totalConsumeData;
                 }
             },
-            handleDel(val, index) {
+            handleDel (val, index) {
                 if (this.consumeData.length == 0) {
                     this.isEnablePreview = true;
                     this.totalPrice = 0.00;
@@ -520,7 +520,7 @@
                     this.totalPrice = totalConsumeData;
                 }
             },
-            handleCellChange(val, index, key) { //
+            handleCellChange (val, index, key) { //
                 for (let i = 0; i < val.length; i++) {
                     let res = val[i];
                     res.count = parseInt(res.count);
@@ -539,9 +539,8 @@
                     }
                     this.totalPrice = totalConsumeData;
                 }
-
             },
-            search(data, argumentObj) {
+            search (data, argumentObj) {
                 let res = data;
                 let dataClone = data;
                 for (let argu in argumentObj) {
@@ -554,22 +553,22 @@
                 }
                 return res;
             },
-            handleSearch() {
+            handleSearch () {
                 this.serverData = this.initServerData;
                 this.serverData = this.search(this.serverData, {
-                    itemKey: this.searchName,
+                    itemKey: this.searchName
                 });
             },
-            toShowPayModal() {
+            toShowPayModal () {
                 this.orderItem.money = this.totalPrice;
                 this.isPayShow = true;
             },
-            onOK(status) { //结算
+            onOK (status) { // 结算
                 this.isLoading = true;
 
                 let orderItems = [];
                 for (let i = 0; i < this.consumeData.length; i++) {
-                    let temp = this.consumeData[i]
+                    let temp = this.consumeData[i];
                     let itemData = {
                         item: temp.title,
                         goodsId: temp.goodsId,
@@ -591,14 +590,14 @@
                 let data = {
                     order: this.orderItem,
                     items: orderItems
-                }
+                };
 
                 this.Http.postJson(config.service.addOrder, data).then((res) => {
                     if (res.data.code == 100) {
                         this.$Message.success({
                             content: res.data.msg,
                             duration: 2
-                        })
+                        });
                         this.consumeData = [];
                         this.totalPrice = 0.00;
                         this.isLoading = false;
@@ -612,13 +611,13 @@
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消!');
                 this.isPayShow = false;
                 this.isLoading = false;
                 this.isPreview = false;
             },
-            remoteMethod(query) {
+            remoteMethod (query) {
                 if (query !== '' && query.length > 3) {
                     this.loading = true;
                     let data = {
@@ -634,20 +633,19 @@
                                 content: res.data.msg,
                                 duration: 2
                             });
-
                         }
                     });
                 } else {
                     this.options = [];
                 }
             },
-            chooseUser(data) {
+            chooseUser (data) {
                 this.member = data;
                 if (this.member != null && this.member != '') {
                     let data = {
                         userId: this.member.id
                     };
-                    //获取账户信息
+                    // 获取账户信息
                     this.Http.post(config.service.getMyAccount, data).then((res) => {
                         if (res.data.code == 100) {
                             this.account = res.data.data;
@@ -660,31 +658,31 @@
                     });
                 } else {
                     this.account = {
-                        createtime: "",
+                        createtime: '',
                         id: 0,
                         money: 0.00,
                         totalConsume: 0.00,
                         userid: 0
-                    }
+                    };
                 }
             },
-            onClear() {
+            onClear () {
                 this.member = null;
                 this.account = {
-                    createtime: "",
+                    createtime: '',
                     id: 0,
                     money: 0.00,
                     totalConsume: 0.00,
                     userid: 0
-                }
+                };
             },
-            toPreview() {
+            toPreview () {
                 this.createDate = new Date().format('yyyy-MM-dd');
                 this.isPreview = true;
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         }
-    }
+    };
 </script>

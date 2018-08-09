@@ -57,20 +57,19 @@
 </template>
 
 <script>
-
     import config from '../../libs/config';
     import utils from '../../libs/util';
 
     export default {
         name: 'store_parts',
-        data() {
+        data () {
             return {
                 searchName: '',
                 columns: [
                     {
-                        type:'index',
-                        align:'center',
-                        width:60
+                        type: 'index',
+                        align: 'center',
+                        width: 60
                     },
                     {
                         key: 'partsName',
@@ -78,13 +77,13 @@
                     },
                     {
                         key: 'createTime',
-                        width:200,
+                        width: 200,
                         title: '创建时间'
                     },
                     {
                         title: '操作',
                         key: 'show_more',
-                        width:120,
+                        width: 120,
                         align: 'center',
                         render: (h, params) => {
                             return h('Button', {
@@ -117,8 +116,8 @@
             };
         },
         methods: {
-            init() {
-                this.Http.post(config.service.getStoreParts, "").then((res) => {
+            init () {
+                this.Http.post(config.service.getStoreParts, '').then((res) => {
                     if (res.data.code == 100) {
                         this.data = this.initTable = res.data.data;
                     } else {
@@ -130,8 +129,7 @@
                 });
             },
 
-
-            search(data, argumentObj) {
+            search (data, argumentObj) {
                 let res = data;
                 let dataClone = data;
                 for (let argu in argumentObj) {
@@ -145,15 +143,15 @@
                 return res;
             },
 
-            handleSearch() {
+            handleSearch () {
                 this.data = this.initTable;
                 this.data = this.search(this.data, {
                     partsName: this.searchName
                 });
             },
-            onOK() {
+            onOK () {
                 this.isLoading = true;
-                if (this.formItem.partsName == "") {
+                if (this.formItem.partsName == '') {
                     this.$Message.info('请输入配件类型');
                     this.isLoading = false;
                     return;
@@ -167,27 +165,24 @@
                         });
                         this.isLoading = false;
                         this.modal = false;
-                        //添加数据
-                        this.data.unshift(res.data.data)
-
+                        // 添加数据
+                        this.data.unshift(res.data.data);
                     } else {
                         this.isLoading = false;
                         this.$Message.error({
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.modal = false;
             }
         },
-        mounted() {
+        mounted () {
             this.init();
-
         }
     };
 </script>

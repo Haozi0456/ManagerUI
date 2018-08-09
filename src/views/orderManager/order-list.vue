@@ -108,13 +108,12 @@
 </template>
 
 <script>
-
     import config from '../../libs/config';
     import Cookies from 'js-cookie';
 
     export default {
         name: 'store_parts',
-        data() {
+        data () {
             return {
                 searchName: '',
                 columns: [
@@ -126,11 +125,11 @@
                         key: 'member',
                         title: '会员号',
                         render: function (h, params) {
-                            let text='';
+                            let text = '';
                             let member = this.row.member;
-                            if(member == undefined){
-                                text = "散客";
-                            }else{
+                            if (member == undefined) {
+                                text = '散客';
+                            } else {
                                 text = member.phone;
                             }
                             return h('div', text);
@@ -142,12 +141,12 @@
                         title: '服务项目',
                         render: function (h, params) {
                             let itemList = this.row.items;
-                            return h('ol',{style:{ type:1,listStyleType:'decimal'}}, itemList.map(function (item) {
-                                return h('li',{style:{ type:1,listStyle:'decimal'}},item.item)
+                            return h('ol', {style: { type: 1, listStyleType: 'decimal'}}, itemList.map(function (item) {
+                                return h('li', {style: { type: 1, listStyle: 'decimal'}}, item.item);
                             }));
 
                             // return h('div', text);
-                            /*这里的this.row能够获取当前行的数据*/
+                            /* 这里的this.row能够获取当前行的数据 */
                         }
 
                     },
@@ -165,17 +164,17 @@
                         render: function (h, params) {
                             let text = '';
                             if (this.row.payfrom == 0) {
-                                text = "账户余额"
+                                text = '账户余额';
                             } else if (this.row.payfrom == 1) {
-                                text = "支付宝"
+                                text = '支付宝';
                             } else if (this.row.payfrom == 2) {
-                                text = "微信"
+                                text = '微信';
                             } else if (this.row.payfrom == 3) {
-                                text = "现金"
+                                text = '现金';
                             } else {
-                                text = "其它"
+                                text = '其它';
                             }
-                            return h('div', text)
+                            return h('div', text);
                         }
                     },
                     {
@@ -198,13 +197,13 @@
                 isLoading: false,
                 isShow: false,
                 isRechargeShow: false,
-                chooseMonth:'',
+                chooseMonth: '',
                 orderItem: {
                     userid: this.userId,
                     type: '1',
                     payfrom: '1',
                     money: 25,
-                    remark: ""
+                    remark: ''
                 },
                 page: {
                     pageNumber: 1,
@@ -214,10 +213,10 @@
             };
         },
         methods: {
-            init() {
+            init () {
                 let data = {
-                    page:this.page,
-                    code:1
+                    page: this.page,
+                    code: 1
                 };
                 this.Http.postJson(config.service.getOrderList, data).then((res) => {
                     if (res.data.code == 100) {
@@ -231,7 +230,7 @@
                     }
                 });
             },
-            search(data, argumentObj) {
+            search (data, argumentObj) {
                 let res = data;
                 let dataClone = data;
                 for (let argu in argumentObj) {
@@ -245,13 +244,13 @@
                 return res;
             },
 
-            handleSearch() {
+            handleSearch () {
                 this.data = this.initTable;
                 this.data = this.search(this.data, {
                     partsName: this.searchName
                 });
             },
-            onOK() {
+            onOK () {
                 this.isLoading = true;
                 let user = Cookies.get('user');
                 this.orderItem.operator = user;
@@ -260,35 +259,32 @@
                         this.$Message.success({
                             content: '添加成功!',
                             duration: 2
-                        })
+                        });
                         this.isLoading = false;
                         this.isShow = false;
-                        //添加数据
+                        // 添加数据
                         // this.data.unshift(res.data.data)
                         this.onPageChange(1);
-
                     } else {
                         this.isLoading = false;
                         this.$Message.error({
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.isShow = false;
                 this.isLoading = false;
             },
-            onPageChange(pageNo){
-
-                if(this.chooseMonth == ''){
+            onPageChange (pageNo) {
+                if (this.chooseMonth == '') {
                     this.page.pageNumber = pageNo;
                     let data = {
-                        page:this.page,
-                        code:1
+                        page: this.page,
+                        code: 1
                     };
                     this.Http.postJson(config.service.getOrderList, data).then((res) => {
                         if (res.data.code == 100) {
@@ -301,13 +297,13 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.page.pageNumber = pageNo;
                     let data = {
-                        pageNumber:pageNo,
-                        pageSize:this.page.pageSize,
-                        month:this.chooseMonth
-                    }
+                        pageNumber: pageNo,
+                        pageSize: this.page.pageSize,
+                        month: this.chooseMonth
+                    };
                     this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -320,15 +316,14 @@
                         }
                     });
                 }
-
             },
-            onPageSizeChange(pageSize){
-                if(this.chooseMonth == ''){
+            onPageSizeChange (pageSize) {
+                if (this.chooseMonth == '') {
                     this.page.pageNumber = 1;
                     this.page.pageSize = pageSize;
                     let data = {
-                        page:this.page,
-                        code:1
+                        page: this.page,
+                        code: 1
                     };
                     this.Http.postJson(config.service.getOrderList, data).then((res) => {
                         if (res.data.code == 100) {
@@ -341,13 +336,13 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.page.pageNumber = 1;
                     this.page.pageSize = pageSize;
                     let data = {
-                        pageVO:this.page,
-                        month:this.chooseMonth
-                    }
+                        pageVO: this.page,
+                        month: this.chooseMonth
+                    };
 
                     this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
                         if (res.data.code == 100) {
@@ -361,17 +356,16 @@
                         }
                     });
                 }
-
             },
-            dateChange(dateValue) {
+            dateChange (dateValue) {
                 this.chooseMonth = dateValue;
-                if(dateValue != ''){
+                if (dateValue != '') {
                     this.page.pageNumber = 1;
                     let data = {
-                        pageNumber:this.page.pageNumber,
-                        pageSize:this.page.pageSize,
-                        month:dateValue
-                    }
+                        pageNumber: this.page.pageNumber,
+                        pageSize: this.page.pageSize,
+                        month: dateValue
+                    };
                     this.Http.post(config.service.getOrderListByMonth, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -383,15 +377,13 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.onPageChange(1);
                 }
-
             }
         },
-        mounted() {
+        mounted () {
             this.init();
-
         }
     };
 </script>

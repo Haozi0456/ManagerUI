@@ -20,12 +20,12 @@
     import infoItem from '../custom-component/infoItem.vue';
 
     export default {
-        name: "employeeConfig",
+        name: 'employeeConfig',
         components: {
             infoPanel,
             infoItem
-        },
-    }
+        }
+    };
 </script>
 
 <style scoped>

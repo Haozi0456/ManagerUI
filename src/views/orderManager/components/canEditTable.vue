@@ -141,8 +141,8 @@ export default {
         columnsList: Array,
         value: Array,
         url: String,
-        maxHeight:{
-            type:Number,
+        maxHeight: {
+            type: Number,
             default: 260
         },
         editIncell: {

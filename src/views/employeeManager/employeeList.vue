@@ -102,10 +102,10 @@
             return {
                 columns: [
                     {
-                        width:60,
-                        type:'index',
-                        sortType:'asc',
-                        align:'center'
+                        width: 60,
+                        type: 'index',
+                        sortType: 'asc',
+                        align: 'center'
                     },
                     {
                         key: 'name',
@@ -118,27 +118,27 @@
                     {
                         key: 'role',
                         title: '职位',
-                        align:'center'
+                        align: 'center'
                     },
                     {
                         key: 'salary',
                         title: '薪资',
-                        align:'center',
+                        align: 'center',
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.salary).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.salary).toFixed(2);
                             return h('div', price);
                         }
                     },
                     {
                         key: 'dataFlag',
                         title: '状态',
-                        align:'center',
+                        align: 'center',
                         render: function (h, params) {
-                            let text = "";
-                            if(params.row.dataFlag == 1){
-                                text = "在职";
-                            }else{
-                                text = "离职";
+                            let text = '';
+                            if (params.row.dataFlag == 1) {
+                                text = '在职';
+                            } else {
+                                text = '离职';
                             }
                             return h('div', text);
                         }
@@ -146,14 +146,14 @@
                     {
                         key: 'entryTime',
                         title: '入职时间',
-                        width:120,
-                        align:'center',
+                        width: 120,
+                        align: 'center'
                     },
 
                     {
                         title: '操作',
                         key: 'show_more',
-                        width:140,
+                        width: 140,
                         align: 'center',
                         render: (h, params) => {
                             let currentRow = params.row;
@@ -182,7 +182,7 @@
                                     },
                                     on: {
                                         'on-ok': () => {
-                                            this.toDelete(currentRow,index)
+                                            this.toDelete(currentRow, index);
                                         }
                                     }
                                 }, [
@@ -202,22 +202,22 @@
                     }
                 ],
                 data: [],
-                roleTypes:[],
-                dataFlags:[{ id:1, name:'在职'},{ id:-1, name:'离职'}],
+                roleTypes: [],
+                dataFlags: [{ id: 1, name: '在职'}, { id: -1, name: '离职'}],
                 modal: false,
                 isLoading: false,
                 searchName: '',
                 manager: {
-                    id:0,
+                    id: 0,
                     name: '',
                     account: '',
                     roleType: 0,
-                    salary:2000,
-                    password:'',
-                    createTime:'',
-                    entryTime:'',
-                    dataFlag:1,
-                    lastVisitTime:''
+                    salary: 2000,
+                    password: '',
+                    createTime: '',
+                    entryTime: '',
+                    dataFlag: 1,
+                    lastVisitTime: ''
                 },
                 page: {
                     pageNumber: 1,
@@ -259,8 +259,8 @@
                 });
 
                 let data = {
-                    page:this.page,
-                    code:0 //全部员工
+                    page: this.page,
+                    code: 0 // 全部员工
                 };
                 // 获取员工列表
                 this.Http.postJson(config.service.getManagerListByType, data).then((res) => {
@@ -275,15 +275,14 @@
                         });
                     }
                 });
+            },
+            toDelete (data, index) {
 
             },
-            toDelete(data,index){
-
-            },
-            onDataChoose(data){
-                if(data == ''){
+            onDataChoose (data) {
+                if (data == '') {
                     this.manager.entryTime = new Date().format('yyyy-MM-dd HH:mm:ss');
-                }else{
+                } else {
                     this.manager.entryTime = data;
                 }
             },
@@ -316,16 +315,16 @@
                         this.isLoading = false;
                         this.modal = false;
                         this.manager = {
-                            id:0,
+                            id: 0,
                             name: '',
                             account: '',
                             roleType: 0,
-                            salary:2000,
-                            password:'',
-                            createTime:'',
-                            entryTime:'',
-                            dataFlag:1,
-                            lastVisitTime:''
+                            salary: 2000,
+                            password: '',
+                            createTime: '',
+                            entryTime: '',
+                            dataFlag: 1,
+                            lastVisitTime: ''
                         };
                         // 添加数据
                         this.onPageChange(1);
@@ -358,15 +357,15 @@
             handleCancel () {
 
             },
-            typeChange(partsId){
+            typeChange (partsId) {
                 this.choosePartsTypeId = partsId;
-                if(partsId != null && partsId != ''){
+                if (partsId != null && partsId != '') {
                     this.page.pageNumber = 1;
-                    var data ={
-                        pageNumber:this.page.pageNumber,
-                        pageSize:this.page.pageSize,
-                        partsId:partsId
-                    }
+                    var data = {
+                        pageNumber: this.page.pageNumber,
+                        pageSize: this.page.pageSize,
+                        partsId: partsId
+                    };
                     this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -378,11 +377,10 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.onPageChange(1);
                 }
             }
-
 
         },
         mounted () {

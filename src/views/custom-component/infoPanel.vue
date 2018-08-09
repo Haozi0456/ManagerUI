@@ -48,7 +48,7 @@
 
 <script>
     export default {
-        name: "infoPanel",
+        name: 'infoPanel',
         props: {
             idName: String,
             decimals: {
@@ -83,9 +83,8 @@
                 default: '120px'
             }
 
-
         }
-    }
+    };
 </script>
 
 <style scoped>

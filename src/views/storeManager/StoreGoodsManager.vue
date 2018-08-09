@@ -122,9 +122,9 @@
                 columns: [
                     {
                         key: 'id',
-                        width:60,
-                        sortType:'asc',
-                        align:'center'
+                        width: 60,
+                        sortType: 'asc',
+                        align: 'center'
                     },
                     {
                         key: 'category',
@@ -137,7 +137,7 @@
                     {
                         key: 'inPrice',
                         title: '进价(元)',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
                             let price = parseFloat(params.row.inPrice).toFixed(2);
                             return h('div', price);
@@ -146,7 +146,7 @@
                     {
                         key: 'outPrice',
                         title: '售价(元)',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
                             let price = parseFloat(params.row.outPrice).toFixed(2);
                             return h('div', price);
@@ -155,7 +155,7 @@
                     {
                         key: 'workPrice',
                         title: '服务费(元)',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
                             let price = parseFloat(params.row.workPrice).toFixed(2);
                             return h('div', price);
@@ -164,17 +164,17 @@
                     {
                         key: 'stockCount',
                         title: '库存',
-                        width:100
+                        width: 100
                     },
                     {
                         key: 'operator',
                         title: '经办人',
-                        width:120
+                        width: 120
                     },
                     {
                         title: '操作',
                         key: 'show_more',
-                        width:140,
+                        width: 140,
                         align: 'center',
                         render: (h, params) => {
                             let currentRow = params.row;
@@ -230,7 +230,7 @@
                                     },
                                     on: {
                                         'on-ok': () => {
-                                            this.toDelete(currentRow,index)
+                                            this.toDelete(currentRow, index);
                                         }
                                     }
                                 }, [
@@ -256,7 +256,7 @@
                 partsType: '',
                 partsList: [],
                 isLoading: false,
-                choosePartsTypeId:'',
+                choosePartsTypeId: '',
                 searchcCategory: '',
                 formItem: {
                     partsId: '',
@@ -289,8 +289,8 @@
                 });
 
                 let data = {
-                    pageNumber:this.page.pageNumber,
-                    pageSize:this.page.pageSize,
+                    pageNumber: this.page.pageNumber,
+                    pageSize: this.page.pageSize
                 };
 
                 this.Http.post(config.service.getGoodsList, data).then((res) => {
@@ -345,7 +345,7 @@
             },
             onPageChange (pageNumber) {
                 this.page.pageNumber = pageNumber;
-                if(this.choosePartsTypeId == ''){
+                if (this.choosePartsTypeId == '') {
                     this.Http.post(config.service.getGoodsList, this.page).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -357,12 +357,12 @@
                             });
                         }
                     });
-                }else{
-                    var data ={
-                        pageNumber:this.page.pageNumber,
-                        pageSize:this.page.pageSize,
-                        partsId:this.choosePartsTypeId
-                    }
+                } else {
+                    var data = {
+                        pageNumber: this.page.pageNumber,
+                        pageSize: this.page.pageSize,
+                        partsId: this.choosePartsTypeId
+                    };
                     this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -375,12 +375,11 @@
                         }
                     });
                 }
-
             },
             onPageSizeChange (pageSize) {
                 this.page.pageNumber = 1;
                 this.page.pageSize = pageSize;
-                if(this.choosePartsTypeId == ''){
+                if (this.choosePartsTypeId == '') {
                     this.Http.post(config.service.getGoodsList, this.page).then((res) => {
                         if (res.data.code === 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -392,12 +391,12 @@
                             });
                         }
                     });
-                }else{
-                    var data ={
-                        pageNumber:this.page.pageNumber,
-                        pageSize:this.page.pageSize,
-                        partsId:this.choosePartsTypeId
-                    }
+                } else {
+                    var data = {
+                        pageNumber: this.page.pageNumber,
+                        pageSize: this.page.pageSize,
+                        partsId: this.choosePartsTypeId
+                    };
                     this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -410,7 +409,6 @@
                         }
                     });
                 }
-
             },
             onCancel () {
                 this.$Message.info('取消添加!');
@@ -423,15 +421,15 @@
             handleCancel () {
 
             },
-            typeChange(partsId){
+            typeChange (partsId) {
                 this.choosePartsTypeId = partsId;
-                if(partsId != null && partsId != ''){
+                if (partsId != null && partsId != '') {
                     this.page.pageNumber = 1;
-                    var data ={
-                        pageNumber:this.page.pageNumber,
-                        pageSize:this.page.pageSize,
-                        partsId:partsId
-                    }
+                    var data = {
+                        pageNumber: this.page.pageNumber,
+                        pageSize: this.page.pageSize,
+                        partsId: partsId
+                    };
                     this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
                         if (res.data.code == 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -443,11 +441,10 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.onPageChange(1);
                 }
             }
-
 
         },
         mounted () {

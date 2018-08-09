@@ -66,7 +66,7 @@
 
     export default {
         name: 'ownspace_index',
-        data() {
+        data () {
             const validePhone = (rule, value, callback) => {
                 var re = /^1[0-9]{10}$/;
                 if (!re.test(value)) {
@@ -128,10 +128,10 @@
             };
         },
         methods: {
-            showEditPassword() {
+            showEditPassword () {
                 this.editPasswordModal = true;
             },
-            cancelEditUserInfor() {
+            cancelEditUserInfor () {
                 this.$store.commit('removeTag', 'ownspace_index');
                 localStorage.pageOpenedList = JSON.stringify(this.$store.state.app.pageOpenedList);
                 let lastPageName = '';
@@ -144,7 +144,7 @@
                     name: lastPageName
                 });
             },
-            saveEdit() {
+            saveEdit () {
                 this.$refs['userForm'].validate((valid) => {
                     if (valid) {
                         // if (this.phoneHasChanged && this.userForm.cellphone !== this.initPhone) { // 手机号码修改过了而且修改之后的手机号和原来的不一样
@@ -161,24 +161,23 @@
                         //     this.saveInfoAjax();
                         // }
 
-
                     }
                 });
             },
-            cancelEditPass() {
+            cancelEditPass () {
                 this.editPasswordModal = false;
             },
-            saveEditPass() {
+            saveEditPass () {
                 this.$refs['editPasswordForm'].validate((valid) => {
                     if (valid) {
                         this.savePassLoading = true;
                         let userId = Cookies.get('userId');
                         let data = {
-                            managerId:userId,
+                            managerId: userId,
                             password: this.editPasswordForm.rePass
-                        }
+                        };
 
-                        //修改登录密码
+                        // 修改登录密码
                         this.Http.post(config.service.resetPassword, data).then((res) => {
                             if (res.data.code == 100) {
                                 Cookies.set('password', this.editPasswordForm.rePass);
@@ -198,16 +197,16 @@
                     }
                 });
             },
-            init() {
+            init () {
                 this.userForm.name = Cookies.get('user');
                 this.userForm.cellphone = Cookies.get('phone');
             },
-            hasChangePhone() {
+            hasChangePhone () {
                 this.phoneHasChanged = true;
                 this.hasGetIdentifyCode = false;
                 this.identifyCodeRight = false;
             },
-            saveInfoAjax() {
+            saveInfoAjax () {
                 this.save_loading = true;
                 setTimeout(() => {
                     this.$Message.success('保存成功');
@@ -215,7 +214,7 @@
                 }, 1000);
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         }
     };

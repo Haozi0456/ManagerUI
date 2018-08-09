@@ -177,7 +177,6 @@
 </template>
 
 <script>
-
     import config from '../../libs/config';
     import canEditTable from './components/canEditTable.vue';
     import tableData from './components/data/table_data.js';
@@ -188,7 +187,7 @@
         components: {
             canEditTable
         },
-        data() {
+        data () {
             return {
                 searchName: '',
                 columns: [],
@@ -206,7 +205,7 @@
                     itemTotalPrice: 0.00
                 },
                 partsList: [],
-                maxPartsCount:9,
+                maxPartsCount: 9,
                 modal: false,
                 isRepairModelShow: false,
                 isPartsItemModelShow: false,
@@ -218,7 +217,7 @@
                 isLoading: false,
                 partsItem: null,
                 totalPrice: 0.00,
-                createDate:'',
+                createDate: '',
                 formItem: {
                     name: '',
                     partsId: '',
@@ -233,14 +232,13 @@
             };
         },
         methods: {
-            getData() {
+            getData () {
                 this.columns = tableData.table1Columns;
                 this.itemColumns = tableData.table2Columns;
                 this.showCurrentColumns = tableData.showCurrentColumns;
-                this.createDate = new Date().format('yyyy-MM-dd')
+                this.createDate = new Date().format('yyyy-MM-dd');
             },
-            init() {
-
+            init () {
                 // 获取配件类型
                 this.Http.post(config.service.getStoreParts, '').then((res) => {
                     if (res.data.code == 100) {
@@ -252,32 +250,30 @@
                         });
                     }
                 });
-
             },
-            onOK() {
+            onOK () {
                 this.isLoading = true;
-                if (this.formItem.name == "") {
-                    this.$Message.error("请输入项目名称");
+                if (this.formItem.name == '') {
+                    this.$Message.error('请输入项目名称');
                     this.isLoading = false;
                     return;
                 }
 
                 if (this.partsItem == null) {
-                    this.$Message.error("请选择配件类型");
+                    this.$Message.error('请选择配件类型');
                     this.isLoading = false;
                     return;
                 }
 
-
                 let dateItem = {
                     itemName: this.formItem.name,
-                    itemType: this.partsItem.category + "(" + this.partsItem.type + ")",
+                    itemType: this.partsItem.category + '(' + this.partsItem.type + ')',
                     itemId: this.partsItem.id,
                     itemCount: this.formItem.count,
                     itemPrice: this.partsItem.outPrice.toFixed(2),
                     itemWorkPrice: this.partsItem.workPrice.toFixed(2),
                     itemTotalPrice: (this.formItem.count * this.partsItem.outPrice + this.partsItem.workPrice).toFixed(2)
-                }
+                };
 
                 this.data.push(dateItem);
                 this.isLoading = false;
@@ -299,19 +295,18 @@
                 //     return;
                 // }
                 //
-
             },
-            addRecord(){
-                if(this.data.length == 0){
+            addRecord () {
+                if (this.data.length == 0) {
                     this.$Message.info('请添加维修项目');
                     return;
                 }
-                let userName = Cookies.get("user");
+                let userName = Cookies.get('user');
                 let parameters = {
-                    items:this.data,
-                    operator:userName
-                }
-                this.Http.postJson(config.service.addRepairRecord,parameters).then((res) => {
+                    items: this.data,
+                    operator: userName
+                };
+                this.Http.postJson(config.service.addRepairRecord, parameters).then((res) => {
                     if (res.data.code == 100) {
                         this.$Message.success({
                             content: '添加成功!',
@@ -322,21 +317,20 @@
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.modal = false;
             },
-            handleDel(val, index) {
+            handleDel (val, index) {
                 this.$Message.success('删除了第' + (index + 1) + '行数据');
                 if (this.data.length == 0) {
                     this.isEnablePreview = true;
                 }
             },
-            getCurrentData() {
+            getCurrentData () {
                 this.showCurrentTableData = true;
                 var totalMoney = 0.00;
                 for (let i = 0; i < this.data.length; i++) {
@@ -345,16 +339,16 @@
                 }
                 this.totalPrice = totalMoney.toFixed(2);
             },
-            onPartItemCancel() {
+            onPartItemCancel () {
                 this.isPartsItemModelShow = false;
                 this.formItem.partsId = '';
             },
-            onRepairItemChoose() {
+            onRepairItemChoose () {
                 this.formItem.name = this.repairName;
                 this.partsItem = null;
                 this.isRepairModelShow = false;
             },
-            onPartsItemChoose() {
+            onPartsItemChoose () {
                 // this.formItem.name = this.repairName;
                 if (this.partsItem != null) {
                     this.formItem.type = this.partsItem.type;
@@ -364,11 +358,11 @@
                     this.$Message.info('请选择配件后点击添加');
                 }
             },
-            onItemSelected(item) {
+            onItemSelected (item) {
                 this.partsItem = item;
             },
-            typeChange(item) {
-                this.choosePartsTypeLabel = item.label + " 配件清单";
+            typeChange (item) {
+                this.choosePartsTypeLabel = item.label + ' 配件清单';
                 this.choosePartsTypeId = item.value;
                 if (this.choosePartsTypeId != null && this.choosePartsTypeId != '') {
                     this.page.pageNumber = 1;
@@ -378,22 +372,22 @@
                     this.onPageChange(1);
                 }
             },
-            onPageChange(pageNumber) {
+            onPageChange (pageNumber) {
                 this.page.pageNumber = pageNumber;
                 this.getPartItemsByPartId();
             },
-            onPageSizeChange(pageSize) {
+            onPageSizeChange (pageSize) {
                 this.page.pageNumber = 1;
                 this.page.pageSize = pageSize;
                 this.getPartItemsByPartId();
             },
-            getPartItemsByPartId() {
+            getPartItemsByPartId () {
                 if (this.choosePartsTypeId != '') {
                     var data = {
                         pageNumber: this.page.pageNumber,
                         pageSize: this.page.pageSize,
                         partsId: this.choosePartsTypeId
-                    }
+                    };
                     this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
                         if (res.data.code == 100) {
                             this.itemData = res.data.data.rows;
@@ -408,10 +402,10 @@
                 }
             }
         },
-        created() {
+        created () {
             this.getData();
         },
-        mounted() {
+        mounted () {
             this.init();
         }
     };

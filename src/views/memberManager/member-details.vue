@@ -266,7 +266,7 @@
     import infoItem from '../custom-component/infoItem.vue';
 
     export default {
-        name: "member-details",
+        name: 'member-details',
         components: {
             inforCard,
             infoItem
@@ -275,7 +275,7 @@
             color: '#f25e43'
 
         },
-        data() {
+        data () {
             return {
                 userId: null,
                 showInfo: false,
@@ -288,17 +288,17 @@
                     transfer: 0
                 },
                 member: {
-                    carnum: "",
-                    createtime: "",
-                    lastvisittime: "",
-                    name: "",
-                    phone: ""
+                    carnum: '',
+                    createtime: '',
+                    lastvisittime: '',
+                    name: '',
+                    phone: ''
                 },
                 account: {
-                    createtime: "",
+                    createtime: '',
                     id: 0,
                     money: 0,
-                    subMoney:0,
+                    subMoney: 0,
                     totalConsume: 0.00,
                     userid: 52
                 },
@@ -312,14 +312,14 @@
                     type: '1',
                     payfrom: '0',
                     money: 25,
-                    remark: ""
+                    remark: ''
                 },
                 rechargeForm: {
                     accountId: 0,
                     type: '1',
                     money: 500,
-                    subMoney:0,
-                    remark: ""
+                    subMoney: 0,
+                    remark: ''
                 },
                 columns: [
                     {
@@ -332,15 +332,15 @@
                         render: function (h, params) {
                             let text = '';
                             if (this.row.type == 1) {
-                                text = '洗车'
+                                text = '洗车';
                             } else if (this.row.type == 2) {
-                                text = '维修'
+                                text = '维修';
                             } else {
-                                text = "其它"
+                                text = '其它';
                             }
 
                             return h('div', text);
-                            /*这里的this.row能够获取当前行的数据*/
+                            /* 这里的this.row能够获取当前行的数据 */
                         }
 
                     },
@@ -354,17 +354,17 @@
                         render: function (h, params) {
                             let text = '';
                             if (this.row.payfrom == 0) {
-                                text = "账户余额"
+                                text = '账户余额';
                             } else if (this.row.payfrom == 1) {
-                                text = "支付宝"
+                                text = '支付宝';
                             } else if (this.row.payfrom == 2) {
-                                text = "微信"
+                                text = '微信';
                             } else if (this.row.payfrom == 3) {
-                                text = "现金"
+                                text = '现金';
                             } else {
-                                text = "其它"
+                                text = '其它';
                             }
-                            return h('div', text)
+                            return h('div', text);
                         }
                     },
                     {
@@ -402,15 +402,15 @@
                 ],
                 chargeColumns: [
                     {
-                        type:'index',
-                        align:'center',
-                        width:60
+                        type: 'index',
+                        align: 'center',
+                        width: 60
                     },
                     {
                         key: 'money',
                         title: '充值金额',
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.money).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.money).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -418,7 +418,7 @@
                         key: 'subMoney',
                         title: '赠送金额',
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.subMoney).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.subMoney).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -428,26 +428,26 @@
                         render: function (h, params) {
                             let text = '';
                             if (this.row.type == 1) {
-                                text = "支付宝"
+                                text = '支付宝';
                             } else if (this.row.type == 2) {
-                                text = "微信"
+                                text = '微信';
                             } else if (this.row.type == 3) {
-                                text = "现金"
+                                text = '现金';
                             } else {
-                                text = "其它"
+                                text = '其它';
                             }
-                            return h('div', text)
+                            return h('div', text);
                         }
                     },
                     {
                         key: 'createTime',
                         title: '充值时间',
-                        width:100
+                        width: 100
                     },
                     {
                         key: 'operator',
                         title: '经办人',
-                        width:100
+                        width: 100
                     },
                     {
                         key: 'remark',
@@ -457,7 +457,7 @@
             };
         },
         methods: {
-            init() {
+            init () {
                 let userid = this.$route.query.user_id.toString();
                 this.userId = userid;
                 let data = {
@@ -474,7 +474,7 @@
                     }
                 });
 
-                //获取账户信息
+                // 获取账户信息
                 this.Http.post(config.service.getMyAccount, data).then((res) => {
                     if (res.data.code == 100) {
                         this.account = res.data.data;
@@ -487,7 +487,7 @@
                     }
                 });
 
-                //获取历史消费订单信息
+                // 获取历史消费订单信息
                 this.Http.post(config.service.getMyOrders, data).then((res) => {
                     if (res.data.code == 100) {
                         this.data = res.data.data;
@@ -498,9 +498,8 @@
                         });
                     }
                 });
-
             },
-            onOK() {
+            onOK () {
                 this.isLoading = true;
                 this.orderItem.userid = this.userId;
                 let user = Cookies.get('user');
@@ -514,20 +513,18 @@
                         this.getMyAccount();
                         this.isLoading = false;
                         this.isShow = false;
-                        //添加数据
-                        this.data.unshift(res.data.data)
-
+                        // 添加数据
+                        this.data.unshift(res.data.data);
                     } else {
                         this.isLoading = false;
                         this.$Message.error({
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
-            onRecharge() {
+            onRecharge () {
                 this.rechargeForm.accountId = this.account.id;
                 this.rechargeForm.operation = 1;
                 let user = Cookies.get('user');
@@ -541,29 +538,27 @@
                         this.getMyAccount();
                         this.isLoading = false;
                         this.isRechargeShow = false;
-                        //添加数据
-                        this.chargeData.unshift(res.data.data)
-
+                        // 添加数据
+                        this.chargeData.unshift(res.data.data);
                     } else {
                         this.isLoading = false;
                         this.$Message.error({
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消操作!');
                 this.isShow = false;
                 this.isLoading = false;
                 this.isRechargeShow = false;
             },
-            getRechargeList() {
+            getRechargeList () {
                 let data = {
-                    accountId: this.account.id,
-                }
+                    accountId: this.account.id
+                };
                 this.Http.post(config.service.getRechargeList, data).then((res) => {
                     if (res.data.code == 100) {
                         this.chargeData = res.data.data;
@@ -576,11 +571,11 @@
                     }
                 });
             },
-            getMyAccount() {
+            getMyAccount () {
                 let data = {
                     userId: this.userId
                 };
-                //获取账户信息
+                // 获取账户信息
                 this.Http.post(config.service.getMyAccount, data).then((res) => {
                     if (res.data.code == 100) {
                         this.account = res.data.data;
@@ -593,14 +588,14 @@
                 });
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         },
         watch: {
-            '$route'() {
+            '$route' () {
                 this.init();
             }
         }
-    }
+    };
 </script>
 

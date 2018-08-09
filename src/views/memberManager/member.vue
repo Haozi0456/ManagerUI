@@ -85,15 +85,14 @@
 </template>
 
 <script>
-
     import config from '../../libs/config';
     import utils from '../../libs/util';
 
     export default {
         name: 'member',
-        data() {
+        data () {
             const validatePhone = (rule, value, callback) => {
-                if (value != "") {
+                if (value != '') {
                     if (!utils.phoneVerify(value)) {
                         callback(new Error('请输入正确的手机号码'));
                     } else {
@@ -102,10 +101,9 @@
                 } else {
                     callback();
                 }
-
             };
             const validateCarNum = (rule, value, callback) => {
-                if (value != "") {
+                if (value != '') {
                     if (!utils.carNumberVerify(value)) {
                         callback(new Error('请输入正确的车牌号码'));
                     } else {
@@ -114,7 +112,6 @@
                 } else {
                     callback();
                 }
-
             };
             return {
                 searchConName: '',
@@ -181,7 +178,7 @@
                 memberItem: {
                     name: '',
                     phone: '',
-                    carnum: '鄂A',
+                    carnum: '鄂A'
                 },
                 accountItem: {
                     money: 100,
@@ -191,8 +188,8 @@
             };
         },
         methods: {
-            init() {
-                this.Http.post(config.service.getAllMembers, "").then((res) => {
+            init () {
+                this.Http.post(config.service.getAllMembers, '').then((res) => {
                     if (res.data.code == 100) {
                         this.data = this.initTable = res.data.data;
                     } else {
@@ -204,8 +201,7 @@
                 });
             },
 
-
-            search(data, argumentObj) {
+            search (data, argumentObj) {
                 let res = data;
                 let dataClone = data;
                 for (let argu in argumentObj) {
@@ -219,7 +215,7 @@
                 return res;
             },
 
-            handleSearch() {
+            handleSearch () {
                 this.data = this.initTable;
                 this.data = this.search(this.data, {
                     name: this.searchConName,
@@ -227,11 +223,11 @@
                     carnum: this.searchCarNo
                 });
             },
-            onOK(name) {
+            onOK (name) {
                 this.isLoading = true;
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        if (this.memberItem.phone == "" && this.memberItem.carnum == "") {
+                        if (this.memberItem.phone == '' && this.memberItem.carnum == '') {
                             this.$Message.info('请输入手机号码或车牌号!');
                             this.isLoading = false;
                             return;
@@ -248,36 +244,33 @@
                                 });
                                 this.isLoading = false;
                                 this.modal = false;
-                                //添加数据
-                                this.data.unshift(res.data.data)
-
+                                // 添加数据
+                                this.data.unshift(res.data.data);
                             } else {
                                 this.isLoading = false;
                                 this.$Message.error({
                                     content: res.data.msg,
                                     duration: 2
                                 });
-
                             }
                         });
                     } else {
                         this.isLoading = false;
                     }
-                })
+                });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.modal = false;
             },
-            toAddMember(){
+            toAddMember () {
                 this.$router.push({
                     name: 'member_add'
                 });
             }
         },
-        mounted() {
+        mounted () {
             this.init();
-
         }
     };
 </script>

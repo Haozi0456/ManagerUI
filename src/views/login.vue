@@ -42,7 +42,7 @@
     import {Message} from 'iview';
 
     export default {
-        data() {
+        data () {
             return {
                 form: {
                     userName: 'admin',
@@ -59,7 +59,7 @@
             };
         },
         methods: {
-            handleSubmit() {
+            handleSubmit () {
                 this.$refs.loginForm.validate((valid) => {
                     if (valid) {
                         let userName = this.form.userName;
@@ -78,10 +78,10 @@
                                 });
                                 Cookies.set('user', user.name);
                                 Cookies.set('password', this.form.password);
-                                Cookies.set('lastTime',user.lastVisitTime);
-                                Cookies.set('role',user.role);
-                                Cookies.set('phone',user.phone);
-                                Cookies.set('userId',user.id);
+                                Cookies.set('lastTime', user.lastVisitTime);
+                                Cookies.set('role', user.role);
+                                Cookies.set('phone', user.phone);
+                                Cookies.set('userId', user.id);
                                 this.$store.commit('setAvator', '../../images/ic-manager.png');
                                 if (this.form.userName === 'admin') {
                                     Cookies.set('access', 0);

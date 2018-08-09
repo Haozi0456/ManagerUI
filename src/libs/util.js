@@ -264,15 +264,15 @@ util.checkUpdate = function (vm) {
     });
 };
 
-//手机号验证
+// 手机号验证
 util.phoneVerify = function (text) {
-    //手机号正则
+    // 手机号正则
     var phonePattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9])|(19[0,5-9])|(17[0,5-9]))\d{8}$/;
-    return phonePattern.test(text)
-}
+    return phonePattern.test(text);
+};
 
-util.carNumberVerify = function(text) {
-    var num = text+"";
+util.carNumberVerify = function (text) {
+    var num = text + '';
     let len = num.length;
     var xreg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
     var creg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
@@ -283,24 +283,22 @@ util.carNumberVerify = function(text) {
     } else {
         return false;
     }
-}
+};
 
 Date.prototype.format = function (format) {
     var args = {
-        "M+": this.getMonth() + 1,
-        "d+": this.getDate(),
-        "h+": this.getHours(),
-        "m+": this.getMinutes(),
-        "s+": this.getSeconds(),
-        "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
-        "S": this.getMilliseconds()
+        'M+': this.getMonth() + 1,
+        'd+': this.getDate(),
+        'h+': this.getHours(),
+        'm+': this.getMinutes(),
+        's+': this.getSeconds(),
+        'q+': Math.floor((this.getMonth() + 3) / 3), // quarter
+        'S': this.getMilliseconds()
     };
-    if (/(y+)/.test(format))
-        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    if (/(y+)/.test(format)) { format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length)); }
     for (var i in args) {
         var n = args[i];
-        if (new RegExp("(" + i + ")").test(format))
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length));
+        if (new RegExp('(' + i + ')').test(format)) { format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ('00' + n).substr(('' + n).length)); }
     }
     return format;
 };

@@ -7,32 +7,32 @@
     import config from '../../../libs/config';
 
     export default {
-        name: "statisticsMonthOfYear",
+        name: 'statisticsMonthOfYear',
         data () {
             return {
-                year:2018,
-                chart:null,
-                chartData:{
-                    datelines:[],
-                    totals:[],
-                    counts:[]
+                year: 2018,
+                chart: null,
+                chartData: {
+                    datelines: [],
+                    totals: [],
+                    counts: []
                 }
 
             };
         },
-        props:{
-          yearVal:{
-              type:Number,
-              required:true,
-              default:2018
-          }
+        props: {
+            yearVal: {
+                type: Number,
+                required: true,
+                default: 2018
+            }
         },
-        methods:{
-          init() {
+        methods: {
+            init () {
                 const option = {
                     color: ['#3398DB'],
-                    title:{
-                      text:''
+                    title: {
+                        text: ''
                     },
                     tooltip: {
                         trigger: 'axis',
@@ -53,14 +53,12 @@
                     xAxis:
                         {
                             type: 'category',
-                            data:this.chartData.xValues
-                        }
-                    ,
+                            data: this.chartData.xValues
+                        },    
                     yAxis:
                         {
                             type: 'value'
-                        }
-                    ,
+                        },    
                     series: [
                         {
                             name: '月收入',
@@ -70,9 +68,9 @@
                                 normal: {
                                     show: true,
                                     position: 'top',
-                                    fontSize:18,
-                                    fontWeight:600,
-                                    color:'#ff0000',
+                                    fontSize: 18,
+                                    fontWeight: 600,
+                                    color: '#ff0000',
                                     formatter: '{c}.00'
                                 }
                             },
@@ -88,8 +86,8 @@
                     statisticsCharts.resize();
                 });
 
-              let dateValue = new Date().format("yyyy");
-              this.refresh(dateValue);
+                let dateValue = new Date().format('yyyy');
+                this.refresh(dateValue);
             },
             refresh (val) {
                 let data = {
@@ -98,8 +96,8 @@
                 this.Http.post(config.service.getStatisticsByMonthInYear, data).then((res) => {
                     if (res.data.code == 100) {
                         let result = res.data.data;
-                        var datelines =[];
-                        var totals =[];
+                        var datelines = [];
+                        var totals = [];
                         var counts = [];
                         for (var i = 0; i < result.length; i++) {
                             datelines.push(result[i].dateline);
@@ -109,10 +107,10 @@
                         this.chartData.datelines = datelines;
                         this.chartData.totals = totals;
                         this.chartData.counts = counts;
-                        let titleLable = val+'年月收入(单位:元)';
+                        let titleLable = val + '年月收入(单位:元)';
                         this.chart.setOption({
-                            title:{
-                                text:titleLable
+                            title: {
+                                text: titleLable
                             },
                             xAxis: {
                                 data: this.chartData.datelines
@@ -123,7 +121,6 @@
                                 data: this.chartData.totals
                             }]
                         });
-
                     } else {
                         this.$Message.error({
                             content: res.data.msg,

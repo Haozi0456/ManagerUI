@@ -40,7 +40,7 @@
 
 <script>
     export default {
-        name: "infoItem",
+        name: 'infoItem',
         props: {
             idName: String,
             decimals: {
@@ -81,7 +81,7 @@
                 default: '120px'
             }
         }
-    }
+    };
 </script>
 
 <style scoped>

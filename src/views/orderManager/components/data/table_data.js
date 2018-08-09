@@ -83,7 +83,6 @@ export const itemColumns = [
 
 ];
 
-
 export const showCurrentColumns = [
     {
         title: '序号',
@@ -118,7 +117,7 @@ export const showCurrentColumns = [
 ];
 
 const tableData = {
-    serverColumns:serverColumns,
+    serverColumns: serverColumns,
     table1Columns: columns,
     table2Columns: itemColumns,
     showCurrentColumns: showCurrentColumns

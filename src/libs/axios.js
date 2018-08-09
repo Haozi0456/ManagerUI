@@ -3,16 +3,15 @@ import axios from 'axios';
 import store from '../store';
 import { Message } from 'iview';
 import helper from './httpHelper';
-
+import Cookies from "js-cookie";
 let baseUrl = 'http://127.0.0.1:81/'; // 设置你的baseUrl
-
 
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
 // 设置token
 function setToken () {
     if (helper.local.get('token')) {
-        axios.defaults.headers.common['token'] = helper.getLocal('token');
+        axios.defaults.headers.common['token'] = helper.local.get('token');
     }
 }
 
@@ -23,15 +22,18 @@ axios.interceptors.request.use(config => {
     if (config.url.indexOf('login') < 0) {
         let lessTime = Number(helper.local.get('expireTime')) - Date.now(); // 后台返回的过期时间与现在的进行计算
         if (lessTime <= 0) {
-            // Message.error({
-            //     content: '登陆过期',
-            //     duration: 5
-            // });
+            Message.error({
+                content: '登录过期,请重新登录',
+                duration: 2
+            });
             // source.token('token过期了')
             // source.token()
             // store.commit('UPDATE_LOADING', false); // 隐藏loading
-            // window.location.href = '/#/login';
-            // helper.local.clear();
+            // window.location.href = '/login';
+            helper.local.clear('token');
+            helper.local.clear('expireTime');
+            Cookies.set('user',"")
+            window.location.href = '/';
         }
     }
     return config;
@@ -39,35 +41,34 @@ axios.interceptors.request.use(config => {
 // 返回数据拦截器
 axios.interceptors.response.use(res => {
     if (res.config.url.indexOf('login') >= 0) {
-        const { token, expireTime, code, data } = res.data;
-        if (code == '200') {
+        const { msg, code, data } = res.data;
+        if (code == 100) {
             // 登陆后做出一些本地的处理，按需加载,()
             // ...................
+            var date = new Date();
+            // n代表天数,加号表示未来n天的此刻时间,减号表示过去n天的此刻时间
+            // var expireTime = date.getTime() + 1000*60*60*24*n;
+            var expireTime = date.getTime() + 1000 * 10;
+            // getTime()方法返回Date对象的毫秒数,但是这个毫秒数不再是Date类型了,而是number类型,所以需要重新转换为Date对象,方便格式化
+            // var newDate= new Date(expireTime);
             helper.local.set('expireTime', expireTime); // 过期时间
-            helper.local.set('token', token);
+            helper.local.set('token', data.token);
         }
     }
     return res;
 });
 
 // 封装请求方法
-function formatReq (type, url, data,headers) {
+function formatReq (type, url, data) {
     setToken();
-    if(headers == undefined){
-        headers = {
-            'content-Type': 'application/x-www-form-urlencoded'
-        }
-    }
     return new Promise((reslove, reject) => {
         axios({
             method: type,
             url: `${baseUrl}${url}`,
-            headers:headers,
-            // headers: {
-            //     // 这里的请求头与后台商量设置
-            //     'content-Type': 'application/x-www-form-urlencoded'
-            // },
-            // headers: { 'content-Type': 'application/json; charset=utf-8' },
+            headers: {
+                // 这里的请求头与后台商量设置
+                'content-Type': 'application/x-www-form-urlencoded'
+            },
             cancelToken: source.token,
             data: qs.stringify(data) // java后台用qs转
             // data:JSON.stringify(data)//PHP后台用JSON转
@@ -93,7 +94,7 @@ function formatReqJson (type, url, data) {
             url: `${baseUrl}${url}`,
             headers: { 'content-Type': 'application/json; charset=utf-8' },
             cancelToken: source.token,
-            data: JSON.stringify(data) //转成json字符串
+            data: JSON.stringify(data) // 转成json字符串
         })
             .then(res => {
                 // store.commit('UPDATE_LOADING', false); // 隐藏loading

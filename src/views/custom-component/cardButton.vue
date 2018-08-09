@@ -21,7 +21,7 @@
 
 <script>
     export default {
-        name: "cardButton",
+        name: 'cardButton',
         props: {
             idName: String,
             endVal: Number,
@@ -62,9 +62,8 @@
                 default: '按钮'
             }
 
-
         }
-    }
+    };
 </script>
 
 <style scoped>

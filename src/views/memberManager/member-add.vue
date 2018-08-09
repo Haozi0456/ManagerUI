@@ -73,10 +73,10 @@
     import Cookies from 'js-cookie';
 
     export default {
-        name: "member-add",
-        data() {
+        name: 'member-add',
+        data () {
             const validatePhone = (rule, value, callback) => {
-                if (value != "") {
+                if (value != '') {
                     if (!utils.phoneVerify(value)) {
                         callback(new Error('请输入正确的手机号码'));
                     } else {
@@ -85,10 +85,9 @@
                 } else {
                     callback();
                 }
-
             };
             const validateCarNum = (rule, value, callback) => {
-                if (value != "") {
+                if (value != '') {
                     if (!utils.carNumberVerify(value)) {
                         callback(new Error('请输入正确的车牌号码'));
                     } else {
@@ -97,12 +96,11 @@
                 } else {
                     callback();
                 }
-
             };
             return {
                 ruleCustom: {
                     phone: [
-                        {required: true,validator: validatePhone, trigger: 'blur'}
+                        {required: true, validator: validatePhone, trigger: 'blur'}
                     ],
                     carnum: [
                         {validator: validateCarNum, trigger: 'blur'}
@@ -118,20 +116,20 @@
                 },
                 accountItem: {
                     money: 100,
-                    submoney:0,
+                    submoney: 0,
                     type: '1',
-                    operator:'',
-                    operation:1,
+                    operator: '',
+                    operation: 1,
                     remark: ''
                 }
             };
         },
         methods: {
-            onOK(name) {
+            onOK (name) {
                 this.isLoading = true;
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        if (this.memberItem.phone == "" && this.memberItem.carnum == "") {
+                        if (this.memberItem.phone == '' && this.memberItem.carnum == '') {
                             this.$Message.info('请输入手机号码或车牌号!');
                             this.isLoading = false;
                             return;
@@ -153,32 +151,30 @@
                                 this.isLoading = false;
 
                                 this.memberItem = {
-                                        name: '',
-                                        phone: '',
-                                        carnum: ''
+                                    name: '',
+                                    phone: '',
+                                    carnum: ''
                                 };
                                 this.accountItem = {
-                                        money: 100,
-                                        submoney:0,
-                                        type: '1',
-                                        remark: ''
-                                }
-
+                                    money: 100,
+                                    submoney: 0,
+                                    type: '1',
+                                    remark: ''
+                                };
                             } else {
                                 this.isLoading = false;
                                 this.$Message.error({
                                     content: res.data.msg,
                                     duration: 2
                                 });
-
                             }
                         });
                     } else {
                         this.isLoading = false;
                     }
-                })
+                });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.modal = false;
             }

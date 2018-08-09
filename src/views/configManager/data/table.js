@@ -1,9 +1,9 @@
 
 export const serverColumns = [
     {
-        type:"index",
-        width:80,
-        align:'center',
+        type: 'index',
+        width: 80,
+        align: 'center',
         title: '序号'
     },
     {
@@ -16,7 +16,7 @@ export const serverColumns = [
         render: function (h, params) {
             let price = parseFloat(params.row.result).toFixed(2);
             return h('div', price);
-            /*这里的this.row能够获取当前行的数据*/
+            /* 这里的this.row能够获取当前行的数据 */
         }
     },
     {
@@ -38,7 +38,7 @@ export const serverColumns = [
                     },
                     on: {
                         click: () => {
-                            this.show(params.index)
+                            this.show(params.index);
                         }
                     }
                 }, '编辑'),
@@ -50,7 +50,7 @@ export const serverColumns = [
                     },
                     on: {
                         'on-ok': () => {
-                            this.toDelete(currentRow)
+                            this.toDelete(currentRow);
                         }
                     }
                 }, [
@@ -70,9 +70,8 @@ export const serverColumns = [
     }
 ];
 
-
 const tableData = {
-    serverColumns:serverColumns
+    serverColumns: serverColumns
 };
 
 export default tableData;

@@ -64,18 +64,18 @@
     import Cookies from 'js-cookie';
 
     export default {
-        name: "serverConfig",
+        name: 'serverConfig',
         components: {
             canEditTable
         },
-        data() {
+        data () {
             return {
                 tableHeight: 480,
                 modal: false,
                 isLoading: false,
                 serverColumns: [
                     {
-                        type: "index",
+                        type: 'index',
                         width: 80,
                         align: 'center',
                         title: '序号'
@@ -123,7 +123,7 @@
                                     },
                                     on: {
                                         'on-ok': () => {
-                                            this.toDelete(currentRow, index)
+                                            this.toDelete(currentRow, index);
                                         }
                                     }
                                 }, [
@@ -151,10 +151,10 @@
             };
         },
         methods: {
-            getData() {
+            getData () {
                 // this.serverColumns = table.serverColumns;
             },
-            init() {
+            init () {
                 let data = {
                     type: 'server'
                 };
@@ -171,7 +171,7 @@
                     }
                 });
             },
-            toDelete(row, index) {
+            toDelete (row, index) {
                 // 删除
                 let data = {
                     id: row.id
@@ -191,11 +191,10 @@
                         });
                     }
                 });
-
             },
-            onSubmint() {
+            onSubmint () {
                 if (this.configModel.title == '') {
-                    this.$Message.error("请输入服务名称!");
+                    this.$Message.error('请输入服务名称!');
                     return;
                 }
 
@@ -216,16 +215,16 @@
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.modal = false;
                 this.isLoading = false;
             }
         },
-        created() {
+        created () {
             this.getData();
         },
-        mounted() {
+        mounted () {
             this.init();
         }
-    }
+    };
 </script>

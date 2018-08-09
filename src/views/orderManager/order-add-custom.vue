@@ -173,12 +173,12 @@
     import Cookies from 'js-cookie';
 
     export default {
-        name: "add-order-custom",
+        name: 'add-order-custom',
         components: {
             canEditTable,
             infoItem
         },
-        data() {
+        data () {
             return {
                 model: '',
                 isPayShow: false,
@@ -194,34 +194,33 @@
                     transfer: 0
                 },
                 member: {
-                    carnum: "",
-                    createtime: "",
-                    lastvisittime: "",
-                    name: "",
-                    phone: ""
+                    carnum: '',
+                    createtime: '',
+                    lastvisittime: '',
+                    name: '',
+                    phone: ''
                 },
                 account: {
-                    createtime: "",
+                    createtime: '',
                     id: 0,
                     money: 0.00,
                     totalConsume: 0.00,
                     userid: 0
                 },
                 orderItem: {
-                    consumContent:'',
+                    consumContent: '',
                     payfrom: '1',
                     money: 100.00,
-                    remark: ""
+                    remark: ''
                 },
-                items:''
-            }
+                items: ''
+            };
         },
         methods: {
-            init() {
-
+            init () {
 
             },
-            onOK() {
+            onOK () {
                 if (this.orderItem.consumContent === '') {
                     this.$Message.info({
                         content: '请输入消费内容!',
@@ -261,10 +260,10 @@
                             duration: 2
                         });
                         this.orderItem = {
-                            consumContent:'',
+                            consumContent: '',
                             payfrom: 1,
                             money: 100.00,
-                            remark: ""
+                            remark: ''
                         };
                         this.isLoading = false;
                     } else {
@@ -276,12 +275,12 @@
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.isPayShow = false;
                 this.isLoading = false;
             },
-            remoteMethod(query) {
+            remoteMethod (query) {
                 if (query !== '' && query.length > 3) {
                     this.loading = true;
                     let data = {
@@ -297,14 +296,13 @@
                                 content: res.data.msg,
                                 duration: 2
                             });
-
                         }
                     });
                 } else {
                     this.options = [];
                 }
             },
-            chooseUser(data) {
+            chooseUser (data) {
                 this.member = data;
                 if (this.member != null && this.member != '') {
                     let data = {
@@ -313,7 +311,7 @@
 
                     this.orderItem.payfrom = '0';
 
-                    //获取账户信息
+                    // 获取账户信息
                     this.Http.post(config.service.getMyAccount, data).then((res) => {
                         if (res.data.code == 100) {
                             this.account = res.data.data;
@@ -326,28 +324,28 @@
                     });
                 } else {
                     this.account = {
-                        createtime: "",
+                        createtime: '',
                         id: 0,
                         money: 0.00,
                         totalConsume: 0.00,
                         userid: 0
-                    }
+                    };
                     this.orderItem.payfrom = '1';
                 }
             },
-            onClear() {
+            onClear () {
                 this.member = null;
                 this.account = {
-                    createtime: "",
+                    createtime: '',
                     id: 0,
                     money: 0.00,
                     totalConsume: 0.00,
                     userid: 0
-                }
+                };
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         }
-    }
+    };
 </script>

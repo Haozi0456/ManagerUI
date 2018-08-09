@@ -113,26 +113,25 @@
 </template>
 
 <script>
-
     import config from '../../libs/config';
     import Cookies from 'js-cookie';
 
     export default {
         name: 'store_parts',
-        data() {
+        data () {
             return {
                 searchName: '',
                 columns: [
                     {
-                        type:'index',
-                        align:'center',
-                        width:60
+                        type: 'index',
+                        align: 'center',
+                        width: 60
                     },
                     {
                         key: 'money',
                         title: '充值金额',
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.money).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.money).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -140,7 +139,7 @@
                         key: 'subMoney',
                         title: '赠送金额',
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.subMoney).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.subMoney).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -150,26 +149,26 @@
                         render: function (h, params) {
                             let text = '';
                             if (this.row.type == 1) {
-                                text = "支付宝"
+                                text = '支付宝';
                             } else if (this.row.type == 2) {
-                                text = "微信"
+                                text = '微信';
                             } else if (this.row.type == 3) {
-                                text = "现金"
+                                text = '现金';
                             } else {
-                                text = "其它"
+                                text = '其它';
                             }
-                            return h('div', text)
+                            return h('div', text);
                         }
                     },
                     {
                         key: 'createTime',
                         title: '充值时间',
-                        width:100
+                        width: 100
                     },
                     {
                         key: 'operator',
                         title: '经办人',
-                        width:100
+                        width: 100
                     },
                     {
                         key: 'remark',
@@ -182,13 +181,13 @@
                 isLoading: false,
                 isShow: false,
                 isRechargeShow: false,
-                chooseMonth:'',
+                chooseMonth: '',
                 orderItem: {
                     userid: this.userId,
                     type: '1',
                     payfrom: '1',
                     money: 25,
-                    remark: ""
+                    remark: ''
                 },
                 page: {
                     pageNumber: 1,
@@ -198,10 +197,10 @@
             };
         },
         methods: {
-            init() {
+            init () {
                 let data = {
-                    page:this.page,
-                    key:this.chooseMonth
+                    page: this.page,
+                    key: this.chooseMonth
                 };
                 this.Http.postJson(config.service.getRechargeListByMonth, data).then((res) => {
                     if (res.data.code == 100) {
@@ -215,7 +214,7 @@
                     }
                 });
             },
-            search(data, argumentObj) {
+            search (data, argumentObj) {
                 let res = data;
                 let dataClone = data;
                 for (let argu in argumentObj) {
@@ -229,13 +228,13 @@
                 return res;
             },
 
-            handleSearch() {
+            handleSearch () {
                 this.data = this.initTable;
                 this.data = this.search(this.data, {
                     partsName: this.searchName
                 });
             },
-            onOK() {
+            onOK () {
                 this.isLoading = true;
                 let user = Cookies.get('user');
                 this.orderItem.operator = user;
@@ -244,47 +243,43 @@
                         this.$Message.success({
                             content: '添加成功!',
                             duration: 2
-                        })
+                        });
                         this.isLoading = false;
                         this.isShow = false;
-                        //添加数据
+                        // 添加数据
                         // this.data.unshift(res.data.data)
                         this.onPageChange(1);
-
                     } else {
                         this.isLoading = false;
                         this.$Message.error({
                             content: res.data.msg,
                             duration: 2
                         });
-
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.$Message.info('取消添加!');
                 this.isShow = false;
                 this.isLoading = false;
             },
-            onPageChange(pageNo){
+            onPageChange (pageNo) {
                 this.page.pageNumber = pageNo;
                 this.init();
             },
-            onPageSizeChange(pageSize){
-                    this.page.pageNumber = 1;
-                    this.page.pageSize = pageSize;
-                    this.init();
-
+            onPageSizeChange (pageSize) {
+                this.page.pageNumber = 1;
+                this.page.pageSize = pageSize;
+                this.init();
             },
-            dateChange(dateValue) {
+            dateChange (dateValue) {
                 this.chooseMonth = dateValue;
                 this.page.pageNumber = 1;
                 this.init();
             }
         },
-        mounted() {
+        mounted () {
             this.init();
-
         }
     };
 </script>

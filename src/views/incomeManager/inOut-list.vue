@@ -94,10 +94,10 @@
             return {
                 columns: [
                     {
-                        width:60,
-                        type:'index',
-                        sortType:'asc',
-                        align:'center'
+                        width: 60,
+                        type: 'index',
+                        sortType: 'asc',
+                        align: 'center'
                     },
                     {
                         key: 'des',
@@ -106,14 +106,14 @@
                     {
                         key: 'type',
                         title: '收支类型',
-                        align:'center',
-                        width:100,
+                        align: 'center',
+                        width: 100,
                         render: function (h, params) {
-                            let text = "";
-                            if(params.row.type === 1){
-                                text = "收入";
-                            }else{
-                                text = "支出";
+                            let text = '';
+                            if (params.row.type === 1) {
+                                text = '收入';
+                            } else {
+                                text = '支出';
                             }
                             return h('div', text);
                         }
@@ -121,31 +121,31 @@
                     {
                         key: 'money',
                         title: '金额',
-                        align:'center',
+                        align: 'center',
                         render: function (h, params) {
-                            let price = "￥"+parseFloat(params.row.money).toFixed(2);
+                            let price = '￥' + parseFloat(params.row.money).toFixed(2);
                             return h('div', price);
                         }
                     },
                     {
                         key: 'createTime',
                         title: '时间',
-                        align:'center'
+                        align: 'center'
                     },
                     {
                         key: 'operator',
                         title: '经办人',
-                        align:'center'
+                        align: 'center'
                     },
                     {
                         key: 'remark',
                         title: '备注',
-                        align:'center'
+                        align: 'center'
                     },
                     {
                         title: '操作',
                         key: 'show_more',
-                        width:140,
+                        width: 140,
                         align: 'center',
                         render: (h, params) => {
                             let currentRow = params.row;
@@ -174,7 +174,7 @@
                                     },
                                     on: {
                                         'on-ok': () => {
-                                            this.toDelete(currentRow,index)
+                                            this.toDelete(currentRow, index);
                                         }
                                     }
                                 }, [
@@ -194,18 +194,18 @@
                     }
                 ],
                 data: [],
-                inOutType:0,
-                selectTypes:[{id:0, name:'全部'},{id:1, name:'收入'},{id:2, name:'支出'}],
-                types:[{id:1, name:'收入'},{id:2, name:'支出'}],
+                inOutType: 0,
+                selectTypes: [{id: 0, name: '全部'}, {id: 1, name: '收入'}, {id: 2, name: '支出'}],
+                types: [{id: 1, name: '收入'}, {id: 2, name: '支出'}],
                 modal: false,
                 isLoading: false,
                 inOut: {
-                    id:0,
-                    type:0,
-                    money:0.00,
-                    des:'',
-                    remark:'',
-                    operator:''
+                    id: 0,
+                    type: 0,
+                    money: 0.00,
+                    des: '',
+                    remark: '',
+                    operator: ''
                 },
                 page: {
                     pageNumber: 1,
@@ -217,8 +217,8 @@
         methods: {
             init () {
                 let data = {
-                    page:this.page,
-                    code:this.inOutType //全部收支
+                    page: this.page,
+                    code: this.inOutType // 全部收支
                 };
                 // 获取收支列表
                 this.Http.postJson(config.service.getInOutByType, data).then((res) => {
@@ -233,13 +233,12 @@
                         });
                     }
                 });
-
             },
-            toDelete(dataRow,index){
+            toDelete (dataRow, index) {
                 let data = {
-                   id:dataRow.id
+                    id: dataRow.id
                 };
-                //删除收支
+                // 删除收支
                 this.Http.post(config.service.deleteInOutById, data).then((res) => {
                     if (res.data.code === 100) {
                         this.$Message.success({
@@ -278,12 +277,12 @@
                         this.isLoading = false;
                         this.modal = false;
                         this.inOut = {
-                            id:0,
-                            type:1,
-                            money:0.00,
-                            des:'',
-                            remark:'',
-                            operator:''
+                            id: 0,
+                            type: 1,
+                            money: 0.00,
+                            des: '',
+                            remark: '',
+                            operator: ''
                         };
                         // 添加数据
                         this.onPageChange(1);
@@ -310,13 +309,13 @@
                 this.modal = false;
                 this.isLoading = false;
             },
-            onTypeChoose(type){
-                if(type != null && type != ''){
+            onTypeChoose (type) {
+                if (type != null && type != '') {
                     this.inOutType = type;
                     this.page.pageNumber = 1;
                     let data = {
-                        page:this.page,
-                        code:this.inOutType //全部收支
+                        page: this.page,
+                        code: this.inOutType // 全部收支
                     };
                     // 获取收支列表
                     this.Http.postJson(config.service.getInOutByType, data).then((res) => {
@@ -331,7 +330,7 @@
                             });
                         }
                     });
-                }else{
+                } else {
                     this.inOutType = 0;
                     this.onPageChange(1);
                 }

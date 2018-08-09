@@ -41,11 +41,11 @@ export default {
     props: {
         idName: String,
         endVal: Number,
-        decimals:{
+        decimals: {
             type: Number,
             default: 2
         },
-        unit:String,
+        unit: String,
         color: String,
         iconType: String,
         introText: String,

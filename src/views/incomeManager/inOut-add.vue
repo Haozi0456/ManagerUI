@@ -64,18 +64,18 @@
         name: 'inOut-add',
         data () {
             return {
-                inOutType:0,
-                selectTypes:[{id:0, name:'全部'},{id:1, name:'收入'},{id:2, name:'支出'}],
-                types:[{id:1, name:'收入'},{id:2, name:'支出'}],
+                inOutType: 0,
+                selectTypes: [{id: 0, name: '全部'}, {id: 1, name: '收入'}, {id: 2, name: '支出'}],
+                types: [{id: 1, name: '收入'}, {id: 2, name: '支出'}],
                 modal: false,
                 isLoading: false,
                 inOut: {
-                    id:0,
-                    type:0,
-                    money:0.00,
-                    des:'',
-                    remark:'',
-                    operator:''
+                    id: 0,
+                    type: 0,
+                    money: 0.00,
+                    des: '',
+                    remark: '',
+                    operator: ''
                 },
                 page: {
                     pageNumber: 1,
@@ -114,12 +114,12 @@
                         this.isLoading = false;
                         this.modal = false;
                         this.inOut = {
-                            id:0,
-                            type:1,
-                            money:0.00,
-                            des:'',
-                            remark:'',
-                            operator:''
+                            id: 0,
+                            type: 1,
+                            money: 0.00,
+                            des: '',
+                            remark: '',
+                            operator: ''
                         };
                     } else {
                         this.isLoading = false;

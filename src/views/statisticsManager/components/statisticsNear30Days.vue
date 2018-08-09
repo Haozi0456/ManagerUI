@@ -7,23 +7,23 @@
     import config from '../../../libs/config';
 
     export default {
-        name: "statisticsNear30Days",
+        name: 'statisticsNear30Days',
         data () {
             return {
-                chart:null,
-                chartData:{
-                    xValues:[],
-                    yValues:[]
+                chart: null,
+                chartData: {
+                    xValues: [],
+                    yValues: []
                 }
 
             };
         },
-        methods:{
-          init() {
+        methods: {
+            init () {
                 const option = {
                     color: ['#3398DB'],
-                    title:{
-                      text:''
+                    title: {
+                        text: ''
                     },
                     tooltip: {
                         trigger: 'axis',
@@ -44,14 +44,12 @@
                     xAxis:
                         {
                             type: 'category',
-                            data:this.chartData.xValues
-                        }
-                    ,
+                            data: this.chartData.xValues
+                        },    
                     yAxis:
                         {
                             type: 'value'
-                        }
-                    ,
+                        },    
                     series: [
                         {
                             name: '月收入',
@@ -61,9 +59,9 @@
                                 normal: {
                                     show: true,
                                     position: 'top',
-                                    fontSize:18,
-                                    fontWeight:600,
-                                    color:'#ff0000',
+                                    fontSize: 18,
+                                    fontWeight: 600,
+                                    color: '#ff0000',
                                     formatter: '{c}.00'
                                 }
                             },
@@ -79,25 +77,24 @@
                     statisticsCharts.resize();
                 });
 
-
-              this.refresh();
+                this.refresh();
             },
             refresh () {
                 this.Http.post(config.service.getStatisticsByNearOneMonth, '').then((res) => {
                     if (res.data.code == 100) {
                         let result = res.data.data;
-                        var xValue =[];
-                        var yValue =[];
+                        var xValue = [];
+                        var yValue = [];
                         for (var i = 0; i < result.length; i++) {
                             xValue.push(result[i].dateline);
                             yValue.push(result[i].total);
                         }
                         this.chartData.xValues = xValue;
                         this.chartData.yValues = yValue;
-                        let titleLable ='近30天收入(单位:元)';
+                        let titleLable = '近30天收入(单位:元)';
                         this.chart.setOption({
-                            title:{
-                                text:titleLable
+                            title: {
+                                text: titleLable
                             },
                             xAxis: {
                                 data: this.chartData.xValues
@@ -108,7 +105,6 @@
                                 data: this.chartData.yValues
                             }]
                         });
-
                     } else {
                         this.$Message.error({
                             content: res.data.msg,

@@ -62,20 +62,20 @@
     import Cookies from 'js-cookie';
 
     export default {
-        name: "serverConfig",
+        name: 'serverConfig',
         components: {
             canEditTable
         },
-        data() {
+        data () {
             return {
                 tableHeight: 480,
                 modal: false,
                 isLoading: false,
                 serverColumns: [
                     {
-                        type: "index",
+                        type: 'index',
                         width: 60,
-                        align: 'center',
+                        align: 'center'
                     },
                     {
                         key: 'roleName',
@@ -91,14 +91,14 @@
                         key: 'dataFlag',
                         align: 'center',
                         title: '状态',
-                        width:100,
+                        width: 100,
                         render: function (h, params) {
-                            let text='';
+                            let text = '';
                             let dataFlag = this.row.dataFlag;
-                            if(dataFlag === 1){
-                                text = "启用";
-                            }else{
-                                text = "禁用";
+                            if (dataFlag === 1) {
+                                text = '启用';
+                            } else {
+                                text = '禁用';
                             }
                             return h('div', text);
                         }
@@ -112,7 +112,7 @@
                             let currentRow = params.row;
                             let index = params.index;
                             let dataFlag = params.row.dataFlag;
-                            if(dataFlag === 1){
+                            if (dataFlag === 1) {
                                 return h('div', [
                                     h('Poptip', {
                                         props: {
@@ -122,7 +122,7 @@
                                         },
                                         on: {
                                             'on-ok': () => {
-                                                this.disableOrEnableRole(currentRow, index)
+                                                this.disableOrEnableRole(currentRow, index);
                                             }
                                         }
                                     }, [
@@ -138,7 +138,7 @@
                                         }, '禁用')
                                     ])
                                 ]);
-                            }else if(dataFlag === -1){
+                            } else if (dataFlag === -1) {
                                 return h('div', [
                                     h('Poptip', {
                                         props: {
@@ -148,7 +148,7 @@
                                         },
                                         on: {
                                             'on-ok': () => {
-                                                this.disableOrEnableRole(currentRow, index)
+                                                this.disableOrEnableRole(currentRow, index);
                                             }
                                         }
                                     }, [
@@ -165,25 +165,24 @@
                                     ])
                                 ]);
                             }
-
                         }
                     }],
                 serverData: [],
-                dataFlags:[{ id:1, name:'启用'},{ id:2, name:'弃用'}],
-                roleTypes:[{ id:1, name:'管理员'},{ id:2, name:'员工'}],
+                dataFlags: [{ id: 1, name: '启用'}, { id: 2, name: '弃用'}],
+                roleTypes: [{ id: 1, name: '管理员'}, { id: 2, name: '员工'}],
                 totalItems: 0,
                 roleModel: {
-                    roleName:'',
-                    roleDes:'',
-                    dataFlag:1
+                    roleName: '',
+                    roleDes: '',
+                    dataFlag: 1
                 }
             };
         },
         methods: {
-            getData() {
+            getData () {
                 // this.serverColumns = table.serverColumns;
             },
-            init() {
+            init () {
                 let data = {
                     status: 0
                 };
@@ -192,10 +191,10 @@
                     if (res.data.code === 100) {
                         this.serverData = res.data.data;
                         this.totalItems = this.serverData.length;
-                        this.roleModel= {
-                            roleName:'',
-                            roleDes:'',
-                            dataFlag:1
+                        this.roleModel = {
+                            roleName: '',
+                            roleDes: '',
+                            dataFlag: 1
                         };
                     } else {
                         this.$Message.error({
@@ -205,10 +204,10 @@
                     }
                 });
             },
-            disableOrEnableRole(rowData, index) {
-                if(rowData.dataFlag === 1){
+            disableOrEnableRole (rowData, index) {
+                if (rowData.dataFlag === 1) {
                     rowData.dataFlag = -1;
-                }else if(rowData.dataFlag === -1){
+                } else if (rowData.dataFlag === -1) {
                     rowData.dataFlag = 1;
                 }
                 this.Http.post(config.service.disableOrEnableRole, rowData).then((res) => {
@@ -225,11 +224,10 @@
                         });
                     }
                 });
-
             },
-            onSubmint() {
+            onSubmint () {
                 if (this.roleModel.roleName == '') {
-                    this.$Message.error("请输入职位名称!");
+                    this.$Message.error('请输入职位名称!');
                     return;
                 }
 
@@ -250,16 +248,16 @@
                     }
                 });
             },
-            onCancel() {
+            onCancel () {
                 this.modal = false;
                 this.isLoading = false;
             }
         },
-        created() {
+        created () {
             this.getData();
         },
-        mounted() {
+        mounted () {
             this.init();
         }
-    }
+    };
 </script>

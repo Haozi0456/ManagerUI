@@ -146,7 +146,6 @@
 
     import cardButton from '../custom-component/cardButton.vue';
 
-
     import config from '../../libs/config';
 
     export default {
@@ -159,7 +158,7 @@
             inforCard,
             cardButton
         },
-        data() {
+        data () {
             return {
                 decimals: 2,
                 decimalsCount: 0,
@@ -176,28 +175,28 @@
         },
         computed: {
 
-            user() {
+            user () {
                 return Cookies.get('user');
             },
-            role() {
+            role () {
                 return Cookies.get('role');
             },
-            lastVisitTime() {
+            lastVisitTime () {
                 return Cookies.get('lastTime');
             },
-            currentYear() {
+            currentYear () {
                 this.todayYear = new Date().format('yyyy');
                 return this.todayYear;
             }
         },
         methods: {
-            init() {
-                let date = new Date().format("yyyy-MM-dd");
+            init () {
+                let date = new Date().format('yyyy-MM-dd');
                 let data = {
                     day: date,
-                    status:1,
+                    status: 1
                 };
-                //获取今日收入统计
+                // 获取今日收入统计
                 this.Http.post(config.service.getStatisticsByDay, data).then((res) => {
                     if (res.data.code == 100) {
                         this.count.dayIncome = res.data.data.total;
@@ -211,9 +210,9 @@
 
                 let data2 = {
                     day: date,
-                    status:0,
+                    status: 0
                 };
-                //获取挂单待结金额
+                // 获取挂单待结金额
                 this.Http.post(config.service.getStatisticsByDay, data2).then((res) => {
                     if (res.data.code == 100) {
                         this.count.outstanding = res.data.data.total;
@@ -225,7 +224,7 @@
                     }
                 });
 
-                //获取会员数量
+                // 获取会员数量
                 this.Http.post(config.service.getMemberCount, data).then((res) => {
                     if (res.data.code == 100) {
                         this.count.memberCount = res.data.data;
@@ -237,7 +236,7 @@
                     }
                 });
 
-                //获取今日订单
+                // 获取今日订单
                 this.Http.post(config.service.getStatisticsOrdersByDay, data).then((res) => {
                     if (res.data.code == 100) {
                         this.count.orderCount = res.data.data.length;
@@ -260,25 +259,24 @@
                 //         });
                 //     }
                 // });
-
             },
-            toAddMember() { //添加会员
+            toAddMember () { // 添加会员
                 this.$router.push({
                     name: 'member_add'
                 });
             },
-            toStore(){//商品库存
+            toStore () { // 商品库存
                 this.$router.push({
                     name: 'storeGoods_index'
                 });
             },
-            toCollectMoney(){
+            toCollectMoney () {
                 this.$router.push({
                     name: 'order-add'
                 });
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         }
     };

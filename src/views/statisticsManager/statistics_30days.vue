@@ -26,35 +26,34 @@
     import statisticsNear30Days from './components/statisticsNear30Days.vue';
 
     export default {
-        name: "statistics-30days",
+        name: 'statistics-30days',
         components: {
             statisticsNear30Days
         },
-        data() {
+        data () {
             return {
                 todayYear: 2018,
-                yearVal: 2018,
+                yearVal: 2018
             };
         },
         computed: {
-            currentYear() {
+            currentYear () {
                 this.todayYear = new Date().format('yyyy');
                 return this.todayYear;
             }
         },
         methods: {
-            init() {
-
+            init () {
 
             },
-            handleChange(daterange) {
+            handleChange (daterange) {
                 this.yearVal = parseInt(daterange);
             }
         },
-        mounted() {
+        mounted () {
             this.init();
         }
-    }
+    };
 </script>
 
 <style scoped>
