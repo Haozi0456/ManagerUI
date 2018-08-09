@@ -48,7 +48,7 @@ axios.interceptors.response.use(res => {
             var date = new Date();
             // n代表天数,加号表示未来n天的此刻时间,减号表示过去n天的此刻时间
             // var expireTime = date.getTime() + 1000*60*60*24*n;
-            var expireTime = date.getTime() + 1000 * 10;
+            var expireTime = date.getTime() + 1000*60*60;
             // getTime()方法返回Date对象的毫秒数,但是这个毫秒数不再是Date类型了,而是number类型,所以需要重新转换为Date对象,方便格式化
             // var newDate= new Date(expireTime);
             helper.local.set('expireTime', expireTime); // 过期时间
