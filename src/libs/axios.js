@@ -108,6 +108,29 @@ function formatReqJson (type, url, data) {
             });
     });
 }
+function formatReqExcel (type, url, data) {
+    setToken();
+    return new Promise((reslove, reject) => {
+        axios({
+            method: type,
+            url: `${baseUrl}${url}`,
+            headers: { 'content-Type': 'application/json; charset=utf-8' },
+            cancelToken: source.token,
+            data: JSON.stringify(data), // 转成json字符串
+            responseType: 'blob'
+        })
+            .then(res => {
+                // store.commit('UPDATE_LOADING', false); // 隐藏loading
+                // 这里可以添加指定对应状态码的处理方式,比如登陆过期,res.data.code === '6666' 路由跳转到login
+                reslove(res);
+            })
+            .catch(e => {
+                // store.commit('UPDATE_LOADING', false); // 隐藏loading
+                reject(e.message);
+                Message.error(e.message);
+            });
+    });
+}
 
 const Http = {
     get: (url, query) => {
@@ -117,6 +140,7 @@ const Http = {
     },
     post: (url, data) => formatReq('post', url, data),
     postJson: (url, data) => formatReqJson('post', url, data),
+    postDownLoadExcel: (url, data) => formatReqExcel('post', url, data),
     put: (url, data) => formatReq('put', url, data),
     patch: (url, data) => formatReq('patch', url, data),
     delete: (url, data) => formatReq('delete', url, data)

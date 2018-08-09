@@ -71,6 +71,9 @@ var config = {
         // 支付挂单
         toPayEntryOrders: 'system/order/toPayEntryOrders',
 
+        // 打印订单
+        toPrintOrder: 'system/order/toPrintOrder',
+
         // 删除挂单
         toDeleteEntryOrders: 'system/order/toDeleteEntryOrders',
 

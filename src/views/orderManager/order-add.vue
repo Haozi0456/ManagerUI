@@ -148,7 +148,7 @@
                                     </div>
                                 </Row>
                             </TabPane>
-                            <TabPane label="标签三">标签三的内容</TabPane>
+                            <!--<TabPane label="标签三">标签三的内容</TabPane>-->
                         </Tabs>
 
                     </div>
@@ -262,7 +262,7 @@
                 </Col>
             </Row>
             <div slot="footer">
-                <Button type="ghost" style="margin-right: 8px" @click="">导出打印</Button>
+                <Button type="ghost" style="margin-right: 8px" @click="toPrint">导出打印</Button>
                 <Button type="primary" :loading="isLoading" @click="onCancel">关闭</Button>
             </div>
         </Modal>
@@ -381,7 +381,7 @@
                         title: '单价',
                         width: 100,
                         render: function (h, params) {
-                            let price = '￥' + parseFloat(params.row.price).toFixed(2);
+                            let price = parseFloat(params.row.price).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -390,7 +390,7 @@
                         title: '服务费(元)',
                         width: 100,
                         render: function (h, params) {
-                            let price = '￥' + parseFloat(params.row.cover).toFixed(2);
+                            let price = parseFloat(params.row.cover).toFixed(2);
                             return h('div', price);
                         }
                     },
@@ -399,7 +399,15 @@
                         title: '数量',
                         width: 80,
                         editable: true
-                    }
+                    },{
+                        key: 'subTotal',
+                        title: '金额',
+                        width: 100,
+                        render: function (h, params) {
+                            let price = (parseFloat(params.row.cover)+parseFloat(params.row.price)*params.row.count).toFixed(2);
+                            return h('div', price);
+                        }
+                    },
                 ],
                 consumeData: [],
                 serverData: [],
@@ -563,7 +571,7 @@
                 this.orderItem.money = this.totalPrice;
                 this.isPayShow = true;
             },
-            onOK (status) { // 结算
+            onOK (status) { // 结算 0-挂单  1- 直接支付
                 this.isLoading = true;
 
                 let orderItems = [];
@@ -573,6 +581,8 @@
                         item: temp.title,
                         goodsId: temp.goodsId,
                         goodsCount: temp.count,
+                        price:parseFloat(temp.price),
+                        cover:parseFloat(temp.cover),
                         cost: (parseFloat(temp.price) * parseFloat(temp.count) + parseFloat(temp.cover)),
                         type: temp.type
                     };
@@ -679,6 +689,72 @@
             toPreview () {
                 this.createDate = new Date().format('yyyy-MM-dd');
                 this.isPreview = true;
+            },
+            toPrint () {
+                this.isLoading = true;
+
+                let orderItems = [];
+                for (let i = 0; i < this.consumeData.length; i++) {
+                    let temp = this.consumeData[i];
+                    let itemData = {
+                        item: temp.title,
+                        goodsId: temp.goodsId,
+                        goodsCount: temp.count,
+                        price:parseFloat(temp.price),
+                        cover:parseFloat(temp.cover),
+                        cost: (parseFloat(temp.price) * parseFloat(temp.count) + parseFloat(temp.cover)),
+                        type: temp.type
+                    };
+                    orderItems.push(itemData);
+                }
+
+                if (this.member != null) {
+                    this.orderItem.userid = this.member.id;
+                }
+                this.orderItem.status = status;
+                let user = Cookies.get('user');
+                this.orderItem.operator = user;
+                this.orderItem.money = this.totalPrice;
+
+                let data = {
+                    order: this.orderItem,
+                    items: orderItems
+                };
+                this.Http.postDownLoadExcel(config.service.toPrintOrder,data).then((res) => {
+                    this.download(res)
+                    // if (res.data.code === 100) {
+                    //     this.$Message.success({
+                    //         content: res.data.msg,
+                    //         duration: 2
+                    //     });
+                    //     this.consumeData = [];
+                    //     this.totalPrice = 0.00;
+                    //     this.isLoading = false;
+                    //     this.isPayShow = false;
+                    // } else {
+                    //     this.isLoading = false;
+                    //     this.$Message.error({
+                    //         content: res.data.msg,
+                    //         duration: 2
+                    //     });
+                    // }
+                });
+            },
+            // 下载文件
+            download (res ) {
+                if (!res ) {
+                    return
+                }
+                //这里res.data是返回的blob对象
+                var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+                var downloadElement = document.createElement('a');
+                var href = window.URL.createObjectURL(blob); //创建下载的链接
+                downloadElement.href = href;
+                downloadElement.download = 'xxx.xlsx'; //下载后文件名
+                document.body.appendChild(downloadElement);
+                downloadElement.click(); //点击下载
+                document.body.removeChild(downloadElement); //下载完成移除元素
+                window.URL.revokeObjectURL(href); //释放掉blob对象
             }
         },
         mounted () {
