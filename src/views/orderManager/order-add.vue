@@ -67,10 +67,15 @@
                                             text-color="#2d8cf0"></info-item>
                                 </Col>
                                 <Col :lg="6" :md="6" :xs="12">
+                                    <!--<info-item-->
+                                            <!--title="车辆品牌:"-->
+                                            <!--container-width="160px"-->
+                                            <!--:text-lable="member.carmake"-->
+                                            <!--text-color="#2d8cf0"></info-item>-->
                                     <info-item
-                                            title="车辆品牌:"
+                                            title="入会时间:"
                                             container-width="160px"
-                                            :text-lable="member.carmake"
+                                            :text-lable="member.createtime"
                                             text-color="#2d8cf0"></info-item>
                                 </Col>
                             </Row>
@@ -100,11 +105,11 @@
                                             text-color="#2d8cf0"></info-item>
                                 </Col>
                                 <Col :lg="6" :md="6" :xs="12">
-                                    <info-item
-                                            title="入会时间:"
-                                            container-width="160px"
-                                            :text-lable="member.createtime"
-                                            text-color="#2d8cf0"></info-item>
+                                    <!--<info-item-->
+                                            <!--title="入会时间:"-->
+                                            <!--container-width="160px"-->
+                                            <!--:text-lable="member.createtime"-->
+                                            <!--text-color="#2d8cf0"></info-item>-->
 
                                 </Col>
                             </Row>
@@ -241,7 +246,7 @@
                 </Col>
                 <Col :md="24" :lg="24" align="middle">
                     <div style="display: inline-flex; float: right; text-align:right; vertical-align: bottom ">
-                                    <span style="margin-right: 10px; font-weight: 400; font-size: small; vertical-align: bottom;">结算日期:
+                                    <span style="margin-right: 10px; font-weight: 400; font-size: small; vertical-align: bottom;">日期:
                                         <span class="pre-date">{{createDate}}</span>
                                     </span>
                     </div>
@@ -744,19 +749,20 @@
                     return
                 }
                 //这里res.data是返回的blob对象
-                // var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
-                // var downloadElement = document.createElement('a');
-                // var href = window.URL.createObjectURL(blob); //创建下载的链接
-                // downloadElement.href = href;
-                // downloadElement.download = 'xxx.xlsx'; //下载后文件名
-                // document.body.appendChild(downloadElement);
-                // downloadElement.click(); //点击下载
-                // document.body.removeChild(downloadElement); //下载完成移除元素
-                // window.URL.revokeObjectURL(href); //释放掉blob对象
+                var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+                var downloadElement = document.createElement('a');
+                var href = window.URL.createObjectURL(blob); //创建下载的链接
+                downloadElement.href = href
+                let fileName = new Date().format('yyyy-MM-dd hh:mm:ss');
+                downloadElement.download = fileName+'.xlsx'; //下载后文件名
+                document.body.appendChild(downloadElement);
+                downloadElement.click(); //点击下载
+                document.body.removeChild(downloadElement); //下载完成移除元素
+                window.URL.revokeObjectURL(href); //释放掉blob对象
 
-                let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
-                let objectUrl = URL.createObjectURL(blob);
-                window.location.href = objectUrl;
+                // let blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
+                // let objectUrl = URL.createObjectURL(blob);
+                // window.location.href = objectUrl;
             }
         },
         mounted () {
