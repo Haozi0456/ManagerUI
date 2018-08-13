@@ -114,22 +114,22 @@ var config = {
         addRepairRecord: 'system/repair/addRepairRecord',
 
         // 获取收支列表 0 全部 1收入  2支出
-        getInOutByType: '/system/inout/getInOutByType',
+        getInOutByType: 'system/inout/getInOutByType',
 
         // 添加收支  1收入  2支出
-        addInOut: '/system/inout/addInOut',
+        addInOut: 'system/inout/addInOut',
 
         // 删除收支
-        deleteInOutById: '/system/inout/deleteInOut',
+        deleteInOutById: 'system/inout/deleteInOut',
 
         // 根据类型获取配置记录
-        getConfigsByType: '/system/congfig/getConfigsByType',
+        getConfigsByType: 'system/congfig/getConfigsByType',
 
         // 添加配置
-        addConfig: '/system/congfig/addConfig',
+        addConfig: 'system/congfig/addConfig',
 
         // 根据id删除
-        deleteConfigById: '/system/congfig/deleteConfigById'
+        deleteConfigById: 'system/congfig/deleteConfigById'
     }
 };
 
