@@ -67,10 +67,15 @@
                                             text-color="#2d8cf0"></info-item>
                                 </Col>
                                 <Col :lg="6" :md="6" :xs="12">
+                                    <!--<info-item-->
+                                            <!--title="车辆品牌:"-->
+                                            <!--container-width="160px"-->
+                                            <!--:text-lable="member.carmake"-->
+                                            <!--text-color="#2d8cf0"></info-item>-->
                                     <info-item
-                                            title="车辆品牌:"
+                                            title="入会时间:"
                                             container-width="160px"
-                                            :text-lable="member.carmake"
+                                            :text-lable="member.createtime"
                                             text-color="#2d8cf0"></info-item>
                                 </Col>
                             </Row>
@@ -100,11 +105,11 @@
                                             text-color="#2d8cf0"></info-item>
                                 </Col>
                                 <Col :lg="6" :md="6" :xs="12">
-                                    <info-item
-                                            title="入会时间:"
-                                            container-width="160px"
-                                            :text-lable="member.createtime"
-                                            text-color="#2d8cf0"></info-item>
+                                    <!--<info-item-->
+                                            <!--title="入会时间:"-->
+                                            <!--container-width="160px"-->
+                                            <!--:text-lable="member.createtime"-->
+                                            <!--text-color="#2d8cf0"></info-item>-->
 
                                 </Col>
                             </Row>

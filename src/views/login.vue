@@ -40,7 +40,6 @@
     import Cookies from 'js-cookie';
     import config from '../libs/config';
     import {Message} from 'iview';
-
     export default {
         data () {
             return {
@@ -77,7 +76,7 @@
                                     duration: 2
                                 });
                                 Cookies.set('user', user.name);
-                                Cookies.set('password', this.form.password);
+                                // Cookies.set('password', this.form.password);
                                 Cookies.set('lastTime', user.lastVisitTime);
                                 Cookies.set('role', user.role);
                                 Cookies.set('phone', user.phone);

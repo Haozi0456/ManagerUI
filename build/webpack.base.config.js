@@ -3,10 +3,12 @@ const os = require('os');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HappyPack = require('happypack');
-var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+var happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
+
 function resolve (dir) {
     return path.join(__dirname, dir);
 }
+
 module.exports = {
     entry: {
         main: '@/main',
@@ -57,7 +59,7 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
-                    use: ['css-loader?minimize','autoprefixer-loader', 'less-loader'],
+                    use: ['css-loader?minimize', 'autoprefixer-loader', 'less-loader'],
                     fallback: 'style-loader'
                 }),
             },
@@ -84,6 +86,11 @@ module.exports = {
         alias: {
             'vue': 'vue/dist/vue.esm.js',
             '@': resolve('../src'),
+        }
+    },
+    devServer: {
+        historyApiFallback: {
+            index: 'index.html'
         }
     }
 };
