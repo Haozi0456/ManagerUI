@@ -25,7 +25,7 @@
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-map"></Icon>
-                        订单列表
+                        会员充值记录
                     </p>
                     <!--<a type="text" slot="extra" @click.prevent="isShow = true">-->
                         <!--<Icon type="plus-round"></Icon>-->
@@ -88,8 +88,6 @@
                         <Option value="4">其它</Option>
                     </Select>
                 </FormItem>
-
-
                 <FormItem label="支付金额">
                     <InputNumber
                             :max="5000"
@@ -146,6 +144,7 @@
                     {
                         key: 'type',
                         title: '支付方式',
+                        width: 120,
                         render: function (h, params) {
                             let text = '';
                             if (this.row.type == 1) {
@@ -163,7 +162,7 @@
                     {
                         key: 'createTime',
                         title: '充值时间',
-                        width: 100
+                        width: 160,
                     },
                     {
                         key: 'operator',

@@ -5,7 +5,7 @@ import { Message } from 'iview';
 import helper from './httpHelper';
 import Cookies from "js-cookie";
 // let baseUrl = 'http://127.0.0.1:81/'; // 设置你的baseUrl
-let baseUrl = 'http://114.115.169.14:81/'; // 设置你的baseUrl
+let baseUrl = 'http://114.115.169.14:8080/ManagerServer/'; // 设置你的baseUrl
 
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
