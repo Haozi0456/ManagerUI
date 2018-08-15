@@ -146,7 +146,8 @@ export const appRouter = [
         title: '数据统计',
         component: Main,
         children: [
-            {path: 'statistics_30days', title: '近30日收入', name: 'statistics_30days', component: () => import('@/views/statisticsManager/statistics_30days.vue')},
+            {path: 'statistics_15days', title: '近15天收入', name: 'statistics_15days', component: () => import('@/views/statisticsManager/statistics_15days.vue')},
+            // {path: 'statistics_30days', title: '近30天收入', name: 'statistics_30days', component: () => import('@/views/statisticsManager/statistics_30days.vue')},
             {path: 'statistics_index', title: '月度统计', name: 'statistics_index', component: () => import('@/views/statisticsManager/statistics.vue')}
         ]
     },

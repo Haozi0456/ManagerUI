@@ -85,6 +85,8 @@ var config = {
 
         // 统计近30天每天订单收入
         getStatisticsByNearOneMonth: 'system/statistics/getStatisticsByNearOneMonth',
+        // 统计近15天每天订单收入
+        getStatisticsByHalfOfMonth: 'system/statistics/getStatisticsByHalfOfMonth',
 
         // 统计年收入
         getStatisticsByYear: 'system/statistics/getStatisticsByYear',

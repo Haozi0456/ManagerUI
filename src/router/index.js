@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 // 路由配置
 const RouterConfig = {
     mode: 'history',
-    base: '/ManagerClient/',
+    base: '/ManagerClient/', //项目工程名,放在tomcat的webapps下的工程名,在加上WEB_INF防止刷新404的异常
     routes: routers
 };
 

@@ -27,7 +27,7 @@
                         添加商品
                     </a>
                     <Modal
-                            title="入库"
+                            title="添加商品"
                             v-model="modal"
                             :mask-closable="false"
                             :closable="false"
@@ -71,6 +71,46 @@
                         <div slot="footer">
                             <Button type="ghost" style="margin-left: 8px" @click="onCancel">取消</Button>
                             <Button type="primary" :loading="isLoading" @click="onOK">添加</Button>
+                        </div>
+                    </Modal>
+
+                    <Modal
+                            :title="label0"
+                            v-model="isInOutStore"
+                            :mask-closable="false"
+                            :closable="false"
+                            class-name="vertical-center-modal">
+                        <Form ref="recordForm" :model="recordForm" :label-width="80" >
+                            <FormItem label="商品类型">
+                                <Input v-model="recordForm.goodsType" disabled ></Input>
+                            </FormItem>
+                            <FormItem label="商品名称" >
+                                <Input v-model="recordForm.goodsName" disabled ></Input>
+                            </FormItem>
+                            <FormItem :label="label1">
+                                <InputNumber
+                                        :min="0"
+                                        :step="5"
+                                        v-model="recordForm.price"></InputNumber><label style="margin-left: 5px">元</label>
+                            </FormItem>
+                            <FormItem :label="label2">
+                                <InputNumber
+                                        :max="5000"
+                                        :min="1"
+                                        :step="1"
+                                        v-model="recordForm.number"></InputNumber><label style="margin-left: 5px">个</label>
+                            </FormItem>
+                            <FormItem :label="label3" >
+                                <Input v-model="recordForm.orderNo" placeholder="如发票单号等..."></Input>
+                            </FormItem>
+                            <FormItem label="备注">
+                                <Input v-model="recordForm.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                                       placeholder="请输入备注信息..."></Input>
+                            </FormItem>
+                        </Form>
+                        <div slot="footer">
+                            <Button type="ghost" style="margin-left: 8px" @click="onCancel">取消</Button>
+                            <Button type="primary" :loading="isLoading" @click="submitAdd">添加</Button>
                         </div>
                     </Modal>
 
@@ -190,7 +230,7 @@
                                     },
                                     on: {
                                         click: () => {
-
+                                            this.showInOutStore(currentRow,index,0);
                                         }
                                     }
                                 }, '入库'),
@@ -204,7 +244,7 @@
                                     },
                                     on: {
                                         click: () => {
-
+                                            this.showInOutStore(currentRow,index,1);
                                         }
                                     }
                                 }, '出库'),
@@ -253,6 +293,7 @@
                 data: [],
                 initTable: [],
                 modal: false,
+                isInOutStore:false,
                 partsType: '',
                 partsList: [],
                 isLoading: false,
@@ -267,6 +308,21 @@
                     stockCount: 1,
                     remark: ''
                 },
+                recordForm: {
+                    id: '',
+                    goodsId:0,
+                    goodsType:'',
+                    goodsName:'',
+                    orderNo:'',
+                    type: '',
+                    price: 100,
+                    number: 1,
+                    remark: ''
+                },
+                label0:'',
+                label1:'',
+                label2:'',
+                label3:'',
                 page: {
                     pageNumber: 1,
                     pageSize: 10,
@@ -343,43 +399,31 @@
                     }
                 });
             },
+            showInOutStore(data,index,type){ //出入库
+                this.isInOutStore = true;
+                if(type === 0){
+                    this.label0 = "商品入库";
+                    this.label1 = "进货价格";
+                    this.label2 = "入库数量";
+                    this.label3 = "入库单号";
+                }else{
+                    this.label0 = "商品出库";
+                    this.label1 = "出库价格";
+                    this.label2 = "出库数量";
+                    this.label3 = "出库单号";
+                }
+                this.recordForm.goodsType = data.category;
+                this.recordForm.goodsName = data.type;
+                this.recordForm.goodsId = data.id;
+                this.recordForm.type = type;
+
+            },
+            submitAdd(){ //提交出入库记录
+
+            },
             onPageChange (pageNumber) {
                 this.page.pageNumber = pageNumber;
-                if (this.choosePartsTypeId == '') {
-                    this.Http.post(config.service.getGoodsList, this.page).then((res) => {
-                        if (res.data.code == 100) {
-                            this.data = this.initTable = res.data.data.rows;
-                            this.page.total = res.data.data.total;
-                        } else {
-                            this.$Message.error({
-                                content: res.data.msg,
-                                duration: 2
-                            });
-                        }
-                    });
-                } else {
-                    var data = {
-                        pageNumber: this.page.pageNumber,
-                        pageSize: this.page.pageSize,
-                        partsId: this.choosePartsTypeId
-                    };
-                    this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
-                        if (res.data.code == 100) {
-                            this.data = this.initTable = res.data.data.rows;
-                            this.page.total = res.data.data.total;
-                        } else {
-                            this.$Message.error({
-                                content: res.data.msg,
-                                duration: 2
-                            });
-                        }
-                    });
-                }
-            },
-            onPageSizeChange (pageSize) {
-                this.page.pageNumber = 1;
-                this.page.pageSize = pageSize;
-                if (this.choosePartsTypeId == '') {
+                if (this.choosePartsTypeId === '') {
                     this.Http.post(config.service.getGoodsList, this.page).then((res) => {
                         if (res.data.code === 100) {
                             this.data = this.initTable = res.data.data.rows;
@@ -398,7 +442,41 @@
                         partsId: this.choosePartsTypeId
                     };
                     this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
-                        if (res.data.code == 100) {
+                        if (res.data.code === 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                }
+            },
+            onPageSizeChange (pageSize) {
+                this.page.pageNumber = 1;
+                this.page.pageSize = pageSize;
+                if (this.choosePartsTypeId === '') {
+                    this.Http.post(config.service.getGoodsList, this.page).then((res) => {
+                        if (res.data.code === 100) {
+                            this.data = this.initTable = res.data.data.rows;
+                            this.page.total = res.data.data.total;
+                        } else {
+                            this.$Message.error({
+                                content: res.data.msg,
+                                duration: 2
+                            });
+                        }
+                    });
+                } else {
+                    var data = {
+                        pageNumber: this.page.pageNumber,
+                        pageSize: this.page.pageSize,
+                        partsId: this.choosePartsTypeId
+                    };
+                    this.Http.post(config.service.getGoodsListByPartsId, data).then((res) => {
+                        if (res.data.code === 100) {
                             this.data = this.initTable = res.data.data.rows;
                             this.page.total = res.data.data.total;
                         } else {
@@ -413,6 +491,7 @@
             onCancel () {
                 this.$Message.info('取消添加!');
                 this.modal = false;
+                this.isInOutStore = false;
             },
             handleSearch () {
                 this.data = this.initTable;
