@@ -159,7 +159,8 @@ export const appRouter = [
         component: Main,
         children: [
             {path: 'store_goods', title: '商品列表', name: 'storeGoods_index', component: () => import('@/views/storeManager/StoreGoodsManager.vue')},
-            {path: 'store_parts', title: '商品分类', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')}
+            {path: 'store_parts', title: '商品分类', name: 'storeParts_index', component: () => import('@/views/storeManager/StorePartsManager.vue')},
+            {path: 'store_goods_record', title: '出入库记录', name: 'storeGoodsRecord_index', component: () => import('@/views/storeManager/StoreGoodsRecordManager.vue')},
         ]
     },
     {

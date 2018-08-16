@@ -19,7 +19,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
+                        <Icon type="navicon-round"></Icon>
                         库存商品列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">
@@ -419,7 +419,35 @@
 
             },
             submitAdd(){ //提交出入库记录
+                if (this.recordForm.price === 0) {
+                    this.$Message.error('请输入' + this.label1);
+                    return;
+                }
 
+                if (this.recordForm.number === 0) {
+                    this.$Message.error('请输入' + this.label2);
+                    return;
+                }
+                this.isLoading = true;
+                let user = Cookies.get('user');
+                this.recordForm.operator = user;
+                this.Http.post(config.service.inOrOutStore, this.recordForm).then((res) => {
+                    if (res.data.code === 100) {
+                        this.isInOutStore = false;
+                        this.isLoading = false;
+                        this.onPageChange(1);
+                        this.$Message.success({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                    } else {
+                        this.isLoading = false;
+                        this.$Message.error({
+                            content: res.data.msg,
+                            duration: 2
+                        });
+                    }
+                });
             },
             onPageChange (pageNumber) {
                 this.page.pageNumber = pageNumber;
@@ -436,7 +464,7 @@
                         }
                     });
                 } else {
-                    var data = {
+                    let data = {
                         pageNumber: this.page.pageNumber,
                         pageSize: this.page.pageSize,
                         partsId: this.choosePartsTypeId
@@ -504,7 +532,7 @@
                 this.choosePartsTypeId = partsId;
                 if (partsId != null && partsId != '') {
                     this.page.pageNumber = 1;
-                    var data = {
+                    let data = {
                         pageNumber: this.page.pageNumber,
                         pageSize: this.page.pageSize,
                         partsId: partsId

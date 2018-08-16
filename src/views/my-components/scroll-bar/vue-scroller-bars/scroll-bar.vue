@@ -1,6 +1,6 @@
 <template>
 	<div ref="wraper" :class="wraperClasses" @DOMMouseScroll="handleDOMMouseWheel" @mousewheel="handleMouseWheel">
-		<div 
+		<div
 			ref="content"
 			:class="`${prefix}-content`"
 			:style="contentStyles"
@@ -169,10 +169,10 @@ export default {
                 };
                 if (this.contentSize.height <= this.wraperSize.height) { // if content's height shorter than wraper's height
                     this.scrollOffsetY = 0;
-                };
+                }
                 if ((wraperRect.bottom > contentRect.bottom) && (this.scrollOffsetY > 0)) { // if content's bottom upper wraper's bottom
                     this.scrollOffsetY += contentRect.bottom - wraperRect.bottom;
-                };
+                }
             });
         },
         handleMouseWheel (e) {

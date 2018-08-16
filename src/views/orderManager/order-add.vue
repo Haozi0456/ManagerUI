@@ -752,7 +752,7 @@
                 var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
                 var downloadElement = document.createElement('a');
                 var href = window.URL.createObjectURL(blob); //创建下载的链接
-                downloadElement.href = href
+                downloadElement.href = href;
                 let fileName = new Date().format('yyyy-MM-dd hh:mm:ss');
                 downloadElement.download = fileName+'.xlsx'; //下载后文件名
                 document.body.appendChild(downloadElement);

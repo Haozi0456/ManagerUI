@@ -19,7 +19,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
+                        <Icon type="navicon-round"></Icon>
                         会员列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="toAddMember">

@@ -18,7 +18,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
+                        <Icon type="navicon-round"></Icon>
                         收支列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">

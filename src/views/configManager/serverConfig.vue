@@ -37,7 +37,7 @@
             <Col span="24">
                 <Card :padding="10">
                     <p slot="title">
-                        <Icon type="map"></Icon>
+                        <Icon type="navicon-round"></Icon>
                         服务列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">

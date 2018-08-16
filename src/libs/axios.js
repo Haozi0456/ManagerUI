@@ -34,7 +34,7 @@ axios.interceptors.request.use(config => {
             // window.location.href = '/login';
             helper.local.clear('token');
             helper.local.clear('expireTime');
-            Cookies.remove('user')
+            Cookies.remove('user');
             window.location.href = '/';
         }
     }

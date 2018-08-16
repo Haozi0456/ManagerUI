@@ -112,6 +112,12 @@ var config = {
         // 添加库存商品
         addStoreGoods: 'system/store/addStoreGoods',
 
+        // 商品添加出入库
+        inOrOutStore: 'system/store/inOrOutStore',
+
+        // 根据条件查询出入库记录
+        getRecordListByParams: 'system/store/getRecordListByParams',
+
         // 添加维修工单记录
         addRepairRecord: 'system/repair/addRepairRecord',
 

@@ -18,7 +18,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
+                        <Icon type="plus-round"></Icon>
                         添加收入/支出
                     </p>
                     <Row>

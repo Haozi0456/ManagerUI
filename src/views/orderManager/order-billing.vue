@@ -20,7 +20,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
+                        <Icon type="ios-list-outline"></Icon>
                         维修工单
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">

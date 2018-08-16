@@ -19,7 +19,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
+                        <Icon type="navicon-round"></Icon>
                         商品类型列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">
@@ -79,30 +79,31 @@
                         key: 'createTime',
                         width: 200,
                         title: '创建时间'
-                    },
-                    {
-                        title: '操作',
-                        key: 'show_more',
-                        width: 120,
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small'
-                                },
-                                on: {
-                                    click: () => {
-                                        let query = {user_id: params.row.id};
-                                        this.$router.push({
-                                            name: 'member_details',
-                                            query: query
-                                        });
-                                    }
-                                }
-                            }, '详情');
-                        }
                     }
+                    // ,
+                    // {
+                    //     title: '操作',
+                    //     key: 'show_more',
+                    //     width: 120,
+                    //     align: 'center',
+                    //     render: (h, params) => {
+                    //         return h('Button', {
+                    //             props: {
+                    //                 type: 'primary',
+                    //                 size: 'small'
+                    //             },
+                    //             on: {
+                    //                 click: () => {
+                    //                     let query = {user_id: params.row.id};
+                    //                     this.$router.push({
+                    //                         name: 'member_details',
+                    //                         query: query
+                    //                     });
+                    //                 }
+                    //             }
+                    //         }, '详情');
+                    //     }
+                    // }
 
                 ],
 

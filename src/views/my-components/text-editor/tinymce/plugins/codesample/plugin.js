@@ -641,8 +641,7 @@ define(
     if (typeof global !== 'undefined') {
       global.Prism = Prism;
     }
-    ;
-    Prism.languages.markup = {
+      Prism.languages.markup = {
       'comment': /<!--[\w\W]*?-->/,
       'prolog': /<\?[\w\W]+?\?>/,
       'doctype': /<!DOCTYPE[\w\W]+?>/,
@@ -741,8 +740,8 @@ define(
           alias: 'language-css'
         }
       }, Prism.languages.markup.tag);
-    };
-    Prism.languages.clike = {
+    }
+      Prism.languages.clike = {
       'comment': [
         {
           pattern: /(^|[^\\])\/\*[\w\W]*?\*\//,
@@ -991,8 +990,7 @@ define(
         'php': /\{\{\{PHP[0-9]+\}\}\}/
       });
     }
-    ;
-    Prism.languages.python = {
+      Prism.languages.python = {
       'comment': {
         pattern: /(^|[^\\])#.*/,
         lookbehind: true

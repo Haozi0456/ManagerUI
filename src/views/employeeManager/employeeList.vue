@@ -18,7 +18,7 @@
             <Col span="24">
                 <Card :padding="8">
                     <p slot="title">
-                        <Icon type="person-stalker"></Icon>
+                        <Icon type="navicon-round"></Icon>
                         员工列表
                     </p>
                     <a type="text" slot="extra" @click.prevent="modal = true">

@@ -19,7 +19,7 @@
             <Col :md="24" :lg="24" :style="{marginBottom: '8px'}">
                 <Card>
                     <p slot="title" class="card-title">
-                        <Icon type="android-map"></Icon>
+                        <Icon type="navicon-round"></Icon>
                         订单列表
                     </p>
                     <!--<a type="text" slot="extra" @click.prevent="isShow = true">-->
